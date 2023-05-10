@@ -1,0 +1,16 @@
+<div class="modal animated fadeIn fast" id="{{size}}" *ngIf="show">
+    <div class="modal-box modal-box-centered modal-box-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">{{title}}</div>
+                <div class="close-modal pointer noselect" (click)="closeModal()"><i class="fa fa-times-circle"></i></div>
+            </div>
+            <div class="modal-body">
+                <ng-content select="div[role=body]"></ng-content>
+            </div>
+            <div class="modal-footer">
+                <ng-content select="div[role=footer]"></ng-content>
+            </div>
+        </div>
+    </div>
+</div>

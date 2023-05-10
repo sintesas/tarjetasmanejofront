@@ -1,0 +1,41 @@
+<div class="box-login-bg"></div>
+<div class="box-login" [ngClass]="{'none': model.showLoading}">
+    <div class="inner-box-login">
+        <div class="content-login animated transitionlarge">
+            <div class="header-login">
+                <div class="logo">
+                    <img src="../../assets/images/logo.png">
+                </div>
+            </div>
+            <div class="contain-login">
+                <div class="row-login row-login-username">
+                    <div class="form-login">
+                        <label for="login-username">
+                            <i class="fas fa-user"></i>
+                        </label>
+                        <input autofocus id="login-username" type="text" placeholder="Usuario" [(ngModel)]="model.varLogin.user" (keyup.enter)="inputNext()">
+                    </div>
+                </div>
+                <div class="row-login row-login-password">
+                    <div class="form-login">
+                        <label for="login-password">
+                            <i class="fas fa-lock"></i>
+                        </label>
+                        <input id="login-password" class="inputp" type="password" placeholder="Contraseña" [(ngModel)]="model.varLogin.pass" (keyup.enter)="logeo()">
+                    </div>
+                </div>
+                <div class="row-login row-login-btn">
+                    <div class="form-login">
+                        <div class="btn-login pointer noselect" (click)="logeo()">Iniciar Sesion</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="loader-wrapper animated fadeIn" *ngIf="model.showLoading">
+    <div class="loader-logo">
+        <img src="../../assets/images/logo_fac.png">
+        <div class="loader"></div>
+    </div>
+</div>

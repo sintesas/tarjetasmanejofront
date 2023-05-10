@@ -1,0 +1,24 @@
+<ul class="app-sidebar-menu">
+    <li id="treeview" class="treeview treeview-{{menu.menu_id}}" *ngFor="let menu of menuList">
+        <div *ngIf="menu.menu_padre_id == null && menu.tipo == 'I'" class="app-menu-item pointer noselect" routerLink="/fac/{{menu.url}}" routerLinkActive="active">
+            <i class="app-menu-icon {{menu.icono}}"></i>
+            <span class="app-menu-label">{{menu.titulo}}</span>
+        </div>
+        <div *ngIf="menu.menu_padre_id == null && menu.tipo == 'M'" class="app-menu-item pointer noselect" (click)="toggleIsExpanded(menu.menu_id)">
+            <i class="app-menu-icon {{menu.icono}}"></i>
+            <span class="app-menu-label">{{menu.titulo}}</span>
+            <i class="treeview-indicator fa fa-angle-right"></i>
+        </div>
+        <ul class="treeview-menu">
+            <li *ngFor="let submenu of menu.submenus" class="subtreeview">
+                <div *ngIf="submenu.menu_padre_id != null" class="treeview-menu-item pointer noselect" routerLink="/fac/{{submenu.url}}" routerLinkActive="active">
+                    <i class="app-menu-icon {{submenu.icono}}"></i>
+                    <span class="app-menu-label">{{submenu.titulo}}</span>
+                </div>
+                <div *ngIf="submenu.submenus?.length > 0" class="treeview-submenu">
+                    <app-treview [menuList]="submenu.submenu"></app-treview>
+                </div> 
+            </li>
+        </ul>
+    </li>
+</ul>

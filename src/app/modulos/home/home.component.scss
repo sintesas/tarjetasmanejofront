@@ -1,0 +1,333 @@
+//variables
+$background-purple: #EEEEEE;
+$subtle-white: #f9f9f9;
+$subtle-grey: #f2f2f2;
+$masked-grey: #333;
+$blue: #4738f0;
+
+$fuente: forgotten_futurist;
+
+@font-face {
+font-family: forgotten_futurist;
+src: url('../../../../fonts/forgotten_futurist/forgotten\ futurist\ rg.ttf');
+}
+
+.centrar {
+  display: grid;
+  place-items: center;
+}
+
+html,body{
+  overflow: hidden;
+  font-family: $fuente;
+}
+
+/*slider*/
+.image {
+    width: 100px;
+    height: 200px;
+  }
+
+  .radio {
+      position: relative;
+      left: 50%;
+      transform: translateX(-50%);
+      margin-bottom: 10px;
+  }
+
+  .autoplay {
+      color: #000;
+  }
+
+  .images {
+    overflow: hidden;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 300px;
+  }
+
+  .images-inner {
+    width: 500%;
+    transition: all 800ms cubic-bezier(0.770, 0.000, 0.175, 1.000);
+    transition-timing-function: cubic-bezier(0.770, 0.000, 0.175, 1.000);
+  }
+
+  .image-slide {
+    width: 20%;
+    float: left;
+  }
+
+  .image-slide,
+  .fake-radio,
+  .pagination-item {
+    transition: all 0.5s ease-out;
+  }
+
+  .fake-radio {
+    left: 0;
+    right: 0;
+    bottom: 0;
+    text-align: center;
+    padding: 5px;
+    background-color: rgba(0,0,0,0.5);
+  }
+
+
+
+
+  /* Move slides overflowed container */
+  #slide1:checked ~ .images .images-inner {
+    margin-left: 0;
+  }
+
+  #slide2:checked ~ .images .images-inner {
+    margin-left: -100%;
+  }
+
+  #slide3:checked ~ .images .images-inner {
+    margin-left: -200%;
+  }
+
+
+
+
+  /* Color of bullets */
+  #slide1:checked ~ div .fake-radio .pagination-item:nth-child(1),
+  #slide2:checked ~ div .fake-radio .pagination-item:nth-child(2),
+  #slide3:checked ~ div .fake-radio .pagination-item:nth-child(3) {
+    background: rgb(255, 255, 255);
+    color:rgb(255, 255, 255);
+  }
+
+  /* Color of bullets - END */
+
+
+
+
+  /* Text of slides */
+  #slide1:checked ~ .labels .label:nth-child(1),
+  #slide2:checked ~ .labels .label:nth-child(2),
+  #slide3:checked ~ .labels .label:nth-child(3) {
+    opacity: 1;
+  }
+
+  .label {
+    opacity: 0;
+    position: absolute;
+    color: #dfe5e5;
+    font-family: $fuente;
+  }
+  /* Text of slides - END */
+
+
+
+  /* Calculate AUTOPLAY for BULLETS */
+  @keyframes bullet {
+    0%, 33.32333333333334% {
+      background: rgb(255, 255, 255);
+    }
+
+    33.333333333333336%, 100% {
+      background: gray;
+    }
+  }
+
+
+  #play1:checked ~ div .fake-radio .pagination-item:nth-child(1) {
+    animation: bullet 12300ms infinite -1000ms;
+    -webkit-animation: bullet 12300ms infinite -1000ms;
+}
+
+  #play1:checked ~ div .fake-radio .pagination-item:nth-child(2) {
+    animation: bullet 12300ms infinite 3100ms;
+  }
+
+  #play1:checked ~ div .fake-radio .pagination-item:nth-child(3) {
+    animation: bullet 12300ms infinite 7200ms;
+    -webkit-animation: bullet 12300ms infinite 7200ms;
+}
+  /* Calculate AUTOPLAY for BULLETS - END */
+
+
+
+
+  /* Calculate AUTOPLAY for SLIDES */
+  @keyframes slide {
+    0%, 25.203252032520325% {
+      margin-left: 0;
+    }
+
+    33.333333333333336%, 58.53658536585366% {
+      margin-left: -100%;
+    }
+
+    66.66666666666667%, 91.869918699187% {
+      margin-left: -200%;
+    }
+  }
+
+
+  .st-slider > #play1:checked ~ .images .images-inner {
+    animation: slide 12300ms infinite;
+  }
+  /* Calculate AUTOPLAY for SLIDES - END */
+
+
+  /* Calculate AUTOPLAY for CAPTION */
+  @keyframes caption {
+    0%, 33.32333333333334% {
+      opacity: 1;
+    }
+
+    33.333333333333336%, 100% {
+      opacity: 0;
+    }
+  }
+
+
+  #play1:checked ~ .labels .label:nth-child(1) {
+    animation: caption 12300ms infinite -1000ms;
+    -webkit-animation: caption 12300ms infinite -1000ms;
+}
+
+  #play1:checked ~ .labels .label:nth-child(2) {
+    animation: caption 12300ms infinite 3100ms;
+    -webkit-animation: caption 12300ms infinite 3100ms;
+}
+
+  #play1:checked ~ .labels .label:nth-child(3) {
+    animation: caption 12300ms infinite 7200ms;
+  }
+  /* Calculate AUTOPLAY for CAPTION - END */
+
+  .pagination{
+    left: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    width: 1000px;
+  }
+
+  .pagination-item{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 2px solid white;
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+    overflow: hidden;
+    cursor: pointer;
+    background: rgba(255, 255, 255,0.5);
+    margin: 0 10px;
+    text-align: center;
+    transition: all 300ms;
+  }
+
+  .pagination-item:hover{
+    transform: scale(2);
+  }
+
+  .pagination-item img{
+    display: inline-block;
+    max-width: none;
+    height: 100%;
+    transform: scale(1);
+    opacity: 0;
+    transition: all 300ms;
+  }
+
+  .pagination-item:hover img{
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  img{
+    width: 1000px;
+    object-fit: cover;
+    object-position: center;
+  }
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.centrar {
+  width: 100vw;
+  //height: 100vh;
+  display: grid;
+  place-items: center;
+  margin-left: 70px;
+}
+
+.input-text-login {
+  height: 30px;
+  width: 30%;
+  background-color: #ff000000;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  padding: 2px 10px;
+  border-top: 0;
+  border-left: 0;
+  border-right: 0;
+  border-bottom-color: #191A19;
+  color: white;
+}
+
+input[type=text]:focus,
+input[type=password]:focus {
+  outline: none;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-top: 0;
+  border-left: 0;
+  border-right: 0;
+  border-bottom-color: #191A19;
+}
+
+input[id="1"]:checked ~ .slide{
+  transform: translate3d(0,0,0);
+}
+
+input[id="slide1"]:checked ~ .pagination .pagination-item[for="slide1"]{
+  background: #fff;
+}
+
+input[id="slide2"]:checked ~ .slide{
+  transform: translate3d(calc(-100% * 1),0,0);
+}
+
+input[id="slide2"]:checked ~ .pagination .pagination-item[for="slide2"]{
+  background: #fff;
+}
+
+input[id="slide3"]:checked ~ .slide{
+  transform: translate3d(calc(-100% * 2),0,0);
+}
+
+input[id="slide3"]:checked ~ .pagination .pagination-item[for="slide3"]{
+  background: #fff;
+}
+
+.adaptar{
+  font-size:85px;
+  color: #dfe5e5;
+  align-items: baseline;
+  display: flex;
+  justify-content: center;
+}
+.image{
+  height: 667px;
+  width: 1000px;
+  object-fit: cover;
+  object-position: center;
+}

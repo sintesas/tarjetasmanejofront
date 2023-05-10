@@ -1,0 +1,31 @@
+<div class="modal fade in" *ngIf="show">
+    <div class="modal-inner">
+        <div class="modal-content {{ size }}">
+            <div class="modal-header">
+                <h3 class="modal-title">{{ title }}: Seleccione un dato</h3>
+                <span class="close-modal" (click)="closeModal()"><i class="fa fa-times-circle"></i></span>
+            </div>
+            <div class="modal-body">
+                <div class="filter-content">
+                    <input type="search" placeholder="Buscar..." (keyup)="search($event)" (search)="clearSearch($event)">
+                </div>
+                <div class="table-content">
+                    <table class="table flex-table">
+                        <tbody class="scroll">
+                            <tr class="pointer" *ngFor="let dato of array" (click)="clickData(dato)">
+                                <td>{{dato.item1}}</td>
+                                <td *ngIf='dato.item2 != ""'>{{dato.item2}}</td>
+                            </tr>
+                            <tr *ngIf="array?.length == 0">
+                                <div class="dbempty">Sin resultados</div>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <ng-content select="div[role=footer]"></ng-content>
+            </div>
+        </div>
+    </div>
+</div>

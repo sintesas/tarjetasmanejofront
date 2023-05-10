@@ -1,0 +1,43 @@
+<header class="app-header">
+    <div class="app-header-logo">
+        <img src="../../../assets/images/logo.png">
+    </div>
+    <div class="app-header-toggle pointer noselect" (click)="toggle()"></div>
+    <ul class="app-nav">
+        <!-- <li>
+            <div class="app-nav-item pointer noselect">
+                <i class="fa fa-bell fa-lg"></i>
+            </div>
+        </li>
+        <li>
+            <div class="app-nav-item pointer noselect">
+                <i class="fa fa-cog fa-lg"></i>
+            </div>
+        </li> -->
+        <!-- <li>
+            <div class="app-nav-item">
+                <img src="../../../assets/images/avatar.jpg">
+            </div>
+        </li> -->
+        <!-- <li (click)="toggleMenu()">
+            <span class="app-nav-user">{{currentUser.usuario}}</span>
+            <div class="app-nav-item pointer noselect" >
+                <i class="fa fa-sign-out-alt fa-lg"></i>
+            </div>
+        </li> -->
+    </ul>
+    <div class="logout-options" (click)="toggleMenu()">
+        <span class="app-nav-user" style="font-size: 16px;font-weight: bold; color: #FFFFFF;">
+            <i class="fa fa-user"></i>
+            {{currentUser.usuario}}
+        </span>
+        <div class="logout-menu" [ngClass]="{'show': showMenu}">
+            <a>
+                <i class="fa fa-address-card"></i> Ver perfil
+            </a>
+            <a (click)="logout()">
+                <i class="fa fa-sign-out-alt fa-lg"></i>Cerrar sesión
+            </a>
+        </div>
+    </div>
+</header>

@@ -1,0 +1,65 @@
+<div class="modal animated fadeIn fast" id="{{size}}" *ngIf="show">
+    <div class="modal-box modal-box-centered modal-box-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">{{title}}: Selecciona un dato</div>
+                <div class="close-modal pointer noselect" (click)="closeModal()"><i class="fa fa-times-circle"></i></div>
+            </div>
+            <div class="modal-body">
+                <div class="filter-content">
+                    <ul class="filter-inner">
+                        <li class="filter-item">
+                            <div class="input-group-btn">
+                                <input type="search" #input placeholder="Buscar..." (keyup)="search($event)" (search)="clearSearch($event)" autofocus>
+                                <button type="button" class="button btn-default">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="table-content">
+                    <table class="table flex-table">
+                        <thead>
+                            <tr>
+                                <th>Rol</th>
+                                <th>Módulo</th>
+                                <th>Nombre Pantalla</th>
+                                <th>Consultar</th>
+                                <th>Crear</th>
+                                <th>Actualizar</th>
+                                <th>Eliminar</th>
+                            </tr>
+                        </thead>
+                        <tbody class="scroll">
+                            <tr class="pointer" *ngFor="let dato of array" (click)="clickData(dato)">
+                                <td>{{dato.rol}}</td>
+                                <td>{{dato.modulo}}</td>
+                                <td>{{dato.nombre_pantalla}}</td>
+                                <td>
+                                    <i class="fa fa-1m5x fa-check-circle" *ngIf="dato.consultar == 1"></i>
+                                    <i class="fa fa-1m5x fa-times-circle" *ngIf="dato.consultar == 0"></i>
+                                </td>
+                                <td>
+                                    <i class="fa fa-1m5x fa-check-circle" *ngIf="dato.crear == 1"></i>
+                                    <i class="fa fa-1m5x fa-times-circle" *ngIf="dato.crear == 0"></i>
+                                </td>
+                                <td>
+                                    <i class="fa fa-1m5x fa-check-circle" *ngIf="dato.actualizar == 1"></i>
+                                    <i class="fa fa-1m5x fa-times-circle" *ngIf="dato.actualizar == 0"></i>
+                                </td>
+                                <td>
+                                    <i class="fa fa-1m5x fa-check-circle" *ngIf="dato.eliminar == 1"></i>
+                                    <i class="fa fa-1m5x fa-times-circle" *ngIf="dato.eliminar == 0"></i>
+                                </td>
+                            </tr>
+                            <tr *ngIf="array?.length == 0">
+                                <div class="dbempty">Sin resultados</div>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

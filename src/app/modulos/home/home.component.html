@@ -1,0 +1,57 @@
+<!-- <div class="titulo adaptar" id="reloj">
+    {{model.reloj}}
+    <div class="subtitulo">
+      {{model.format}}
+    </div>
+  </div>
+   -->
+  <div class="centrar">
+      <div id="homepage-slider" class="st-slider">
+  
+          <input hidden (change)="changeBtnRadio()" type="radio" class="cs_anchor radio" name="slider" id="slide1" />
+          <input hidden (change)="changeBtnRadio()" type="radio" class="cs_anchor radio" name="slider" id="slide2" />
+          <input hidden (change)="changeBtnRadio()" type="radio" class="cs_anchor radio" name="slider" id="slide3" />
+          <input hidden type="radio" class="cs_anchor radio autoplay" name="slider" id="play1" checked="" />
+  
+          <div class="images">
+              <div class="images-inner">
+                  <div class="image-slide">
+                      <div class="image bg-yellow">
+                          <img id="slider-1" [src]="model.banner[0]?.imagen" alt="">
+                          {{model.banner[0]?.nombre}}
+                      </div>
+                  </div>
+                  <div class="image-slide">
+                      <div class="image bg-blue">
+                          <img id="slider-2" [src]="model.banner[1]?.imagen" alt="">
+                          {{model.banner[1]?.nombre}}
+                      </div>
+                  </div>
+                  <div class="image-slide">
+                      <div class="image bg-red">
+                          <img id="slider-3" [src]="model.banner[2]?.imagen" alt="">
+                          {{model.banner[2]?.nombre}}
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div class="labels">
+              <label for="slide1" class="label">{{model.banner[0]?.nombre}}</label>
+              <label for="slide2" class="label">{{model.banner[1]?.nombre}}</label>
+              <label for="slide3" class="label">{{model.banner[2]?.nombre}}</label>
+  
+              <div class="fake-radio pagination">
+                  <label for="slide1" class="pagination-item">
+                      <img [src]="model.banner[0]?.imagen">
+                  </label>
+                  <label for="slide2" class="pagination-item">
+                      <img [src]="model.banner[1]?.imagen">
+                  </label>
+                  <label for="slide3" class="pagination-item">
+                      <img [src]="model.banner[2]?.imagen">
+                  </label>
+              </div>
+          </div>
+      </div>
+  </div>
+  
