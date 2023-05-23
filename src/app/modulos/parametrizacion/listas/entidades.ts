@@ -1,18 +1,14 @@
 export class Model{
     varhistorial:any;
-    modal:boolean = false;
     varLista:any = {
-        nombre_lista: ""
+        nombre_lista: "",
+        nombre_lista_padre_id:"0",
+        lista_padre_id:"0",
+        activo:true
     }
-    isLectura:boolean = false;
-    title:String = "";
     Listas:boolean = false;
-    listasPadre:any;
-    varListas:any;
-    modalCrear:boolean = false;
-    varList:any = {
-        lista_dinamica: ""
-    }
-    isCrear:boolean = false;
+    listListas:any = [];
+    listHijos:any = [];
     nombre_lista_id:number = 0;
+    isCrear:boolean = false;
 }

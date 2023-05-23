@@ -20,6 +20,8 @@ import { RolesComponent } from '../modulos/administracion/roles/roles.component'
 import { SelectModalComponent } from '../views/select-modal/select-modal.component';
 import { ListasComponent } from '../modulos/parametrizacion/listas/listas.component';
 import { SelectRolModalComponent } from '../views/select-rol-modal/select-rol-modal.component';
+import { PersonasComponent } from '../modulos/parametrizacion/personas/personas.component';
+import { UnidadesComponent } from '../modulos/parametrizacion/unidades/unidades.component';
 
 
 @NgModule({
@@ -39,7 +41,9 @@ import { SelectRolModalComponent } from '../views/select-rol-modal/select-rol-mo
     RolesComponent,
     SelectModalComponent,
     ListasComponent,
-    SelectRolModalComponent
+    SelectRolModalComponent,
+    PersonasComponent,
+    UnidadesComponent
   ],
   imports: [
     CommonModule,

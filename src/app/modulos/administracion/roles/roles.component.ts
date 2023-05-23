@@ -102,6 +102,7 @@ export class RolesComponent {
     this.model.modal = true;
     this.model.title = 'Crear Rol';
     this.model.isCreacion = true;
+    this.model.varRol = new Model().varRol;
   }
 
   closeModal(bol: any) {
@@ -120,6 +121,7 @@ export class RolesComponent {
   }
 
   saveRoles() {
+    this.model.varRol.rol = this.model.varRol.rol.toUpperCase();
     this.apiR.createRol(this.model.varRol).subscribe(data => {
       let response: any = this.api.ProcesarRespuesta(data);
       if (response.tipo == 0) {
@@ -139,6 +141,7 @@ export class RolesComponent {
   }
 
   updateRoles() {
+    this.model.varRol.rol = this.model.varRol.rol.toUpperCase();
     this.apiR.updateRol(this.model.varRol).subscribe(data => {
       let response: any = this.api.ProcesarRespuesta(data);
       if (response.tipo == 0) {

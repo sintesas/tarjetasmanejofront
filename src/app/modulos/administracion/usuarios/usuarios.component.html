@@ -64,10 +64,10 @@
 <app-modal [title]="model.title" [show]="model.modal" [size]="'modal-md-w'" (close)="closeModal($event)">
     <div role="body">
         <div class="inner-col">
-            <div class="col col33">
-                <div class="label-row">Usuario</div>
-                <input type="text" [(ngModel)]="model.varUsuario.usuario">
+            <div class="col col100 title-row">
+                Datos Personales
             </div>
+            <div class="line-col"></div>
             <div class="col col33">
                 <div class="label-row">Nombres</div>
                 <input type="text" [(ngModel)]="model.varUsuario.nombres">
@@ -80,9 +80,21 @@
                 <div class="label-row">Correo Electronico</div>
                 <input type="text" [(ngModel)]="model.varUsuario.email">
             </div>
+            <div class="col col100 title-row">
+                Credenciales
+            </div>
+            <div class="line-col"></div>
             <div class="col col33">
+                <div class="label-row">Usuario</div>
+                <input type="text" [(ngModel)]="model.varUsuario.usuario" style="text-transform: lowercase;">
+            </div>
+            <div class="col col33" *ngIf="model.isCrear == true">
                 <div class="label-row">Contraseña</div>
-                <input type="text" [(ngModel)]="model.varUsuario.email">
+                <input type="password" [(ngModel)]="model.varUsuario.password">
+            </div>
+            <div class="col col33" *ngIf="model.isCrear == true">
+                <div class="label-row">Confirmar Contraseña</div>
+                <input type="password" [(ngModel)]="model.varUsuario.password2">
             </div>
             <div class="col col33" *ngIf="model.isCrear == false">
                 <div class="label-row">Activo</div>
@@ -126,7 +138,7 @@
                                 <input type="text" placeholder="Selecciona..." [(ngModel)]="rol.nombre_rol" (click)="saveRol(i)">
                             </td>
                             <td>
-                                <input type="text" placeholder="Selecciona..." type="text" [(ngModel)]="rol.modulo" (click)="saveModulo(i)">
+                                <input type="text" placeholder="Modulo" type="text" [(ngModel)]="rol.modulo" disabled>
                             </td>
                             <td>
                                 <input disabled type="text" [(ngModel)]="rol.nombre_pantalla">
@@ -160,5 +172,5 @@
 
 <!-- <app-select-big-modal [title]="'Roles'" [show]="selectModal" [array]="array" [arrayTemp]="array" (output)="dataform(inputform, $event)" (close)="closeSelectModal($event)"></app-select-big-modal> -->
 
-<!-- <app-select-rol-modal [title]="'Roles'" [show]="selectModal" [array]="array" [arrayTemp]="array" (output)="dataform(inputform, $event)" (close)="closeSelectModal($event)"></app-select-rol-modal> -->
-<app-select-modal [title]="''" [show]="model.selectModal" [array]="model.array" [arrayTemp]="model.array" (output)="dataform(model.inputform, $event)" (close)="closeSelectModal($event)"></app-select-modal>
+<app-select-rol-modal [title]="'Roles'" [show]="model.selectModal" [array]="model.array" [arrayTemp]="model.array" (output)="dataform(model.inputform, $event)" (close)="closeSelectModal($event)"></app-select-rol-modal>
+<!-- <app-select-modal [title]="''" [show]="model.selectModal" [array]="model.array" [arrayTemp]="model.array" (output)="dataform(model.inputform, $event)" (close)="closeSelectModal($event)"></app-select-modal> -->

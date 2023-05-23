@@ -13,9 +13,7 @@ export class PruebasComponent {
     this.pruebaApi.ObtenerPrueba().subscribe(data=> {
       let response = this.api.ProcesarRespuesta(data);
       if(response.tipo == 0){
-        console.log(response.result);
       }
     });
-    console.log("En este instante el componente ha cargado")
   }
 }

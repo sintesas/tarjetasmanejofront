@@ -13,7 +13,7 @@
                         <label for="login-username">
                             <i class="fas fa-user"></i>
                         </label>
-                        <input autofocus id="login-username" type="text" placeholder="Usuario" [(ngModel)]="model.varLogin.user" (keyup.enter)="inputNext()">
+                        <input autofocus id="login-username" type="text" placeholder="Usuario" [(ngModel)]="model.varLogin.user" (keyup.enter)="inputNext()" autocomplete="off">
                     </div>
                 </div>
                 <div class="row-login row-login-password">

@@ -44,10 +44,11 @@ export class LoginComponent implements OnInit {
           text: response.mensaje,
           allowOutsideClick: false,
           showConfirmButton: true,
-          type: 'error'
+          icon: 'error'
         }).then((result: any) => {
           if (result) {
             this.model.varLogin.pass = "";
+            window.location.href = '/';
           }
         });
       }

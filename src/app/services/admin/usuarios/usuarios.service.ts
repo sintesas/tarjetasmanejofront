@@ -13,6 +13,8 @@ export class UsuariosService {
   private apiBuscandoUsuarios = this.api.getBaseUrl + "admin/usuarios/busqueda";
   private apiCreateprivilegios = this.api.getBaseUrl + "admin/usuarios/crearPrivilegios";
   private apiUpdateprivilegios = this.api.getBaseUrl + "admin/usuarios/actualizarPrivilegios";
+  private apiCambiopassword = this.api.getBaseUrl + "admin/usuarios/cambiarContraseña";
+  private apiGetRolesAsignados = this.api.getBaseUrl + "admin/usuarios/obtenerRolesAsignados";
 
   constructor(private http: HttpClient, private api: ApiService) { }
 
@@ -47,6 +49,17 @@ export class UsuariosService {
     return this.http.post<any>(this.apiUpdateprivilegios, JSON.stringify(data), this.api.getOptions('g'))
     .pipe(retry(1), catchError(this.api.errorHandle));
   }
+
+  public Cambiarpassword(data: any): Observable<any> {
+    return this.http.post<any>(this.apiCambiopassword, JSON.stringify(data), this.api.getOptions('g'))
+    .pipe(retry(1), catchError(this.api.errorHandle));
+  }
+
+  public ObtenerRolesAsignados(data: any): Observable<any> {
+    return this.http.post<any>(this.apiGetRolesAsignados, JSON.stringify(data), this.api.getOptions('g'))
+    .pipe(retry(1), catchError(this.api.errorHandle));
+  }
+
 }
 
 

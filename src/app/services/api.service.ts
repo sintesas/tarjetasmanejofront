@@ -12,7 +12,9 @@ export class ApiService {
   entity = new Entitys();
   version =  "V 1.0";
 
-  private baseurl = "http://localhost:8000/api/";
+  private url = "http://localhost:8000/";
+  private baseurl = this.url + "api/";
+  public imagen_folder = this.url + "img/perfil/";
 
   constructor() { }
 
@@ -109,16 +111,16 @@ export class ApiService {
         footer: 'Tarjetas '+ this.version
       })
     }
-    if (request != undefined && request.tipo == -1 && request.codigo == 2) {
+    if (request != undefined && request.tipo == -2) {
       Swal.fire({
-        title: 'ADVERTENCIA',
+        title: 'ERROR',
         icon: 'error',
         text: request.mensaje,
         footer: 'Tarjetas '+ this.version
       }).then((result: any) => {
         setTimeout(() => {
           localStorage.clear();
-          window.location.href = '/login';
+          window.location.href = '/';
         }, 500);
       });
     }

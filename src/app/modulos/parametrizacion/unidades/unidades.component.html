@@ -1,0 +1,138 @@
+<app-breadcrumb [icon]="'fa-building'" [title]="'Unidades'" [items]="'Parametrizacion,Unidades'"></app-breadcrumb>
+
+<div class="app-content-inner">
+    <div class="app-content-tile">
+        <div class="flex-content">
+            <div class="filter-content">
+                <ul class="filter-inner">
+                    <li class="filter-item">
+                        <button type="button" class="button btn-default" (click)="CrearUnidad()">Crear</button>
+                    </li>
+                    <li class="filter-item">
+                        <div class="input-group-btn">
+                            <input type="search" placeholder="Buscar..." (keyup)="search($event)" (search)="clearSearch($event)">
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="table-content">
+                <table class="table flex-table">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <!-- <th>Tipo</th> -->
+                            <th>Nombre Unidad</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody class="scroll">
+                        <tr *ngFor="let item of model.varhistorial; let i = index">
+                            <td>{{item.unidad_id}}</td>
+                            <!-- <td>
+                            	{{item.tipo}}
+                            </td> -->
+                            <td>
+                                {{item.nombre_unidad}}
+                            </td>
+                            <td>
+                                <i class="fa fa-check" style="color: darkgreen;" *ngIf="item.estado"></i>
+                                <i class="fa fa-times-circle" style="color:darkred" *ngIf="!item.estado"></i>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-info" (click)="OpenUnidad(item)"><i class="fa fa-pencil"></i></button>
+                                <button type="button" class="btn btn-secondary" (click)="openDependencias(item)"><i class="fa fa-bars"></i></button>
+                            </td>
+                        </tr>
+                        <tr *ngIf="model.varhistorial?.length == 0">
+                            <div class="dbempty">No hay datos.</div>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="pagination-content">
+                <div class="col col100">
+                    Cantidad de Registros: {{model.varhistorial?.length}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-modal [title]="'Unidad'" class="prioridad" [show]="model.modalCrear" [size]="'modal-lg1'" (close)="closeCrear()">
+    <div role="body">
+        <div class="inner-col">
+            <div class="col col33">
+                <div class="label-row">Nombre:</div>
+                <input type="text" [(ngModel)]="model.varUnidad.nombre_unidad">
+            </div>
+            <!-- <div class="col col33">
+                <div class="label-row">Denominacion:</div>
+                <input type="text" [(ngModel)]="model.varUnidad.denominacion">
+            </div> -->
+            <div class="col col33">
+                <div class="label-row">Ciudad:</div>
+                <input type="text" [(ngModel)]="model.varUnidad.ciudad">
+            </div>
+            <div class="col col33">
+                <div class="label-row">Direccion:</div>
+                <input type="text" [(ngModel)]="model.varUnidad.direccion">
+            </div>
+            <div class="col col33" *ngIf="model.isCrear == false">
+                <div class="label-row">Estado:</div>
+                <label class="switch">
+                    <input type="checkbox" [(ngModel)]="model.varUnidad.estado">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+    </div>
+    <div role="footer">
+        <button type="button" class="btn btn-red" (click)="closeCrear()">Cerrar</button>
+        <button type="button" class="btn btn-blue" *ngIf="model.isCrear == true" (click)="guardarUnidad(1)">Guardar</button>
+        <button type="button" class="btn btn-blue" *ngIf="model.isCrear == false" (click)="guardarUnidad(2)">Guardar</button>
+    </div>
+</app-modal>
+
+<app-modal [title]="'Dependencias'" [show]="model.modalDependencias" [size]="'modal-md'" (close)="closeDependecias()">
+    <div role="body">
+        <div class="inner-col">
+            <div class="input-group col col40">
+                <label>Nombre Unidad:</label>
+                <input type="text" disabled [(ngModel)]="model.title">
+            </div>
+        </div>   
+        <br>
+        <button type="button" class="btn btn-blue" (click)="CrearUnidad()">Crear</button>
+        <div class="inner-col">
+            <div class="table-content">
+                <table class="table flex-table">
+                    <thead>
+                        <tr>
+                            <th>Nombre Unidad</th>
+                            <th>Denominacion</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody class="scroll">
+                        <tr *ngFor="let item of model.varHistorialDependencias; let i = index">
+                            <td>{{item.nombre_unidad}}</td>
+                            <td>{{item.denominacion}}</td>
+                            <td>
+                                <i class="fa fa-check" style="color: darkgreen;" *ngIf="item.estado"></i>
+                                <i class="fa fa-times-circle" style="color:darkred" *ngIf="!item.estado"></i>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-primary button" (click)="OpenUnidad(item)">Editar</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div role="footer">
+        <button type="button" class="btn btn-red" (click)="closeDependecias()">Cerrar</button>
+    </div>
+</app-modal>

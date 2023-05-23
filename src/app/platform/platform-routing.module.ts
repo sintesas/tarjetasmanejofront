@@ -10,6 +10,8 @@ import { PlatformComponent } from './platform.component';
 import { UsuariosComponent } from '../modulos/administracion/usuarios/usuarios.component';
 import { RolesComponent } from '../modulos/administracion/roles/roles.component';
 import { ListasComponent } from '../modulos/parametrizacion/listas/listas.component';
+import { PersonasComponent } from '../modulos/parametrizacion/personas/personas.component';
+import { UnidadesComponent } from '../modulos/parametrizacion/unidades/unidades.component';
 
 
 var entidad = new Entitys();
@@ -23,6 +25,8 @@ const routes: Routes = [
     { path: 'menu', component: MenuComponent, canActivate: [AccesoGuard]},
     { path: 'admin/usuarios', component: UsuariosComponent, canActivate: [AccesoGuard]},
     { path: 'admin/roles', component: RolesComponent, canActivate: [AccesoGuard]},
+    { path: 'param/personas', component: PersonasComponent, canActivate: [AccesoGuard]},
+    { path: 'param/unidades', component: UnidadesComponent, canActivate: [AccesoGuard]},
     { path: 'param/listas', component: ListasComponent, canActivate: [AccesoGuard]},
     { path: '404', component: NotfoundComponent, canActivate: [AccesoGuard]},
     { path: '**', redirectTo: ruta}

@@ -19,7 +19,6 @@ export class HomeComponent implements OnInit {
   constructor(private apiHome: HomeService, private api: ApiService) {}
 
   ngOnInit() {
-    console.log(this.entity)
     this.reloj();
     this.ObtenerBanner();
   }

@@ -34,93 +34,31 @@ export class ListasComponent {
       }
     });
   }
+
+  search(dato:any){}
+
+  clearSearch(dato:any){}
   
-  crearListaPadre(num:any,data:any = null){
-    this.apiLD.getListasPadre().subscribe(data=>{
-      let response:any = this.api.ProcesarRespuesta(data);
-      if(response.tipo == 0){
-        console.log(response.result);
-        response.result.forEach((x:any) => {
-          x.nombre_padre = x.nombre_lista + " - " + x.lista_dinamica;
-        });
-        this.model.listasPadre = response.result;
-      }
-    })
-    this.model.modal = true;
+  crearLista(num:any,data:any = null){
+    console.log(this.model.varhistorial)
+    this.model.Listas = true;
     if(num == 2){
-      this.model.varLista = data;
       this.model.isCrear = false;
+      this.model.varLista = data;
+      console.log(this.model.varLista);
+      if(this.model.varLista.nombre_lista_padre_id == undefined){
+        this.model.varLista.nombre_lista_padre_id = "0";
+        this.model.varLista.lista_padre_id = "0";
+      }
+      this.model.nombre_lista_id = data.nombre_lista_id;
+      this.model.varLista.nombre_lista = data.nombre_lista;
+      this.ObtenerListasHijos(data.nombre_lista_id)
     }else{
       this.model.isCrear = true;
     }
   }
 
-  guardarListaPadre(data:any,num:Number){
-    if(num == 1){
-      let json = {
-        nombre_lista: data.nombre_lista,
-        usuario: this.utilidades.UsuarioConectado()
-      }
-      this.apiLD.crearLista(json).subscribe(data=>{
-        let response:any = this.api.ProcesarRespuesta(data);
-        if(response.tipo == 0){
-          Swal.fire({
-            title: 'Listas Dinamicas',
-            text: response.mensaje,
-            allowOutsideClick: false,
-            showConfirmButton: true,
-            icon: 'success'
-          });
-          this.closeListaPadre();
-        }
-      })
-    }else{
-      let json = {
-        nombre_lista_id: data.nombre_lista_id,
-        nombre_lista:data.nombre_lista,
-        activo: data.activo,
-        usuario: this.utilidades.UsuarioConectado()
-      }
-      this.apiLD.actualizarLista(json).subscribe(data=>{
-        let response:any = this.api.ProcesarRespuesta(data);
-        if(response.tipo == 0){
-          Swal.fire({
-            title: 'Listas Dinamicas',
-            text: response.mensaje,
-            allowOutsideClick: false,
-            showConfirmButton: true,
-            icon: 'success'
-          });
-          this.closeListaPadre();
-        }
-      })
-    }
-
-  }
-
-  closeListaPadre(){
-    this.model.varLista = new Model().varLista;
-    this.model.modal = false;
-    this.grilla();
-  }
-
-  closeCrear(){
-    this.model.modalCrear = false;
-    this.model.varList = new Model().varList;
-    this.ObtenerListas(this.model.nombre_lista_id);
-  }
-  search(dato:any){}
-
-  clearSearch(dato:any){}
-
-  openLd(item:any){
-    this.model.Listas = true;
-    this.model.nombre_lista_id = item.nombre_lista_id;
-    this.model.varLista.nombre_lista = item.nombre_lista;
-    this.ObtenerListas(item.nombre_lista_id)
-  }
-
-  ObtenerListas(id:any){
+  ObtenerListasHijos(id:any){
     this.apiLD.ObtenerListas({id:id}).subscribe(data =>{
       let response: any = this.api.ProcesarRespuesta(data);
       if(response.tipo == 0){
@@ -131,38 +69,52 @@ export class ListasComponent {
             x.estado = false;
           }
         });
-        this.model.varListas = response.result;
+        this.model.listListas = response.result;
       }
     })
   }
 
-  closeLd(){
-    this.model.Listas = false;
-  }
-  crearLista(data=null, num = 1){
-    if(num == 2){
-      this.model.varList = data;
-      this.model.isCrear = false;
-    }else{
-      this.model.isCrear = true;
-    }
-    this.model.modalCrear = true;
-  }
-  
-  closeLista(){
-    this.model.modalCrear = false;
+  changePadre(id:number){
+    this.apiLD.ObtenerListas({id:id}).subscribe(data =>{
+      let response: any = this.api.ProcesarRespuesta(data);
+      if(response.tipo == 0){
+        response.result.forEach((x: any) => {
+          if(x.activo == 1){
+            x.estado = true;
+          }else{
+            x.estado = false;
+          }
+        });
+        this.model.listHijos = response.result;
+      }
+    })
   }
 
-  guardarLista(data:any,num:number){
-    if(num == 1){
-      let json = {
-        nombre_lista_id: this.model.nombre_lista_id,
-        lista_dinamica: data.lista_dinamica,
-        usuario: this.utilidades.UsuarioConectado()
-      }
-      this.apiLD.crearListah(json).subscribe(data=>{
+  add(){
+    this.model.listListas.push({
+      Nuevoregistro:true,
+      lista_dinamica:"",
+      descripcion:"",
+      atributo1:"",
+      atributo2:"",
+      activo:true
+    });
+  }
+
+  delete(index:number){
+    this.model.listListas.splice(index, 1);
+  }
+
+  guardar(){
+    //guardar datos lista padre
+    if(this.model.isCrear == true){
+      this.model.varLista.usuario= this.utilidades.UsuarioConectado();
+      this.model.varLista.nombre_lista_padre_id = Number(this.model.varLista.nombre_lista_padre_id);
+      this.model.varLista.lista_padre_id = Number(this.model.varLista.lista_padre_id);
+      this.apiLD.crearLista(this.model.varLista).subscribe(data=>{
         let response:any = this.api.ProcesarRespuesta(data);
         if(response.tipo == 0){
+          this.model.nombre_lista_id = response.id;
           Swal.fire({
             title: 'Listas Dinamicas',
             text: response.mensaje,
@@ -170,20 +122,17 @@ export class ListasComponent {
             showConfirmButton: true,
             icon: 'success'
           });
-          this.closeCrear();
+          this.guardarHijos();
         }
       })
     }else{
-      let json = {
-        lista_dinamica_id: data.lista_dinamica_id,
-        nombre_lista_id: this.model.nombre_lista_id,
-        lista_dinamica: data.lista_dinamica,
-        activo: data.activo,
-        usuario: this.utilidades.UsuarioConectado()
-      }
-      this.apiLD.actualizarListah(json).subscribe(data=>{
+      this.model.varLista.usuario= this.utilidades.UsuarioConectado();
+      this.model.varLista.nombre_lista_padre_id = Number(this.model.varLista.nombre_lista_padre_id);
+      this.model.varLista.lista_padre_id = Number(this.model.varLista.lista_padre_id);
+      this.apiLD.actualizarLista(this.model.varLista).subscribe(data=>{
         let response:any = this.api.ProcesarRespuesta(data);
         if(response.tipo == 0){
+          this.model.nombre_lista_id = response.id;
           Swal.fire({
             title: 'Listas Dinamicas',
             text: response.mensaje,
@@ -191,10 +140,36 @@ export class ListasComponent {
             showConfirmButton: true,
             icon: 'success'
           });
-          this.closeCrear();
+          this.guardarHijos();
         }
       })
     }
+    this.grilla();
+  }
+
+  guardarHijos(){
+    debugger
+    //guardar datos hijos
+    this.model.listListas.forEach((x:any) => {
+      x.usuario = this.utilidades.UsuarioConectado();
+      x.nombre_lista_id = Number(this.model.nombre_lista_id);
+      if(x.Nuevoregistro == true){
+        this.apiLD.crearListah(x).subscribe(data=>{});
+      }else{
+        this.apiLD.crearListah(x).subscribe(data=>{});
+      }
+    });
+        //recarga hijos
+    let time = (this.model.listHijos.length * 1000) + 2000;
+    setTimeout(() => {
+      this.ObtenerListasHijos(this.model.nombre_lista_id);
+    }, time);
+  }
+
+  closeLd(){
+    this.model.Listas = false;
+    this.model.listListas = new Model().listListas;
+    this.model.varLista = new Model().varLista;
   }
 
   checkbox(num:Number,data:any,check:boolean){
@@ -206,6 +181,10 @@ export class ListasComponent {
         usuario: this.utilidades.UsuarioConectado()
       }
       this.apiLD.actualizarLista(json).subscribe(data=>{});
+      this.grilla();
+      if(this.model.nombre_lista_id != 0){
+        this.ObtenerListasHijos(this.model.nombre_lista_id);
+      }
     }else{
       let json = {
         lista_dinamica_id: data.lista_dinamica_id,
@@ -215,6 +194,10 @@ export class ListasComponent {
         usuario: this.utilidades.UsuarioConectado()
       }
       this.apiLD.actualizarListah(json).subscribe(data=>{});
+      this.grilla();
+      if(this.model.nombre_lista_id != 0){
+        this.ObtenerListasHijos(this.model.nombre_lista_id);
+      }
     }
   }
 }

@@ -1,0 +1,116 @@
+<app-breadcrumb [icon]="'fa-person'" [title]="'Personas'" [items]="'Parametrizacion,Personas'"></app-breadcrumb>
+<div class="app-content-inner">
+    <div class="app-content-tile">
+        <div class="flex-content">
+            <div class="filter-content">
+                <ul class="filter-inner">
+                    <li class="filter-item">
+                        <button type="button" class="button btn-default" (click)="Crear()">Crear</button>
+                    </li>
+                    <li class="filter-item">
+                        <div class="input-group-btn">
+                            <input type="search" placeholder="Buscar...">
+                            <button type="button" class="button btn-default">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="table-content">
+                <table class="table flex-table">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Grado - Nombre</th>
+                            <th>Cedula</th>
+                            <th>Unidad</th>
+                            <th>Dependecia</th>
+                            <th>Cargo</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody class="scroll">
+                        <tr *ngFor="let item of model.varhistorial; let i = index">
+                            <td>{{item.persona_id}}</td>
+                            <td>{{item.grado + "-" + item.nombres + " " + item.apellidos}}</td>
+                            <td>{{item.numero_identificacion}}</td>
+                            <td>{{item.unidad}}</td>
+                            <td>{{item.dependencia}}</td>
+                            <td>{{item.cargo}}</td>
+                            <td>
+                                <button type="button" class="btn btn-info" (click)="editar(item)"><i class="fa fa-pencil"></i></button>
+                                <!-- <button type="button" class="btn btn-secondary"><i class="fa fa-bars"></i></button> -->
+                            </td>
+                        </tr>
+                        <tr *ngIf="model.varhistorial?.length == 0">
+                            <div class="dbempty">No hay datos.</div>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="pagination-content">
+                <div class="col col100">
+                    Cantidad de Registros: {{model.varhistorial?.length}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-modal [title]="model.title" [show]="model.modal" [size]="'modal-md-w'" (close)="closeModal($event)">
+    <div role="body">
+        <div class="inner-col">
+            <div class="col col25" style="top:50px">
+                <div class="label-row">Tipo Persona</div>
+                <input type="text" [(ngModel)]="model.varPersona.tipo_persona">
+            </div>
+            <div class="col col25"></div>
+            <div class="col col25"></div>
+            <div class="col col25" style="text-align: center;">
+                <div class="imagen">
+                    <!-- <img [src]="model.imagen" class="img" alt="ImagenUser--" -->
+                    <canvas #myCanvas style="width: 200px; height: 200px; padding-bottom: 10px; object-fit: contain;"></canvas>
+                </div>
+                {{model.varPersona?.nombre_imagen}}
+                <input type="file" #filetarget id="filetargetid" (change)="changeFileImage($event)" style="display: none;">
+                <button type="button" class="btn btn-blue" (click)="filetarget.click()">Cargar Imagen</button>
+            </div>
+        </div>
+        <div class="inner-col">
+            <div class="col col25">
+                <div class="label-row">Numero Identificacion</div>
+                <input type="text" [(ngModel)]="model.varPersona.numero_identificacion">
+            </div>
+            <div class="col col25">
+                <div class="label-row">Grado</div>
+                <input type="text" [(ngModel)]="model.varPersona.grado">
+            </div>
+            <div class="col col25">
+                <div class="label-row">Nombres</div>
+                <input type="text" [(ngModel)]="model.varPersona.nombres">
+            </div>
+            <div class="col col25">
+                <div class="label-row">Apellidos</div>
+                <input type="text" [(ngModel)]="model.varPersona.apellidos">
+            </div>
+            <div class="col col25">
+                <div class="label-row">Unidad</div>
+                <input type="text" [(ngModel)]="model.varPersona.unidad">
+            </div>
+            <div class="col col25">
+                <div class="label-row">Jefatura/Dependencia</div>
+                <input type="text" [(ngModel)]="model.varPersona.dependencia">
+            </div>
+            <div class="col col25">
+                <div class="label-row">Cargo</div>
+                <input type="text" [(ngModel)]="model.varPersona.cargo">
+            </div>
+        </div>
+    </div>
+    <div role="footer">
+        <button type="button" class="btn btn-red" (click)="closeModal(false)">Cerrar</button>
+        <button *ngIf="model.isCrear == true" type="button" class="btn btn-blue" (click)="guardar(1)">Guardar</button>
+        <button *ngIf="model.isCrear == false" type="button" class="btn btn-blue" (click)="guardar(2)">Guardar</button>
+    </div>
+</app-modal>

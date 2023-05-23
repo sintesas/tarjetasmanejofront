@@ -5,7 +5,7 @@
             <div class="filter-content">
                 <ul class="filter-inner">
                     <li class="filter-item">
-                        <button type="button" class="button btn-default" (click)="crearListaPadre(1)">Crear</button>
+                        <button type="button" class="button btn-default" (click)="crearLista(1)">Crear</button>
                     </li>
                     <li class="filter-item">
                         <div class="input-group-btn">
@@ -22,6 +22,7 @@
                     <thead>
                         <tr>
                             <th>Nombre Lista</th>
+                            <th>Descripcion</th>
                             <th>Estado</th>
                             <th>Acciones</th>
                         </tr>
@@ -29,12 +30,15 @@
                     <tbody class="scroll">
                         <tr *ngFor="let item of model.varhistorial; let i = index">
                             <td>{{item.nombre_lista}}</td>
+                            <td>{{item.descripcion}}</td>
                             <td>
-                            	<input type="checkbox" [(ngModel)]="item.estado" (click)="checkbox(1,item,!item.estado)">
+                                <label class="switch">
+                                    <input type="checkbox" [(ngModel)]="item.estado" (click)="checkbox(1,item,!item.estado)">
+                                    <span class="slider"></span>
+                                </label>
                             </td>
                             <td>
-                                <button type="button" class="btn btn-info" (click)="crearListaPadre(2,item)"><i class="fa fa-pencil"></i></button>
-                            <button type="button" class="btn btn-secondary" (click)="openLd(item)"><i class="fa fa-bars"></i></button>
+                                <button type="button" class="btn btn-info" (click)="crearLista(2,item)"><i class="fa fa-pencil"></i></button>
                             </td>
                         </tr>
                         <tr *ngIf="model.varhistorial?.length == 0">
@@ -47,53 +51,88 @@
     </div>
 </div>
 
-<app-modal [title]="'Lista Dinamica'" [show]="model.modal" [size]="'modal-lg1'" (close)="closeListaPadre()">
+<app-modal [title]="'Lista'" [show]="model.Listas" [size]="'modal-lg'" (close)="closeLd()">
     <div role="body">
-        <div class="row">
-            <div class="input-group">
-                <label>Nombre lista:</label>
-                <input type="text" class="form-control" [(ngModel)]="model.varLista.nombre_lista" [disabled]="model.isLectura == true">
+        <div class="inner-col">
+            <div class="col col100">
+                <div class="col col40">
+                    <div class="label-row">Nombre lista:</div>
+                    <input type="text" [(ngModel)]="model.varLista.nombre_lista">
+                </div>
+                <div class="col col60">
+                    <div class="label-row">Descripcion:</div>
+                    <textarea style="height: 45px;" [(ngModel)]="model.varLista.descripcion"></textarea>
+                </div>
             </div>
-        </div>     
-    </div>
-    <div role="footer">
-        <button type="button" class="btn btn-danger" (click)="closeListaPadre()">Cerrar</button>
-        <button type="button" class="btn btn-primary" *ngIf="model.isCrear == true" (click)="guardarListaPadre(model.varLista,1)">Guardar</button>
-        <button type="button" class="btn btn-primary" *ngIf="model.isCrear == false" (click)="guardarListaPadre(model.varLista,2)">Guardar</button>
-    </div>
-</app-modal>
-
-<app-modal [title]="''" [show]="model.Listas" [size]="'modal-lg'" (close)="closeLd()">
-    <div role="body">
-        <div class="row">
-            <div class="input-group">
-                <label>Nombre lista:</label>
-                <input type="text" disabled class="form-control" [(ngModel)]="model.varLista.nombre_lista">
+        </div>  
+        <div class="inner-col">
+            <div class="col col100">
+                <div class="col col30">
+                    <div class="label-row">Nombre Padre:</div>
+                    <select (change)="changePadre(model.varLista.nombre_lista_padre_id)" [(ngModel)]="model.varLista.nombre_lista_padre_id">
+                        <option value="0">Seleccione</option>
+                        <option *ngFor="let opcion of model.varhistorial" [value]="opcion.nombre_lista_id">{{ opcion.nombre_lista }}</option>
+                    </select> 
+                </div>
+                <div class="col col30">
+                    <div class="label-row">Valor Padre:</div>
+                    <select [(ngModel)]="model.varLista.lista_padre_id" [disabled]="model.varLista.nombre_lista_padre_id == 0 || model.varLista.nombre_lista_padre_id == ''">
+                        <option value="0">Seleccione</option>
+                        <option *ngFor="let opcion of model.listHijos" [value]="opcion.lista_dinamica_id">{{ opcion.lista_dinamica }}</option>
+                    </select>                      
+                </div>
+                <div class="col col20">
+                    <div class="label-row">Activo:</div>
+                    <label class="switch">
+                        <input type="checkbox" [(ngModel)]="model.varLista.activo">
+                        <span class="slider"></span>
+                    </label>
+                </div>
             </div>
-        </div>   
-        <br>
-        <button type="button" class="btn btn-primary button" (click)="crearLista()">Crear</button>
+        </div>
         <div class="inner-col">
             <div class="table-content">
                 <table class="table flex-table">
                     <thead>
                         <tr>
-                            <th>Nombre</th>
+                            <th>Valor</th>
+                            <th>Descripcion</th>
+                            <th>Atributo1</th>
+                            <th>Atributo2</th>
                             <th>Activo</th> 
                             <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody class="scroll">
-                        <tr *ngFor="let lista of model.varListas; let i = index">
+                        <tr *ngFor="let lista of model.listListas; let i = index">
                             <td>
-                                {{lista.lista_dinamica}}
+                                <input type="text" [(ngModel)]="lista.lista_dinamica">
                             </td>
                             <td>
-                                <input type="checkbox" [(ngModel)]="lista.estado" (click)="checkbox(1,lista,!lista.estado)">
+                                <textarea style="height: 65px;" [(ngModel)]="lista.descripcion"></textarea>
                             </td>
                             <td>
-                                <button type="button" class="btn btn-primary button" (click)="crearLista(lista,2)">Editar</button>
+                                <input type="text" [(ngModel)]="lista.atributo1">
                             </td>
+                            <td>
+                                <input type="text" [(ngModel)]="lista.atributo2">
+                            </td>
+                            <td>
+                                <label class="switch">
+                                    <input type="checkbox" [(ngModel)]="lista.activo" (click)="checkbox(1,lista,!lista.estado)">
+                                    <span class="slider"></span>
+                                </label>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-secondary" *ngIf="lista.Nuevoregistro == true" (click)="delete(i)"><i class="fa fa-circle-xmark"></i></button>
+                                <!-- <button type="button" class="btn btn-secondary"><i class="fa fa-trash"></i></button> -->
+                            </td>
+                        </tr>
+                        <tr *ngIf="model.listListas?.length == 0">
+                            <div class="dbempty">No hay datos.</div>
+                        </tr>
+                        <tr class="add_row_full">
+                            <button type="button" class="button btn-blue" (click)="add()">Agregar</button>
                         </tr>
                     </tbody>
                 </table>
@@ -101,22 +140,7 @@
         </div>
     </div>
     <div role="footer">
-        <button type="button" class="btn btn-danger" (click)="closeLd()">Cerrar</button>
-    </div>
-</app-modal>
-
-<app-modal [title]="model.varLista.nombre_lista" [show]="model.modalCrear" [size]="'modal-md'" (close)="closeCrear()">
-    <div role="body">
-        <div class="row">
-            <div class="input-group">
-                <label>Nombre lista:</label>
-                <input type="text" class="form-control" [(ngModel)]="model.varList.lista_dinamica">
-            </div>
-        </div>     
-    </div>
-    <div role="footer">
-        <button type="button" class="btn btn-danger" (click)="closeCrear()">Cerrar</button>
-        <button type="button" class="btn btn-primary" *ngIf="model.isCrear == true" (click)="guardarLista(model.varList,1)">Guardar</button>
-        <button type="button" class="btn btn-primary" *ngIf="model.isCrear == false" (click)="guardarLista(model.varList,2)">Guardar</button>
+        <button type="button" class="btn btn-red" (click)="closeLd()">Cerrar</button>
+        <button type="button" class="btn btn-blue" (click)="guardar()">Guardar</button>
     </div>
 </app-modal>

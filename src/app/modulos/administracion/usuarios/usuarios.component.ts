@@ -59,17 +59,35 @@ export class UsuariosComponent {
   guardar(num:number){
     this.model.varUsuario.tipo_usuario = 1;
     if(num == 1){
-      this.apiU.createUsuarios(this.model.varUsuario).subscribe(data =>{
-        let response:any = this.api.ProcesarRespuesta(data);
-        if(response.tipo == 0){
+      let existe = this.model.varhistorial.filter((x:any)=>x.usuario == this.model.varUsuario.usuario);
+      if(existe.length >=1){
+        Swal.fire({
+          title:'Usuarios',
+          icon:'warning',
+          text:'El usuario ya existe, cambielo porfavor'
+        })
+      }else{
+        if(this.model.varUsuario.password != this.model.varUsuario.password2){
           Swal.fire({
-            title: "Usuario",
-            text: "Usuario Creado con Exito",
-            icon: "success"
-          });
-          this.closeModal(false);
+            title:'Usuarios',
+            icon:'warning',
+            text:'Las contraseñas no coinciden'
+          })
         }
-      })
+        else{
+          this.apiU.createUsuarios(this.model.varUsuario).subscribe(data =>{
+            let response:any = this.api.ProcesarRespuesta(data);
+            if(response.tipo == 0){
+              Swal.fire({
+                title: "Usuario",
+                text: "Usuario Creado con Exito",
+                icon: "success"
+              });
+              this.closeModal(false);
+            }
+          })
+        }
+      }
     }else{
       if(this.model.varUsuario.activo == true){
         this.model.varUsuario.estado = "S";
@@ -147,29 +165,27 @@ export class UsuariosComponent {
       if(response.tipo == 0){
         this.model.listRoles = response.result;
       }
+    });
+  }
+
+  ObtenerRolesAsignados(id:number){
+    this.apiU.ObtenerRolesAsignados({usuario_id:id}).subscribe(data=>{
+      let response:any = this.api.ProcesarRespuesta(data);
+      if(response.tipo == 0){
+        this.model.varRol = response.result;
+      }
     })
   }
 
   saveRol(index:any){
     this.model.listRoles.forEach((x:any) => {
-      x.item1 = x.rol;
-      // x.item2 = x.pantalla;
+      x.descripcion = x.rol;
     });
     this.model.array = this.model.listRoles;
     this.model.inputform = 'modulo';
     this.model.index = index;
-    this.model.selectModal = true;   
-  }
-
-  saveModulo(index:any){
-    this.model.listPrivilegios.forEach((x:any) => {
-      x.item1 = x.modulo; 
-      x.item2 = x.nombre_pantalla;
-    });
-    this.model.array = this.model.listPrivilegios;
-    this.model.inputform = 'privilegio';
-    this.model.index = index;
     this.model.selectModal = true;
+    console.log(this.model.listRoles);
   }
 
   dataform(inputform: any, data: any) {
@@ -177,17 +193,9 @@ export class UsuariosComponent {
     if (inputform == 'modulo') {
       this.model.varRol[this.model.index].rol_id = data.rol_id;
       this.model.varRol[this.model.index].nombre_rol = data.rol;
-      this.apiR.getRolPrivilegiosById({rol_id:data.rol_id}).subscribe(data=>{
-        let response:any = this.api.ProcesarRespuesta(data);
-        if(response.tipo == 0){
-          this.model.listPrivilegios = response.result;
-        }
-      });
-    }
-    if (inputform == 'privilegio'){
       this.model.varRol[this.model.index].modulo = data.modulo;
       this.model.varRol[this.model.index].nombre_pantalla = data.nombre_pantalla;
-      this.model.varRol[this.model.index].activo = data.activo;
+      this.model.varRol[this.model.index].menu_id = data.menu_id;
     }
   }
 
@@ -196,15 +204,17 @@ export class UsuariosComponent {
   }
 
   guardarAsignacion(){
-    console.log(this.model.userdata)
-    this.model.varRol.forEach((x:any) => {
-      x.usuario_id = this.model.userdata.usuario_id;
-      x.usuario = this.Utilidades.UsuarioConectado();
-      if(x.NuevoRegistro == true){
-        this.apiU.createPrivilegios(x).subscribe(data=>{});
-      }else{
-        this.apiU.UpdatePrivilegios(x).subscribe(data=>{});
-      }
-    });
+    if (this.model.varRol.length > 0) {
+      this.model.varRol.forEach((x:any) => {
+        x.usuario_id = this.model.userdata.usuario_id;
+        x.usuario = this.Utilidades.UsuarioConectado();
+        if(x.NuevoRegistro == true){
+          this.apiU.createPrivilegios(x).subscribe(data=>{});
+        }else{
+          this.apiU.UpdatePrivilegios(x).subscribe(data=>{});
+        }
+        let menu_id = this.model.varRol.map((x: any) => x.menu_id).join(",");
+      });
+    }
   }
 }

@@ -1174,6 +1174,7 @@ a {
 
 .pagination-content {
     background: lightgray;
+    font-weight: 500;
 }
 
 .input-group-btn input[type=text] {
@@ -1457,12 +1458,13 @@ a {
 
 .inner-col input[type=text], .table-content table input[type=text],
 .inner-col input[type=number], .table-content table input[type=number],
+.inner-col input[type=password], .table-content table input[type=password],
 .inner-col select, .table-content table select {
     padding: 8px;
     width: 100%;
     -webkit-appearance: none;
     appearance: none;
-    border: 0;
+    //border: 0;
     border-radius: 5px;
     height: 30px;
     background-color: white;
@@ -1976,5 +1978,10 @@ textarea {
     -webkit-transform: translateX(26px);
     -ms-transform: translateX(26px);
     transform: translateX(26px);
+  }
+// fin checkbox slider
+
+  textarea {
+    border: 1px solid black;
   }
   

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Entitys } from 'src/app/entitys';
+import { LoginService } from '../auth/login.service';
 
 declare var Swal:any;
 
@@ -9,10 +10,11 @@ declare var Swal:any;
 })
 export class SesionService {
 
-  constructor(private router:Router) {}
+  constructor(private router:Router, private apiL:LoginService) {}
   entity = new Entitys();
 
   logout(btn = 0){
+    this.apiL.logout().subscribe(data=>{});
     if(this.entity.Key != 0){
      if(btn == 0){
         Swal.fire({
