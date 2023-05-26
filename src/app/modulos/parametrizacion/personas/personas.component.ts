@@ -28,6 +28,7 @@ export class PersonasComponent implements AfterViewInit {
 
   constructor(private api:ApiService, private apiP:PersonasService, private Utilidades:UtilidadesService){
     this.obtenerPersonas();
+    this.obtenerUnidadesPadre();
   }
 
   ngAfterViewInit(): void {
@@ -158,6 +159,10 @@ export class PersonasComponent implements AfterViewInit {
     this.model.title = 'Actualilzar Persona';
     this.model.varPersona = datos;
 
+    if(this.model.varPersona.unidad != 0 && this.model.varPersona.unidad != ""){
+      this.obtenerUnidadesHijas(this.model.varPersona.unidad);
+    }
+
     if (datos.existe_img == 1) {
       let foto = this.api.imagen_folder + datos.imagen;
       this.loadImage(this.ctx, foto);
@@ -206,5 +211,23 @@ export class PersonasComponent implements AfterViewInit {
         }
       });
     }
+  }
+
+  obtenerUnidadesPadre(){
+    this.apiP.getUnidadesPadre().subscribe(data=>{
+      let response:any = this.api.ProcesarRespuesta(data);
+      if(response.tipo == 0){
+        this.model.listUnidadesP = response.result;
+      }
+    })
+  }
+
+  obtenerUnidadesHijas(num:number){
+    this.apiP.getUnidadesHijas({id:num}).subscribe(data=>{
+      let response:any = this.api.ProcesarRespuesta(data);
+      if(response.tipo == 0){
+        this.model.listUnidadesH = response.result;
+      }
+    })
   }
 }

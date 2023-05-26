@@ -13,6 +13,7 @@ export class ApiService {
   version =  "V 1.0";
 
   private url = "http://localhost:8000/";
+  //private url = "http://172.20.100.67/TarjetasFAC/"
   private baseurl = this.url + "api/";
   public imagen_folder = this.url + "img/perfil/";
 

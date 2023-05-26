@@ -96,11 +96,19 @@
             </div>
             <div class="col col25">
                 <div class="label-row">Unidad</div>
-                <input type="text" [(ngModel)]="model.varPersona.unidad">
+                <!-- <input type="text" [(ngModel)]="model.varPersona.unidad"> -->
+                <select [(ngModel)]="model.varPersona.unidad" (change)="obtenerUnidadesHijas(model.varPersona.unidad)">
+                    <option value="0">Seleccione</option>
+                    <option *ngFor="let item of model.listUnidadesP" [value]="item.unidad_id">{{ item.nombre_unidad }}</option>
+                </select>            
             </div>
             <div class="col col25">
                 <div class="label-row">Jefatura/Dependencia</div>
-                <input type="text" [(ngModel)]="model.varPersona.dependencia">
+                <!-- <input type="text" [(ngModel)]="model.varPersona.dependencia"> -->
+                <select [(ngModel)]="model.varPersona.dependencia" [disabled]="model.varPersona.unidad == 0 || model.varPersona.unidad == ''">
+                    <option value="0">Seleccione</option>
+                    <option *ngFor="let item of model.listUnidadesH" [value]="item.unidad_id">{{ item.nombre_unidad }}</option>
+                </select>  
             </div>
             <div class="col col25">
                 <div class="label-row">Cargo</div>

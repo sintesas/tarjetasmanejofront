@@ -24,4 +24,6 @@ export class Model{
     nombreMultimedia:any;
     MultimediaBase64:any;
     title = "";
+    listUnidadesP:any = [];
+    listUnidadesH:any = [];
 }
