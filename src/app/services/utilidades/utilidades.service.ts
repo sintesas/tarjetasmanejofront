@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Observable, Observer, from } from 'rxjs';
+import { ApiService } from '../api.service';
+import { ListasService } from '../param/listas/listas.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UtilidadesService {
 
-  constructor() { }
+  constructor(private api:ApiService,private apiL:ListasService) { }
   
   pad(n:any){
     return (n<10?'0'+ n: n);
@@ -135,4 +137,15 @@ export class UtilidadesService {
     });
   }
 
+  ObtenerListas(Lista:string){
+    this.apiL.GetListaByName({nombre:Lista}).subscribe(data=>{
+      let response:any = this.api.ProcesarRespuesta(data);
+      if(response.tipo == 0){
+        console.log('result',response.result);
+        localStorage.setItem(Lista,JSON.stringify(response.result));
+        // let lista = 
+        // return response.result;
+      }
+    });
+  }
 }

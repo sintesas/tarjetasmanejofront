@@ -1,0 +1,10 @@
+@font-face {
+    font-family: mister-giacco-bold;
+    src: url("../../../assets/fonts/Mister-Giacco-Bold.ttf");
+}
+$fuente: mister-giacco-bold;
+.titulo-404{
+    font-family: $fuente;
+    font-size: 80px;
+    text-align: center;
+}

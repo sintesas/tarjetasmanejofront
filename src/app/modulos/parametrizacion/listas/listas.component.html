@@ -5,7 +5,7 @@
             <div class="filter-content">
                 <ul class="filter-inner">
                     <li class="filter-item">
-                        <button type="button" class="button btn-default" (click)="crearLista(1)">Crear</button>
+                        <button type="button" class="button btn-default" *ngIf="model.usuario == 'admin'" (click)="crearLista(1)">Crear</button>
                     </li>
                     <li class="filter-item">
                         <div class="input-group-btn">
@@ -23,7 +23,7 @@
                         <tr>
                             <th>Nombre Lista</th>
                             <th>Descripcion</th>
-                            <th>Estado</th>
+                            <th *ngIf="model.usuario == 'admin'">Estado</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -31,7 +31,7 @@
                         <tr *ngFor="let item of model.varhistorial; let i = index">
                             <td>{{item.nombre_lista}}</td>
                             <td>{{item.descripcion}}</td>
-                            <td>
+                            <td *ngIf="model.usuario == 'admin'">
                                 <label class="switch">
                                     <input type="checkbox" [(ngModel)]="item.estado" (click)="checkbox(1,item,!item.estado)">
                                     <span class="slider"></span>
@@ -66,7 +66,7 @@
             </div>
         </div>  
         <div class="inner-col">
-            <div class="col col100">
+            <div class="col col100" *ngIf="model.usuario == 'admin'">
                 <div class="col col30">
                     <div class="label-row">Nombre Padre:</div>
                     <select (change)="changePadre(model.varLista.nombre_lista_padre_id)" [(ngModel)]="model.varLista.nombre_lista_padre_id">

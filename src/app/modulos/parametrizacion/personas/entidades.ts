@@ -26,4 +26,6 @@ export class Model{
     title = "";
     listUnidadesP:any = [];
     listUnidadesH:any = [];
+    tipoPersonalist:any = [];
+    gradosList:any = [];
 }

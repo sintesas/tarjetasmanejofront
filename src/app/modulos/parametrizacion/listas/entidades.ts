@@ -11,4 +11,5 @@ export class Model{
     listHijos:any = [];
     nombre_lista_id:number = 0;
     isCrear:boolean = false;
+    usuario = "";
 }

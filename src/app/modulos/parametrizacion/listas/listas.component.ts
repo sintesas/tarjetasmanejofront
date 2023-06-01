@@ -17,6 +17,7 @@ export class ListasComponent {
 
   constructor(private apiLD:ListasService, private api:ApiService, private utilidades: UtilidadesService){
     this.grilla();
+    this.model.usuario = this.utilidades.UsuarioConectado();
   }
 
   grilla(){
@@ -68,6 +69,7 @@ export class ListasComponent {
           }else{
             x.estado = false;
           }
+          x.Nuevoregistro = false;
         });
         this.model.listListas = response.result;
       }
@@ -148,7 +150,6 @@ export class ListasComponent {
   }
 
   guardarHijos(){
-    debugger
     //guardar datos hijos
     this.model.listListas.forEach((x:any) => {
       x.usuario = this.utilidades.UsuarioConectado();
@@ -156,7 +157,7 @@ export class ListasComponent {
       if(x.Nuevoregistro == true){
         this.apiLD.crearListah(x).subscribe(data=>{});
       }else{
-        this.apiLD.crearListah(x).subscribe(data=>{});
+        this.apiLD.actualizarListah(x).subscribe(data=>{});
       }
     });
         //recarga hijos
@@ -170,6 +171,7 @@ export class ListasComponent {
     this.model.Listas = false;
     this.model.listListas = new Model().listListas;
     this.model.varLista = new Model().varLista;
+    this.grilla();
   }
 
   checkbox(num:Number,data:any,check:boolean){

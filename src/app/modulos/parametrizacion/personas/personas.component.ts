@@ -10,6 +10,9 @@ declare var Swal:any;
 declare var $: any;
 declare var saveAs:any;
 
+const SG_TIPO_PERSONA = "SG_TIPO_PERSONA";
+const SG_GRADOS = "SG_GRADOS";
+
 @Component({
   selector: 'app-personas',
   templateUrl: './personas.component.html',
@@ -29,6 +32,17 @@ export class PersonasComponent implements AfterViewInit {
   constructor(private api:ApiService, private apiP:PersonasService, private Utilidades:UtilidadesService){
     this.obtenerPersonas();
     this.obtenerUnidadesPadre();
+    this.Utilidades.ObtenerListas(SG_TIPO_PERSONA);
+    this.Utilidades.ObtenerListas(SG_GRADOS);
+    var tipo_persona = localStorage.getItem("SG_TIPO_PERSONA");
+    if(tipo_persona != null){
+      this.model.tipoPersonalist = JSON.parse(tipo_persona);
+    }
+
+    var grados =  localStorage.getItem("SG_GRADOS");
+    if(grados != null){
+      this.model.gradosList = JSON.parse(grados);
+    }
   }
 
   ngAfterViewInit(): void {
@@ -228,6 +242,6 @@ export class PersonasComponent implements AfterViewInit {
       if(response.tipo == 0){
         this.model.listUnidadesH = response.result;
       }
-    })
+    });
   }
 }

@@ -63,7 +63,11 @@
         <div class="inner-col">
             <div class="col col25" style="top:50px">
                 <div class="label-row">Tipo Persona</div>
-                <input type="text" [(ngModel)]="model.varPersona.tipo_persona">
+                <!-- <input type="text" [(ngModel)]="model.varPersona.tipo_persona"> -->
+                <select [(ngModel)]="model.varPersona.tipo_persona">
+                    <option value="0">Seleccione</option>
+                    <option *ngFor="let item of model.tipoPersonalist" [value]="item.lista_dinamica_id">{{ item.lista_dinamica }}</option>
+                </select>  
             </div>
             <div class="col col25"></div>
             <div class="col col25"></div>
@@ -80,11 +84,15 @@
         <div class="inner-col">
             <div class="col col25">
                 <div class="label-row">Numero Identificacion</div>
-                <input type="text" [(ngModel)]="model.varPersona.numero_identificacion">
+                <input type="number" [(ngModel)]="model.varPersona.numero_identificacion">
             </div>
             <div class="col col25">
                 <div class="label-row">Grado</div>
-                <input type="text" [(ngModel)]="model.varPersona.grado">
+                <!-- <input type="text" [(ngModel)]="model.varPersona.grado"> -->
+                <select [(ngModel)]="model.varPersona.grado">
+                    <option value="0">Seleccione</option>
+                    <option *ngFor="let item of model.gradosList" [value]="item.lista_dinamica_id">{{ item.lista_dinamica }}</option>
+                </select>  
             </div>
             <div class="col col25">
                 <div class="label-row">Nombres</div>
