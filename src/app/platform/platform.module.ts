@@ -22,6 +22,7 @@ import { ListasComponent } from '../modulos/parametrizacion/listas/listas.compon
 import { SelectRolModalComponent } from '../views/select-rol-modal/select-rol-modal.component';
 import { PersonasComponent } from '../modulos/parametrizacion/personas/personas.component';
 import { UnidadesComponent } from '../modulos/parametrizacion/unidades/unidades.component';
+import { TarjetasComponent } from '../modulos/tarjetas/tarjetas.component';
 
 
 @NgModule({
@@ -43,7 +44,8 @@ import { UnidadesComponent } from '../modulos/parametrizacion/unidades/unidades.
     ListasComponent,
     SelectRolModalComponent,
     PersonasComponent,
-    UnidadesComponent
+    UnidadesComponent,
+    TarjetasComponent
   ],
   imports: [
     CommonModule,

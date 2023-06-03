@@ -1,11 +1,11 @@
-<app-breadcrumb [icon]="'fa fa-clipboard-list'" [title]="'Listas Dinamicas'" [items]="'Parametrización,Listas Dinamicas'"></app-breadcrumb>
+<app-breadcrumb [icon]="'fa fa-id-card'" [title]="'Tarjetas de Manejo'" [items]="'Tarjetas de Manejo'"></app-breadcrumb>
 <div class="app-content-inner">
     <div class="app-content-tile">
         <div class="flex-content">
             <div class="filter-content">
                 <ul class="filter-inner">
                     <li class="filter-item">
-                        <button type="button" class="button btn-default" *ngIf="model.usuario == 'admin'" (click)="crearLista(1)">Crear</button>
+                        <button type="button" class="button btn-default" (click)="CrearTajeta()">Crear</button>
                     </li>
                     <li class="filter-item">
                         <div class="input-group-btn">
@@ -21,9 +21,13 @@
                 <table class="table flex-table">
                     <thead>
                         <tr>
-                            <th>Nombre Lista</th>
-                            <th>Descripcion</th>
-                            <th *ngIf="model.usuario == 'admin'">Estado</th>
+                            <th>Grado-Nombre</th>
+                            <th>Cedula</th>
+                            <th>Tipo</th>
+                            <th>Clasificacion</th>
+                            <th>Vigencia</th>
+                            <th>Fecha Inicio</th>
+                            <th>Fecha Fin</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -31,16 +35,13 @@
                         <tr *ngFor="let item of model.varhistorial; let i = index">
                             <td>{{item.nombre_lista}}</td>
                             <td>{{item.descripcion}}</td>
-                            <td *ngIf="model.usuario == 'admin'">
-                                <!-- <label class="switch">
-                                    <input type="checkbox" [(ngModel)]="item.estado" (click)="checkbox(1,item,!item.estado)">
-                                    <span class="slider"></span>
-                                </label> -->
+                            <!-- <td *ngIf="model.usuario == 'admin'">
                                 <i class="fa fa-check" style="color: darkgreen;" *ngIf="item.estado"></i>
                                 <i class="fa fa-times-circle" style="color:darkred" *ngIf="!item.estado"></i>
-                            </td>
+                            </td> -->
                             <td>
-                                <button type="button" class="btn btn-info" (click)="crearLista(2,item)"><i class="fa fa-pencil"></i></button>
+                                <button type="button" class="button btn-edit">Editar</button>
+                                <button type="button" class="button btn-edit">Detalle</button>
                             </td>
                         </tr>
                         <tr *ngIf="model.varhistorial?.length == 0">
@@ -53,40 +54,39 @@
     </div>
 </div>
 
-<app-modal [title]="'Lista'" [show]="model.Listas" [size]="'modal-lg'" (close)="closeLd()">
+<app-modal [title]="'Tarjeta de Manejo'" [show]="model.tarjeta" [size]="'modal-wmd-4'" (close)="closeT()">
     <div role="body">
         <div class="inner-col">
             <div class="col col100">
-                <div class="col col40">
-                    <div class="label-row">Nombre lista:</div>
-                    <input type="text" [(ngModel)]="model.varLista.nombre_lista">
+                <div class="col col20">
+                    <div class="label-row">Numero Identificacion:</div>
+                    <!-- [(ngModel)]="model.varTarjeta.nombre_lista" -->
+                    <input type="text" >
                 </div>
-                <div class="col col60">
-                    <div class="label-row">Descripcion:</div>
-                    <textarea style="height: 45px;" [(ngModel)]="model.varLista.descripcion"></textarea>
+                <div class="col col20">
+                    <div class="label-row">Grado:</div>
+                    <!-- [(ngModel)]="model.varTarjeta.nombre_lista" -->
+                    <input type="text" >
+                </div>
+                <div class="col col30">
+                    <div class="label-row">Nombres:</div>
+                    <!-- [(ngModel)]="model.varTarjeta.nombre_lista" -->
+                    <input type="text" >
+                </div>
+                <div class="col col30">
+                    <div class="label-row">Apellidos:</div>
+                    <!-- [(ngModel)]="model.varTarjeta.nombre_lista" -->
+                    <input type="text" >
                 </div>
             </div>
         </div>  
         <div class="inner-col">
-            <div class="col col100" *ngIf="model.usuario == 'admin'">
-                <div class="col col30">
-                    <div class="label-row">Nombre Padre:</div>
-                    <select (change)="changePadre(model.varLista.nombre_lista_padre_id)" [(ngModel)]="model.varLista.nombre_lista_padre_id">
-                        <option value="0">Seleccione</option>
-                        <option *ngFor="let opcion of model.varhistorial" [value]="opcion.nombre_lista_id">{{ opcion.nombre_lista }}</option>
-                    </select> 
-                </div>
-                <div class="col col30">
-                    <div class="label-row">Valor Padre:</div>
-                    <select [(ngModel)]="model.varLista.lista_padre_id" [disabled]="model.varLista.nombre_lista_padre_id == 0 || model.varLista.nombre_lista_padre_id == ''">
-                        <option value="0">Seleccione</option>
-                        <option *ngFor="let opcion of model.listHijos" [value]="opcion.lista_dinamica_id">{{ opcion.lista_dinamica }}</option>
-                    </select>                      
-                </div>
+            <div class="col col100">
                 <div class="col col20">
-                    <div class="label-row">Activo:</div>
+                    <div class="label-row">Restringe DA:</div>
                     <label class="switch">
-                        <input type="checkbox" [(ngModel)]="model.varLista.activo">
+                        <!-- [(ngModel)]="model.varTarjeta.activo" -->
+                        <input type="checkbox">
                         <span class="slider"></span>
                     </label>
                 </div>
@@ -97,16 +97,25 @@
                 <table class="table flex-table">
                     <thead>
                         <tr>
-                            <th>Valor</th>
-                            <th>Descripcion</th>
-                            <th>Atributo1</th>
-                            <th>Atributo2</th>
-                            <th>Activo</th> 
+                            <th>Tipo</th>
+                            <th>Clasificacion</th>
+                            <th>Vigencia</th>
+                            <th>Fecha Inicio</th>
+                            <th>Fecha Fin</th>
+                            <th>Unidad</th>
+                            <th>Dependencia</th>
+                            <th>Cargo</th>
+                            <th>Gr-Nombre Firma</th>
+                            <th>Cargo Firma</th>
+                            <th>Imprimir</th>
+                            <th>Acta HERMES</th>
+                            <th>Formato Reserva</th>
+                            <th>Activo</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody class="scroll">
-                        <tr *ngFor="let lista of model.listListas; let i = index">
+                        <tr *ngFor="let lista of model.listTarjetas; let i = index">
                             <td>
                                 <input type="text" [(ngModel)]="lista.lista_dinamica">
                             </td>
@@ -121,16 +130,15 @@
                             </td>
                             <td>
                                 <label class="switch">
-                                    <input type="checkbox" [(ngModel)]="lista.activo" (click)="checkbox(1,lista,!lista.estado)">
+                                    <input type="checkbox" [(ngModel)]="lista.activo">
                                     <span class="slider"></span>
                                 </label>
                             </td>
                             <td>
                                 <button type="button" class="btn btn-secondary" *ngIf="lista.Nuevoregistro == true" (click)="delete(i)"><i class="fa fa-circle-xmark"></i></button>
-                                <!-- <button type="button" class="btn btn-secondary"><i class="fa fa-trash"></i></button> -->
                             </td>
                         </tr>
-                        <tr *ngIf="model.listListas?.length == 0">
+                        <tr *ngIf="model.listTarjetas?.length == 0">
                             <div class="dbempty">No hay datos.</div>
                         </tr>
                         <tr class="add_row_full">
@@ -142,7 +150,7 @@
         </div>
     </div>
     <div role="footer">
-        <button type="button" class="btn btn-red" (click)="closeLd()">Cerrar</button>
+        <button type="button" class="btn btn-red" (click)="closeT()">Cerrar</button>
         <button type="button" class="btn btn-blue" (click)="guardar()">Guardar</button>
     </div>
-</app-modal>
+</app-modal> 

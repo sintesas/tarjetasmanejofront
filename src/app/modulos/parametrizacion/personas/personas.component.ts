@@ -10,9 +10,6 @@ declare var Swal:any;
 declare var $: any;
 declare var saveAs:any;
 
-const SG_TIPO_PERSONA = "SG_TIPO_PERSONA";
-const SG_GRADOS = "SG_GRADOS";
-
 @Component({
   selector: 'app-personas',
   templateUrl: './personas.component.html',
@@ -32,8 +29,6 @@ export class PersonasComponent implements AfterViewInit {
   constructor(private api:ApiService, private apiP:PersonasService, private Utilidades:UtilidadesService){
     this.obtenerPersonas();
     this.obtenerUnidadesPadre();
-    this.Utilidades.ObtenerListas(SG_TIPO_PERSONA);
-    this.Utilidades.ObtenerListas(SG_GRADOS);
     var tipo_persona = localStorage.getItem("SG_TIPO_PERSONA");
     if(tipo_persona != null){
       this.model.tipoPersonalist = JSON.parse(tipo_persona);
@@ -60,6 +55,12 @@ export class PersonasComponent implements AfterViewInit {
       if(response.tipo == 0){
         response.result.forEach((x: any) => {
           x.existe_img = (x.imagen == null) ? 0 : 1;
+          if(x.grado == null){
+            x.grado2 = "";
+          }else{
+            x.grado2 = x.grado + "-";
+          }
+          x.nombre_grado = x.grado2 + x.nombres + " " + x.apellidos;
         });
         this.model.varhistorial = response.result;
       }
@@ -75,6 +76,15 @@ export class PersonasComponent implements AfterViewInit {
   closeModal(evento:any){
     this.model.modal = false;
     this.model.isCrear = false;
+    this.model.varPersona = new Model().varPersona;
+
+    var img = new Image;
+    img.src = "../../../../assets/images/avatar.jpg";
+    img.onload = () => {
+      this.ctx.canvas.width = img.width;
+      this.ctx.canvas.height = img.height;
+      this.ctx.drawImage(img, 0, 0);
+    }
   }
 
   loadImage(ctx: any, filename: any) {
@@ -204,7 +214,8 @@ export class PersonasComponent implements AfterViewInit {
             allowOutsideClick: false,
             showConfirmButton: true,
             icon: 'success'
-          });
+          })
+          this.closeModal(false);
         }
       });
     }
@@ -222,6 +233,7 @@ export class PersonasComponent implements AfterViewInit {
             showConfirmButton: true,
             icon: 'success'
           });
+          this.closeModal(false);
         }
       });
     }

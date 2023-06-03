@@ -3,8 +3,12 @@ import { Model } from './entidades';
 import { HomeService } from 'src/app/services/modulos/home/home.service';
 import { ApiService } from 'src/app/services/api.service';
 import { Entitys } from 'src/app/entitys';
+import { UtilidadesService } from 'src/app/services/utilidades/utilidades.service';
 // Jquery
 declare var $:any;
+
+const SG_TIPO_PERSONA = "SG_TIPO_PERSONA";
+const SG_GRADOS = "SG_GRADOS";
 
 @Component({
   selector: 'app-home',
@@ -16,9 +20,12 @@ export class HomeComponent implements OnInit {
   model = new Model();
   entity = new Entitys();
 
-  constructor(private apiHome: HomeService, private api: ApiService) {}
+
+  constructor(private apiHome: HomeService, private api: ApiService, private Utilidades:UtilidadesService) {}
 
   ngOnInit() {
+    this.Utilidades.ObtenerListas(SG_TIPO_PERSONA);
+    this.Utilidades.ObtenerListas(SG_GRADOS);
     this.reloj();
     this.ObtenerBanner();
   }

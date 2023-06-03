@@ -49,6 +49,7 @@ export class UnidadesComponent {
     this.model.varUnidad.denominacion = data.denominacion;
     this.model.varUnidad.ciudad = data.ciudad;
     this.model.varUnidad.direccion = data.direccion;
+    this.model.varUnidad.estado = data.estado;
   }
 
   closeCrear(){

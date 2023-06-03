@@ -12,7 +12,7 @@ import { RolesComponent } from '../modulos/administracion/roles/roles.component'
 import { ListasComponent } from '../modulos/parametrizacion/listas/listas.component';
 import { PersonasComponent } from '../modulos/parametrizacion/personas/personas.component';
 import { UnidadesComponent } from '../modulos/parametrizacion/unidades/unidades.component';
-
+import { TarjetasComponent } from '../modulos/tarjetas/tarjetas.component';
 
 var entidad = new Entitys();
 var ruta = String(entidad.ruta);
@@ -28,6 +28,7 @@ const routes: Routes = [
     { path: 'param/personas', component: PersonasComponent, canActivate: [AccesoGuard]},
     { path: 'param/unidades', component: UnidadesComponent, canActivate: [AccesoGuard]},
     { path: 'param/listas', component: ListasComponent, canActivate: [AccesoGuard]},
+    { path: 'tarjetas', component: TarjetasComponent, canActivate: [AccesoGuard]},
     { path: '404', component: NotfoundComponent, canActivate: [AccesoGuard]},
     { path: '**', redirectTo: ruta}
   ]}
