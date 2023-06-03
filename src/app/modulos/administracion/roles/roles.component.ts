@@ -4,8 +4,17 @@ import { ApiService } from 'src/app/services/api.service';
 import { Router } from '@angular/router';
 import { RolesService } from 'src/app/services/admin/roles/roles.service';
 import { UtilidadesService } from 'src/app/services/utilidades/utilidades.service';
+import { UsuariosService } from 'src/app/services/admin/usuarios/usuarios.service';
+
 
 declare var Swal:any;
+
+export class Permiso {
+  consultar: any;
+  crear: any;
+  actualizar: any;
+  eliminar: any;
+}
 
 @Component({
   selector: 'app-roles',
@@ -14,12 +23,14 @@ declare var Swal:any;
 })
 export class RolesComponent {
   model = new Model();
+  p = new Permiso();
 
-  constructor(private api:ApiService, private router:Router, private apiR:RolesService, private utilidades:UtilidadesService){}
+  constructor(private api:ApiService, private router:Router, private apiR:RolesService, private utilidades:UtilidadesService, private usuarioService: UsuariosService){}
 
   ngOnInit(): void {
     this.getRoles();
     this.getModulos();
+    this.getPermisos();
   }
 
   reload() {
@@ -70,6 +81,24 @@ export class RolesComponent {
     if (e.target.value == "") {
       this.model.varprivilegio = this.model.varprivilegioTemp;
     }
+  }
+
+  getPermisos() {
+    let dato = this.utilidades.DatosUsuario();
+    let json = {
+      usuario: dato.usuario,
+      cod_modulo: 'AD'
+    }
+
+    this.usuarioService.getPermisos(json).subscribe(data => {
+      let response: any = this.api.ProcesarRespuesta(data);
+      if (response.tipo == 0) {
+        this.p.consultar = response.result.consultar;
+        this.p.crear = response.result.crear;
+        this.p.actualizar = response.result.actualizar;
+        this.p.eliminar = response.result.eliminar;
+      }
+    })
   }
 
   getRoles() {

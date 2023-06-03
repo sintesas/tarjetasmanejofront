@@ -12,11 +12,11 @@ export class ApiService {
   entity = new Entitys();
   version =  "V 1.0";
 
-  // private url = "http://localhost:8000/";
-  private url = "http://172.20.100.67:85/TarjetasFac/"
+  private url = "http://localhost:8000/";
+  // private url = "http://172.20.100.67:85/TarjetasFac/"
   private baseurl = this.url + "api/";
-  // public imagen_folder = this.url + "img/perfil/";
-  public imagen_folder = this.url + "/public/img/perfil/";
+  public imagen_folder = this.url + "img/perfil/";
+  // public imagen_folder = this.url + "/public/img/perfil/";
 
   constructor() { }
 

@@ -3,8 +3,16 @@ import { Model } from './entidades';
 import { ApiService } from 'src/app/services/api.service';
 import { UtilidadesService } from 'src/app/services/utilidades/utilidades.service';
 import { ListasService } from 'src/app/services/param/listas/listas.service';
+import { UsuariosService } from 'src/app/services/admin/usuarios/usuarios.service';
 
 declare var Swal:any;
+
+export class Permiso {
+  consultar: any;
+  crear: any;
+  actualizar: any;
+  eliminar: any;
+}
 
 @Component({
   selector: 'app-listas',
@@ -14,10 +22,12 @@ declare var Swal:any;
 
 export class ListasComponent {
   model = new Model();
+  p = new Permiso();
 
-  constructor(private apiLD:ListasService, private api:ApiService, private utilidades: UtilidadesService){
+  constructor(private apiLD:ListasService, private api:ApiService, private utilidades: UtilidadesService, private usuarioService: UsuariosService){
     this.grilla();
     this.model.usuario = this.utilidades.UsuarioConectado();
+    this.getPermisos();
   }
 
   grilla(){
@@ -201,5 +211,23 @@ export class ListasComponent {
         this.ObtenerListasHijos(this.model.nombre_lista_id);
       }
     }
+  }
+
+  getPermisos() {
+    let dato = this.utilidades.DatosUsuario();
+    let json = {
+      usuario: dato.usuario,
+      cod_modulo: 'PM'
+    }
+
+    this.usuarioService.getPermisos(json).subscribe(data => {
+      let response: any = this.api.ProcesarRespuesta(data);
+      if (response.tipo == 0) {
+        this.p.consultar = response.result.consultar;
+        this.p.crear = response.result.crear;
+        this.p.actualizar = response.result.actualizar;
+        this.p.eliminar = response.result.eliminar;
+      }
+    })
   }
 }
