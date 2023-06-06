@@ -141,7 +141,6 @@ export class UtilidadesService {
     this.apiL.GetListaByName({nombre:Lista}).subscribe(data=>{
       let response:any = this.api.ProcesarRespuesta(data);
       if(response.tipo == 0){
-        console.log('result',response.result);
         localStorage.setItem(Lista,JSON.stringify(response.result));
         // let lista = 
         // return response.result;

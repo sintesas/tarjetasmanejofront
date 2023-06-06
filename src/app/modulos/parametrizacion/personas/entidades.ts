@@ -1,15 +1,27 @@
 import { Observable, Subscriber } from 'rxjs';
 export class Model{
     varhistorial:any = [];
+    // varPersona:any = {
+    //     tipo_persona:0,
+    //     numero_identificacion:"",
+    //     grado:0,
+    //     nombres:"",
+    //     apellidos:"",
+    //     unidad:0,
+    //     dependencia:0,
+    //     cargo:"",
+    //     imagen:null,
+    //     tipo_imagen: ''
+    // }
     varPersona:any = {
-        tipo_persona:"",
-        numero_identificacion:0,
-        grado:"",
-        nombres:"",
-        apellidos:"",
-        unidad:0,
+        tipo_persona:2015,
+        numero_identificacion:121212121,
+        grado:2017,
+        nombres:"Error",
+        apellidos:"Error",
+        unidad:2,
         dependencia:0,
-        cargo:"",
+        cargo:"Error",
         imagen:null,
         tipo_imagen: ''
     }

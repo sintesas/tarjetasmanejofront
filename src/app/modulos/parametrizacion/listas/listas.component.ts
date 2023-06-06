@@ -51,12 +51,10 @@ export class ListasComponent {
   clearSearch(dato:any){}
   
   crearLista(num:any,data:any = null){
-    console.log(this.model.varhistorial)
     this.model.Listas = true;
     if(num == 2){
       this.model.isCrear = false;
       this.model.varLista = data;
-      console.log(this.model.varLista);
       if(this.model.varLista.nombre_lista_padre_id == undefined){
         this.model.varLista.nombre_lista_padre_id = "0";
         this.model.varLista.lista_padre_id = "0";

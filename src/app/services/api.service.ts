@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpHeaders } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { Entitys } from '../entitys';
-
 declare var Swal:any;
 
 @Injectable({
@@ -10,13 +9,19 @@ declare var Swal:any;
 })
 export class ApiService {
   entity = new Entitys();
-  version =  "V 1.0";
+  version =  this.entity.version;
+  tipoAmbiente:any = "Local";
+  // tipoAmbiente:any = "Produccion";
 
+  ////Producion
+  //  private url = "http://172.20.100.67:85/TarjetasFac/"
+  //  public imagen_folder = this.url + "/public/img/perfil/";
+
+  ////local
   private url = "http://localhost:8000/";
-  // private url = "http://172.20.100.67:85/TarjetasFac/"
-  private baseurl = this.url + "api/";
   public imagen_folder = this.url + "img/perfil/";
-  // public imagen_folder = this.url + "/public/img/perfil/";
+  
+  private baseurl = this.url + "api/";
 
   constructor() { }
 

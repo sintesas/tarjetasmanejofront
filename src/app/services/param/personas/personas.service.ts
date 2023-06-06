@@ -27,8 +27,8 @@ export class PersonasService {
   }
 
   public CrearPersona(data: any): Observable<any> {
-    return this.http.post<any>(this.apiCrearPersonas, data, 
-      this.api.getOptions('b'))
+    return this.http.post<any>(this.apiCrearPersonas, JSON.stringify(data), 
+      this.api.getOptions('g'))
     .pipe(retry(1), catchError(this.api.errorHandle));
   }
 
