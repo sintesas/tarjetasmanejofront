@@ -1,27 +1,16 @@
 import { Observable, Subscriber } from 'rxjs';
 export class Model{
     varhistorial:any = [];
-    // varPersona:any = {
-    //     tipo_persona:0,
-    //     numero_identificacion:"",
-    //     grado:0,
-    //     nombres:"",
-    //     apellidos:"",
-    //     unidad:0,
-    //     dependencia:0,
-    //     cargo:"",
-    //     imagen:null,
-    //     tipo_imagen: ''
-    // }
     varPersona:any = {
-        tipo_persona:2015,
-        numero_identificacion:121212121,
-        grado:2017,
-        nombres:"Error",
-        apellidos:"Error",
-        unidad:2,
+        tipo_persona:0,
+        numero_identificacion:"",
+        tmp_numero_identificacion:"",
+        grado:0,
+        nombres:"",
+        apellidos:"",
+        unidad:0,
         dependencia:0,
-        cargo:"Error",
+        cargo:"",
         imagen:null,
         tipo_imagen: ''
     }
@@ -29,6 +18,7 @@ export class Model{
     // imagen!: Observable<any>;
     base64!: any;
     imagen: string | ArrayBuffer | null | undefined
+    tmp_imagen: string | ArrayBuffer | null | undefined
     filename:any = "../../../../assets/images/avatar.jpg";
     modal:boolean = false;
     isCrear:boolean = false;

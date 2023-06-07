@@ -1,14 +1,11 @@
 <app-breadcrumb [icon]="'fa-user'" [title]="'Usuarios'" [items]="'Administracion,Usuarios'"></app-breadcrumb>
 <div class="app-content-inner">
     <div class="app-content-tile">
-        <!-- <div class="loading" *ngIf="model.loading">
-            <i class="fa fa-10x fa-sync fa-pulse"></i>
-        </div> -->
         <div class="flex-content">
             <div class="filter-content">
                 <ul class="filter-inner">
                     <li class="filter-item">
-                        <button type="button" class="button btn-default" (click)="create()">Crear</button>
+                        <button type="button" class="button btn-default" *ngIf="p.crear == 1" (click)="create()">Crear</button>
                     </li>
                     <li class="filter-item">
                         <!-- <div class="input-group-btn"> -->
@@ -41,9 +38,8 @@
                                 <i class="fa fa-1m5x fa-times-circle" *ngIf="item.estado == 'N'"></i>
                             </td>
                             <td class="table-buttons-action">
-                                <button type="button" class="button btn-edit" (click)="edit(item)">Editar</button>
-                                <button type="button" class="button btn-edit" (click)="openRolModal(item)">Asignar Rol</button>
-                                <!--<button *ngIf="item.usuario_rol_id != 0" type="button" class="button btn-edit" (click)="openViewMenu(item)">Ver menu</button>-->
+                                <button type="button" class="button btn-edit" *ngIf="p.actualizar == 1" (click)="edit(item)">Editar</button>
+                                <button type="button" class="button btn-edit" *ngIf="p.actualizar == 1" (click)="openRolModal(item)">Asignar Rol</button>
                             </td>
                         </tr>
                         <tr *ngIf="model.varhistorial?.length == 0">
@@ -170,7 +166,4 @@
     </div>
 </app-modal>
 
-<!-- <app-select-big-modal [title]="'Roles'" [show]="selectModal" [array]="array" [arrayTemp]="array" (output)="dataform(inputform, $event)" (close)="closeSelectModal($event)"></app-select-big-modal> -->
-
 <app-select-rol-modal [title]="'Roles'" [show]="model.selectModal" [array]="model.array" [arrayTemp]="model.array" (output)="dataform(model.inputform, $event)" (close)="closeSelectModal($event)"></app-select-rol-modal>
-<!-- <app-select-modal [title]="''" [show]="model.selectModal" [array]="model.array" [arrayTemp]="model.array" (output)="dataform(model.inputform, $event)" (close)="closeSelectModal($event)"></app-select-modal> -->

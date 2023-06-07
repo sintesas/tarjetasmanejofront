@@ -5,10 +5,18 @@ import { ApiService } from 'src/app/services/api.service';
 import { PersonasService } from 'src/app/services/param/personas/personas.service';
 import { HttpClient } from '@angular/common/http';
 import { UtilidadesService } from 'src/app/services/utilidades/utilidades.service';
+import { UsuariosService } from 'src/app/services/admin/usuarios/usuarios.service';
 
 declare var Swal:any;
 declare var $: any;
 declare var saveAs:any;
+
+export class Permiso {
+  consultar: any;
+  crear: any;
+  actualizar: any;
+  eliminar: any;
+}
 
 @Component({
   selector: 'app-personas',
@@ -24,9 +32,11 @@ export class PersonasComponent implements AfterViewInit {
 
   model = new Model();
 
+  p = new Permiso();
+
   file: any;
 
-  constructor(private api:ApiService, private apiP:PersonasService, private Utilidades:UtilidadesService){
+  constructor(private api:ApiService, private apiP:PersonasService, private apiU:UsuariosService, private Utilidades:UtilidadesService){
     this.obtenerPersonas();
     this.obtenerUnidadesPadre();
     var tipo_persona = localStorage.getItem("SG_TIPO_PERSONA");
@@ -55,7 +65,7 @@ export class PersonasComponent implements AfterViewInit {
       if(response.tipo == 0){
         response.result.forEach((x: any) => {
           x.grado_nombre = this.model.gradosList.filter((g:any) => g.lista_dinamica_id == x.grado)[0].lista_dinamica;
-          x.existe_img = (x.imagen == null) ? 0 : 1;
+          x.existe_img = (x.imagen == null || x.imagen == "") ? 0 : 1;
           if(x.grado == null){
             x.grado2 = "";
           }else{
@@ -78,7 +88,7 @@ export class PersonasComponent implements AfterViewInit {
     this.model.modal = false;
     this.model.isCrear = false;
     this.model.varPersona = new Model().varPersona;
-
+    this.obtenerPersonas();
     var img = new Image;
     img.src = "../../../../assets/images/avatar.jpg";
     img.onload = () => {
@@ -183,6 +193,10 @@ export class PersonasComponent implements AfterViewInit {
     this.model.modal = true;
     this.model.title = 'Actualilzar Persona';
     this.model.varPersona = datos;
+    this.model.varPersona.tmp_numero_identificacion = datos.numero_identificacion;
+    this.model.varPersona.tmp_imagen = datos.imagen == "" || datos.imagen == null ? null : datos.imagen;
+
+    console.log(this.model.varPersona);
 
     if(this.model.varPersona.unidad != 0 && this.model.varPersona.unidad != ""){
       this.obtenerUnidadesHijas(this.model.varPersona.unidad);
@@ -224,6 +238,8 @@ export class PersonasComponent implements AfterViewInit {
       if (this.file) this.model.varPersona.imagen = this.model.imagen?.toString().substring(this.model.imagen?.toString().indexOf(',') + 1);
       else this.model.varPersona.imagen = null;
 
+      console.log(this.model.varPersona);
+
       this.apiP.ActualizarPersona(this.model.varPersona).subscribe(data=>{
         let response:any = this.api.ProcesarRespuesta(data);
         if(response.tipo == 0){
@@ -256,5 +272,23 @@ export class PersonasComponent implements AfterViewInit {
         this.model.listUnidadesH = response.result;
       }
     });
+  }
+
+  getPermisos() {
+    let dato = this.Utilidades.DatosUsuario();
+    let json = {
+      usuario: dato.usuario,
+      cod_modulo: 'PM'
+    }
+
+    this.apiU.getPermisos(json).subscribe(data => {
+      let response: any = this.api.ProcesarRespuesta(data);
+      if (response.tipo == 0) {
+        this.p.consultar = response.result.consultar;
+        this.p.crear = response.result.crear;
+        this.p.actualizar = response.result.actualizar;
+        this.p.eliminar = response.result.eliminar;
+      }
+    })
   }
 }

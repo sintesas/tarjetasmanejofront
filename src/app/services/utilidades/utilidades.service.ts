@@ -142,8 +142,6 @@ export class UtilidadesService {
       let response:any = this.api.ProcesarRespuesta(data);
       if(response.tipo == 0){
         localStorage.setItem(Lista,JSON.stringify(response.result));
-        // let lista = 
-        // return response.result;
       }
     });
   }

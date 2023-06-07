@@ -7,6 +7,13 @@ import { UtilidadesService } from 'src/app/services/utilidades/utilidades.servic
 
 declare var Swal:any;
 
+export class Permiso {
+  consultar: any;
+  crear: any;
+  actualizar: any;
+  eliminar: any;
+}
+
 @Component({
   selector: 'app-usuarios',
   templateUrl: './usuarios.component.html',
@@ -14,6 +21,9 @@ declare var Swal:any;
 })
 export class UsuariosComponent {
   model = new Model();
+
+  p = new Permiso();
+
   usuario_id = 0;
   
   constructor(private Utilidades:UtilidadesService, private apiU:UsuariosService, private api:ApiService, private apiR:RolesService){
@@ -242,6 +252,24 @@ export class UsuariosComponent {
     }).then((result: any) => {
       this.model.rolModal = false;
       this.obtenerUsuarios();
+    })
+  }
+
+  getPermisos() {
+    let dato = this.Utilidades.DatosUsuario();
+    let json = {
+      usuario: dato.usuario,
+      cod_modulo: 'AD'
+    }
+
+    this.apiU.getPermisos(json).subscribe(data => {
+      let response: any = this.api.ProcesarRespuesta(data);
+      if (response.tipo == 0) {
+        this.p.consultar = response.result.consultar;
+        this.p.crear = response.result.crear;
+        this.p.actualizar = response.result.actualizar;
+        this.p.eliminar = response.result.eliminar;
+      }
     })
   }
 }

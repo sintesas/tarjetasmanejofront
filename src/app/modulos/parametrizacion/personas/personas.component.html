@@ -5,7 +5,7 @@
             <div class="filter-content">
                 <ul class="filter-inner">
                     <li class="filter-item">
-                        <button type="button" class="button btn-default" (click)="Crear()">Crear</button>
+                        <button type="button" class="button btn-default" *ngIf="p.crear == 1" (click)="Crear()">Crear</button>
                     </li>
                     <li class="filter-item">
                         <div class="input-group-btn">
@@ -39,8 +39,7 @@
                             <td>{{item.nombre_dependencia}}</td>
                             <td>{{item.cargo}}</td>
                             <td>
-                                <button type="button" class="btn btn-info" (click)="editar(item)"><i class="fa fa-pencil"></i></button>
-                                <!-- <button type="button" class="btn btn-secondary"><i class="fa fa-bars"></i></button> -->
+                                <button type="button" class="btn btn-info" *ngIf="p.crear == 1" (click)="editar(item)"><i class="fa fa-pencil"></i></button>
                             </td>
                         </tr>
                         <tr *ngIf="model.varhistorial?.length == 0">
@@ -63,7 +62,6 @@
         <div class="inner-col">
             <div class="col col25" style="top:50px">
                 <div class="label-row">Tipo Persona</div>
-                <!-- <input type="text" [(ngModel)]="model.varPersona.tipo_persona"> -->
                 <select [(ngModel)]="model.varPersona.tipo_persona">
                     <option value="0">Seleccione</option>
                     <option *ngFor="let item of model.tipoPersonalist" [value]="item.lista_dinamica_id">{{ item.lista_dinamica }}</option>
@@ -73,7 +71,6 @@
             <div class="col col25"></div>
             <div class="col col25" style="text-align: center;">
                 <div class="imagen">
-                    <!-- <img [src]="model.imagen" class="img" alt="ImagenUser--" -->
                     <canvas #myCanvas style="width: 200px; height: 200px; padding-bottom: 10px; object-fit: contain;"></canvas>
                 </div>
                 {{model.varPersona?.nombre_imagen}}
@@ -88,7 +85,6 @@
             </div>
             <div class="col col25">
                 <div class="label-row">Grado</div>
-                <!-- <input type="text" [(ngModel)]="model.varPersona.grado"> -->
                 <select [(ngModel)]="model.varPersona.grado">
                     <option value="0">Seleccione</option>
                     <option *ngFor="let item of model.gradosList" [value]="item.lista_dinamica_id">{{ item.lista_dinamica }}</option>
@@ -104,7 +100,6 @@
             </div>
             <div class="col col25">
                 <div class="label-row">Unidad</div>
-                <!-- <input type="text" [(ngModel)]="model.varPersona.unidad"> -->
                 <select [(ngModel)]="model.varPersona.unidad" (change)="obtenerUnidadesHijas(model.varPersona.unidad)">
                     <option value="0">Seleccione</option>
                     <option *ngFor="let item of model.listUnidadesP" [value]="item.unidad_id">{{ item.nombre_unidad }}</option>
@@ -112,7 +107,6 @@
             </div>
             <div class="col col25">
                 <div class="label-row">Jefatura/Dependencia</div>
-                <!-- <input type="text" [(ngModel)]="model.varPersona.dependencia"> -->
                 <select [(ngModel)]="model.varPersona.dependencia" [disabled]="model.varPersona.unidad == 0 || model.varPersona.unidad == ''">
                     <option value="0">Seleccione</option>
                     <option *ngFor="let item of model.listUnidadesH" [value]="item.unidad_id">{{ item.nombre_unidad }}</option>

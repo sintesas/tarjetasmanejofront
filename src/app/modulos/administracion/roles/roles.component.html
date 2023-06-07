@@ -1,9 +1,6 @@
 <app-breadcrumb [icon]="'fa-user-shield'" [title]="'Roles'" [items]="'Administracion,Roles'"></app-breadcrumb>
 <div class="app-content-inner">
     <div class="app-content-tile">
-        <!-- <div class="loading" *ngIf="loading">
-            <i class="fa fa-10x fa-sync fa-pulse"></i>
-        </div> -->
         <div class="flex-content">
             <div class="filter-content">
                 <ul class="filter-inner">
@@ -87,9 +84,6 @@
         <div class="flex-content">
             <div class="filter-content">
                 <ul class="filter-inner">
-                    <!-- <li class="filter-item">
-                        <button type="button" class="button btn-default" (click)="crearRolPrivilegioModal()">Crear</button>
-                    </li> -->
                     <li class="filter-item">
                         <div class="input-group-btn">
                             <input type="search" placeholder="Buscar..." (keyup)="searchPrivilegio($event)">
@@ -172,72 +166,5 @@
         <button type="button" class="btn btn-blue" (click)="savePrivilegios()">Guardar</button>
     </div>
 </app-modal>
-
-<!-- <app-modal [title]="model.title" [show]="editrolPrivilegioModal" [size]="'modal-sm'" (close)="closeEditRolPrivilegioModal($event)">
-    <div role="body">
-        <div class="inner-col">
-            <div class="col col20">
-                <div class="label-row">Número Pantalla</div>
-                <input type="number" [(ngModel)]="model.varRolPrivilegio.num_pantalla">
-            </div>
-            <div class="col col50">
-                <div class="label-row">Nombre Pantalla</div>
-                <input type="text" [(ngModel)]="model.varRolPrivilegio.nombre_pantalla">
-            </div>
-            <div class="col col20">
-                <div class="label-row">Consultar</div>
-                <div class="checkbox-component">
-                    <label>
-                        <input type="checkbox" checked="checked" [(ngModel)]="model.varRolPrivilegio.consultar">
-                        <span class="checkmark"></span>
-                    </label>
-                </div>
-            </div>
-            <div class="col col10">
-                <div class="label-row">Crear</div>
-                <div class="checkbox-component">
-                    <label>
-                        <input type="checkbox" checked="checked" [(ngModel)]="model.varRolPrivilegio.crear">
-                        <span class="checkmark"></span>
-                    </label>
-                </div>
-            </div>
-            <div class="col col100">
-            <div class="col col25">
-                <div class="label-row">Actualizar</div>
-                <div class="checkbox-component">
-                    <label>
-                        <input type="checkbox" checked="checked" [(ngModel)]="model.varRolPrivilegio.actualizar">
-                        <span class="checkmark"></span>
-                    </label>
-                </div>
-            </div>
-            <div class="col col25">
-                <div class="label-row">Eliminar</div>
-                <div class="checkbox-component">
-                    <label>
-                        <input type="checkbox" checked="checked" [(ngModel)]="model.varRolPrivilegio.eliminar">
-                        <span class="checkmark"></span>
-                    </label>
-                </div>
-            </div>
-            <div class="col col25">
-                <div class="label-row">Activo</div>
-                <div class="checkbox-component">
-                    <label>
-                        <input type="checkbox" checked="checked" [(ngModel)]="model.varRolPrivilegio.activo">
-                        <span class="checkmark"></span>
-                    </label>
-                </div>
-            </div>
-            </div>
-        </div>
-    </div>
-    <div role="footer">
-        <button type="button" class="btn btn-red" (click)="closeEditRolPrivilegioModal(false)">Cerrar</button>
-        <button *ngIf="model.tipo == 'C'" type="button" class="btn btn-blue" (click)="savePrivilegios()">Guardar</button>
-        <button *ngIf="model.tipo == 'U'" type="button" class="btn btn-blue" (click)="updatePrivilegios()">Actualizar</button>
-    </div>
-</app-modal> -->
 
 <app-select-modal [title]="'Módulos'" [show]="model.selectModal" [array]="model.array" [arrayTemp]="model.array" (output)="dataform(model.inputform, $event)" (close)="closeSelectModal($event)"></app-select-modal>
