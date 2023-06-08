@@ -1,5 +1,6 @@
 export class Model{
-    varhistorial:any;
+    varhistorial:any = [];
+    varhistorialTemp:any = [];
     varLista:any = {
         nombre_lista: "",
         nombre_lista_padre_id:"0",

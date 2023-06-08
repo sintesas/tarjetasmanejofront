@@ -28,6 +28,7 @@ export class UsuariosComponent {
   
   constructor(private Utilidades:UtilidadesService, private apiU:UsuariosService, private api:ApiService, private apiR:RolesService){
     this.obtenerUsuarios();
+    this.getPermisos();
   }
 
   obtenerUsuarios(){

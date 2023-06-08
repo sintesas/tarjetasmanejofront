@@ -39,6 +39,7 @@ export class PersonasComponent implements AfterViewInit {
   constructor(private api:ApiService, private apiP:PersonasService, private apiU:UsuariosService, private Utilidades:UtilidadesService){
     this.obtenerPersonas();
     this.obtenerUnidadesPadre();
+    this.getPermisos();
     var tipo_persona = localStorage.getItem("SG_TIPO_PERSONA");
     if(tipo_persona != null){
       this.model.tipoPersonalist = JSON.parse(tipo_persona);
@@ -74,6 +75,7 @@ export class PersonasComponent implements AfterViewInit {
           x.nombre_grado = x.grado2 + x.nombres + " " + x.apellidos;
         });
         this.model.varhistorial = response.result;
+        this.model.varhistorialTemp = response.result;
       }
     })
   }
@@ -82,6 +84,23 @@ export class PersonasComponent implements AfterViewInit {
     this.model.modal = true;
     this.model.isCrear = true;
     this.model.title = 'Crear Persona';
+  }
+
+  search(dato:any){
+    let filtro = dato.value.toLowerCase();
+    if(dato.value.length >= 3){
+      this.model.varhistorial = this.model.varhistorialTemp.filter((item: any) => {
+        if (item.nombre_grado.toString().toLowerCase().indexOf(filtro) !== -1 ||
+            item.numero_identificacion.toString().toLowerCase().indexOf(filtro) !== -1 ||
+            item.cargo.toString().toLowerCase().indexOf(filtro) !== -1 ||
+            item.persona_id.toString().toLowerCase().indexOf(filtro) !== -1) {
+              return true;
+            }
+            return false;
+      });
+    }else{
+      this.model.varhistorial = this.model.varhistorialTemp;
+    }
   }
 
   closeModal(evento:any){
@@ -111,15 +130,11 @@ export class PersonasComponent implements AfterViewInit {
   onFileSelected(event: any) {
     this.model.selectedFile = event.target.files[0] as File;
     this.model.varPersona.nombre_imagen = event.target.files[0].name;
-    // this.changeMultimedia(event);
   }
 
   changeMultimedia = ($event: Event) => {
     const target = $event.target as HTMLInputElement;
     const file: File = (target.files as FileList)[0];
-    // this.model.Multimedia = file;
-    // this.model.nombreMultimedia = ' ...' + file.name;
-    // this.convertToBase64(file)
     
     var mimeType = file.type;
     if (mimeType.match(/image\/*/) == null) {
@@ -196,8 +211,6 @@ export class PersonasComponent implements AfterViewInit {
     this.model.varPersona.tmp_numero_identificacion = datos.numero_identificacion;
     this.model.varPersona.tmp_imagen = datos.imagen == "" || datos.imagen == null ? null : datos.imagen;
 
-    console.log(this.model.varPersona);
-
     if(this.model.varPersona.unidad != 0 && this.model.varPersona.unidad != ""){
       this.obtenerUnidadesHijas(this.model.varPersona.unidad);
     }
@@ -237,8 +250,6 @@ export class PersonasComponent implements AfterViewInit {
     else{
       if (this.file) this.model.varPersona.imagen = this.model.imagen?.toString().substring(this.model.imagen?.toString().indexOf(',') + 1);
       else this.model.varPersona.imagen = null;
-
-      console.log(this.model.varPersona);
 
       this.apiP.ActualizarPersona(this.model.varPersona).subscribe(data=>{
         let response:any = this.api.ProcesarRespuesta(data);

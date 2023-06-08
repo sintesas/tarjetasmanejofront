@@ -1,5 +1,6 @@
 export class Model{
     varhistorial:any = [];
+    varhistorialTemp:any = [];
     modalCrear:boolean = false;
     varUnidad:any = {
         nombre_unidad:"",

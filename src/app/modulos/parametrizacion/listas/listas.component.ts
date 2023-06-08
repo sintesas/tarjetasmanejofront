@@ -42,11 +42,24 @@ export class ListasComponent {
           }
         });
         this.model.varhistorial = response.result;
+        this.model.varhistorialTemp = response.result;
       }
     });
   }
 
-  search(dato:any){}
+  search(dato:any){
+    let filtro = dato.value.toLowerCase();
+    if(dato.value.length >= 3){
+      this.model.varhistorial = this.model.varhistorialTemp.filter((item: any) => {
+        if (item.nombre_lista.toString().toLowerCase().indexOf(filtro) !== -1) {
+              return true;
+            }
+            return false;
+      });
+    }else{
+      this.model.varhistorial = this.model.varhistorialTemp;
+    }
+  }
 
   clearSearch(dato:any){}
   

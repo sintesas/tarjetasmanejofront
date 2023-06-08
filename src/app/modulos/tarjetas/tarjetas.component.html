@@ -60,23 +60,37 @@
             <div class="col col100">
                 <div class="col col20">
                     <div class="label-row">Numero Identificacion:</div>
-                    <!-- [(ngModel)]="model.varTarjeta.nombre_lista" -->
-                    <input type="text" >
+                    <div class="input-group-btn">
+                        <input type="search" style="
+                        -webkit-appearance: none;
+                        appearance: none;
+                        border-radius: 5px;
+                        height: 30px;
+                        background-color: white;" [(ngModel)]="model.varTarjeta.numero_identificacion">
+                        <button type="button" class="button btn-default">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="col col15">
+                    <div class="label-row">Grado:</div>
+                    <select disabled [(ngModel)]="model.varTarjeta.grado">
+                        <option value="0">Sin grado</option>
+                        <option *ngFor="let item of model.gradosList" [value]="item.lista_dinamica_id">{{ item.lista_dinamica }}</option>
+                    </select>  
                 </div>
                 <div class="col col20">
-                    <div class="label-row">Grado:</div>
-                    <!-- [(ngModel)]="model.varTarjeta.nombre_lista" -->
-                    <input type="text" >
-                </div>
-                <div class="col col30">
                     <div class="label-row">Nombres:</div>
-                    <!-- [(ngModel)]="model.varTarjeta.nombre_lista" -->
-                    <input type="text" >
+                    <input type="text" disabled [(ngModel)]="model.varTarjeta.nombres">
                 </div>
-                <div class="col col30">
+                <div class="col col20">
                     <div class="label-row">Apellidos:</div>
-                    <!-- [(ngModel)]="model.varTarjeta.nombre_lista" -->
-                    <input type="text" >
+                    <input type="text" disabled [(ngModel)]="model.varTarjeta.apellidos">
+                </div>
+                <div class="col col25" style="text-align: center;">
+                    <div class="imagen">
+                        <canvas #myCanvas style="width: 200px; height: 200px; padding-bottom: 10px; object-fit: contain;"></canvas>
+                    </div>
                 </div>
             </div>
         </div>  
@@ -85,8 +99,7 @@
                 <div class="col col20">
                     <div class="label-row">Restringe DA:</div>
                     <label class="switch">
-                        <!-- [(ngModel)]="model.varTarjeta.activo" -->
-                        <input type="checkbox">
+                        <input type="checkbox" [(ngModel)]="model.varTarjeta.activo">
                         <span class="slider"></span>
                     </label>
                 </div>
@@ -117,16 +130,51 @@
                     <tbody class="scroll">
                         <tr *ngFor="let lista of model.listTarjetas; let i = index">
                             <td>
-                                <input type="text" [(ngModel)]="lista.lista_dinamica">
+                                <select [(ngModel)]="lista.tipo"> 
+                                    <option value="0">Seleccione</option>
+                                </select>
                             </td>
                             <td>
-                                <textarea style="height: 65px;" [(ngModel)]="lista.descripcion"></textarea>
+                                <select [(ngModel)]="lista.clasificacion">
+                                    <option value="0">Seleccione</option>
+                                </select>
                             </td>
                             <td>
-                                <input type="text" [(ngModel)]="lista.atributo1">
+                                <input type="text" disabled [(ngModel)]="lista.vigencia">
                             </td>
                             <td>
-                                <input type="text" [(ngModel)]="lista.atributo2">
+                                <input type="date" [(ngModel)]="lista.fecha_inicio">
+                            </td>
+                            <td>
+                                <input type="date" [(ngModel)]="lista.fecha_fin">
+                            </td>
+                            <td>
+                                <select [(ngModel)]="lista.unidad">
+                                    <option value="0">Seleccione</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select [(ngModel)]="lista.dependencia">
+                                    <option value="0">Seleccione</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input type="text" [(ngModel)]="lista.cargo">
+                            </td>
+                            <td>
+                                <input type="text" [(ngModel)]="lista.gr_nombre">
+                            </td>
+                            <td>
+                                <input type="text" [(ngModel)]="lista.gr_cargo">
+                            </td>
+                            <td>
+                                <button type="button"><i class="fa fa-print"></i></button>
+                            </td>
+                            <td>
+                                <button type="button"><i class="fa fa-upload"></i> Acta HERMES</button>
+                            </td>
+                            <td>
+                                <button type="button"><i class="fa fa-upload"> Formato Reserva</i></button>
                             </td>
                             <td>
                                 <label class="switch">

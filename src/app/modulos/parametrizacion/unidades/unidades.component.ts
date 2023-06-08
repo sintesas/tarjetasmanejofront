@@ -26,6 +26,7 @@ export class UnidadesComponent {
 
   constructor(private api:ApiService, private apiU:UnidadesService, private apiUs:UsuariosService, private utilidades:UtilidadesService){
     this.obtenerUnidades();
+    this.getPermisos();
   }
 
   obtenerUnidades(){
@@ -40,6 +41,7 @@ export class UnidadesComponent {
           }
         });
         this.model.varhistorial = response.result;
+        this.model.varhistorialTemp = response.result;
       }
     })
   }
@@ -48,7 +50,20 @@ export class UnidadesComponent {
     this.model.modalCrear = true;
     this.model.isCrear = true;
   }
-  search(dato:any){}
+
+  search(dato:any){
+    let filtro = dato.value.toLowerCase();
+    if(dato.value.length >= 3){
+      this.model.varhistorial = this.model.varhistorialTemp.filter((item: any) => {
+        if (item.nombre_unidad.toString().toLowerCase().indexOf(filtro) !== -1) {
+              return true;
+            }
+            return false;
+      });
+    }else{
+      this.model.varhistorial = this.model.varhistorialTemp;
+    }
+  }
 
   clearSearch(dato:any){}
 

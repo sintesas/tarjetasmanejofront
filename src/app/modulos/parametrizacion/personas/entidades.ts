@@ -1,6 +1,7 @@
 import { Observable, Subscriber } from 'rxjs';
 export class Model{
     varhistorial:any = [];
+    varhistorialTemp:any = [];
     varPersona:any = {
         tipo_persona:0,
         numero_identificacion:"",

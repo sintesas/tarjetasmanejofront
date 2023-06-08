@@ -5,15 +5,10 @@
             <div class="filter-content">
                 <ul class="filter-inner">
                     <li class="filter-item">
-                        <button type="button" class="button btn-default" (click)="crearLista(1)" *ngIf="p.crear == 1">Crear</button>
+                        <button type="button" class="button btn-default" (click)="crearLista(1)" *ngIf="model.usuario == 'admin'">Crear</button>
                     </li>
                     <li class="filter-item">
-                        <div class="input-group-btn">
-                            <input type="search" placeholder="Buscar..." (keyup)="search($event)" (search)="clearSearch($event)">
-                            <button type="button" class="button btn-default">
-                                <i class="fa fa-search"></i>
-                            </button>
-                        </div>
+                        <input type="search" placeholder="Buscar..." (keyup)="search($event.target)">
                     </li>
                 </ul>
             </div>
@@ -23,7 +18,7 @@
                         <tr>
                             <th>Nombre Lista</th>
                             <th>Descripcion</th>
-                            <th *ngIf="model.usuario == 'admin'">Estado</th>
+                            <th>Estado</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -31,11 +26,7 @@
                         <tr *ngFor="let item of model.varhistorial; let i = index">
                             <td>{{item.nombre_lista}}</td>
                             <td>{{item.descripcion}}</td>
-                            <td *ngIf="model.usuario == 'admin'">
-                                <!-- <label class="switch">
-                                    <input type="checkbox" [(ngModel)]="item.estado" (click)="checkbox(1,item,!item.estado)">
-                                    <span class="slider"></span>
-                                </label> -->
+                            <td>
                                 <i class="fa fa-check" style="color: darkgreen;" *ngIf="item.estado"></i>
                                 <i class="fa fa-times-circle" style="color:darkred" *ngIf="!item.estado"></i>
                             </td>

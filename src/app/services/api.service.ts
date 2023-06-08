@@ -13,7 +13,7 @@ export class ApiService {
   tipoAmbiente:any = "Local";
   // tipoAmbiente:any = "Produccion";
 
-  ////Producion si no no funciona
+  ////Producion
   //  private url = "http://172.20.100.67:85/TarjetasFac/"
   //  public imagen_folder = this.url + "/public/img/perfil/";
 
