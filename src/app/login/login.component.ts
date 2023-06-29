@@ -15,7 +15,8 @@ declare var $:any;
 })
 
 export class LoginComponent implements OnInit {
-
+  password: string = "";
+  showPassword: boolean = false;
   //Entidades
   model = new Model();
   entity =new Entitys();

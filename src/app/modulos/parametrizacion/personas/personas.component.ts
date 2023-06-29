@@ -73,6 +73,18 @@ export class PersonasComponent implements AfterViewInit {
             x.grado2 = x.grado_nombre + "-";
           }
           x.nombre_grado = x.grado2 + x.nombres + " " + x.apellidos;
+
+          if(x.nombre_unidad == null){
+            x.nombre_unidad = "";
+          }
+          
+          if(x.nombre_dependencia == null){
+            x.nombre_dependencia = "";
+          }
+
+          if(x.cargo == null){
+            x.cargo = "";
+          }
         });
         this.model.varhistorial = response.result;
         this.model.varhistorialTemp = response.result;
@@ -93,7 +105,9 @@ export class PersonasComponent implements AfterViewInit {
         if (item.nombre_grado.toString().toLowerCase().indexOf(filtro) !== -1 ||
             item.numero_identificacion.toString().toLowerCase().indexOf(filtro) !== -1 ||
             item.cargo.toString().toLowerCase().indexOf(filtro) !== -1 ||
-            item.persona_id.toString().toLowerCase().indexOf(filtro) !== -1) {
+            item.persona_id.toString().toLowerCase().indexOf(filtro) !== -1 ||
+            item.nombre_unidad.toString().toLowerCase().indexOf(filtro) !== -1 ||
+            item.nombre_dependencia.toString().toLowerCase().indexOf(filtro) !== -1) {
               return true;
             }
             return false;
@@ -168,39 +182,6 @@ export class PersonasComponent implements AfterViewInit {
     reader.onload = e => {
        this.model.imagen = e.target?.result;
        this.loadImage(this.ctx, e.target?.result);
-    };
-  }
-  
-  convertToBase64(file: File) {
-    const base64 = new Observable((subscriber: Subscriber<any>) => {
-      this.LeerArchivo(file, subscriber);
-    });
-    base64.subscribe((d) => {
-      this.model.base64 = d;
-      this.model.MultimediaBase64 = d;
-      this.model.imagen = d;
-    })
-  }
-
-  LeerArchivo(file: File, subscriber: Subscriber<any>) {
-    const lector = new FileReader();
-    lector.readAsDataURL(file);
-    lector.onload = () => {
-      subscriber.next(lector.result);
-      subscriber.complete();
-    };
-    lector.onerror = (error) => {
-      Swal.fire({
-        title: '<strong>HTML <u>ERROR</u></strong>',
-        icon: 'warning',
-        html: '<b>Seleccione un Archivo</b>',
-        showCloseButton: true,
-        showCancelButton: true,
-        focusConfirm: false,
-        confirmButtonText:'<i class="fa fa-thumbs-up"></i> Aceptar!'
-      });
-      subscriber.error(error);
-      subscriber.complete();
     };
   }
 

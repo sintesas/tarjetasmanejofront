@@ -205,3 +205,18 @@ input {
   transform: rotate(360deg);
   }
 }
+
+.input-icon {
+  position: relative;
+}
+
+.input-icon input[type="text"] {
+  padding-left: 30px; /* Ajusta el valor según sea necesario para dejar espacio para el icono */
+}
+
+.input-icon .fa {
+  position: absolute;
+  top: 50%;
+  left: 10px; /* Ajusta el valor según sea necesario para posicionar el icono */
+  transform: translateY(-50%);
+}

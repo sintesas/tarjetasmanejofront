@@ -48,7 +48,8 @@ export class RolesComponent {
     }
     else {
       this.model.varhistorial = this.model.varhistorialTemp.filter((item: any) => {
-        if (item.rol.toString().toLowerCase().indexOf(filtro) !== -1) {
+        if (item.rol.toString().toLowerCase().indexOf(filtro) !== -1 ||
+            item.descripcion.toString().toLowerCase().indexOf(filtro) !== -1 ) {
             return true;
         }
         return false;
@@ -108,6 +109,11 @@ export class RolesComponent {
       //   this.loading = false;
       // }, 1000);
       if (response.tipo == 0) {
+        response.result.forEach((x:any) => {
+          if(x.descripcion == null){
+            x.descripcion = "";
+          }
+        });
         this.model.varhistorial = response.result;
         this.model.varhistorialTemp = response.result;
       }

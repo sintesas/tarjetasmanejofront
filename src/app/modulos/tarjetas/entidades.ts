@@ -11,4 +11,13 @@ export class Model {
     listTarjetas:any = [];
     filename:any = "../../../assets/images/avatar.jpg";
     gradosList:any = [];
+    tiposList:any = [];
+    clasificacionList:any = [];
+    listUnidadesP:any = [];
+    listUnidadesH:any = [];
+    isCrear = false;
+    isLectura:boolean = false;
+    Multimedia:any;
+    nombreMultimedia:any;
+    MultimediaBase64:any;
 }

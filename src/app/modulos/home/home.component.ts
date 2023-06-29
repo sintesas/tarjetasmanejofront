@@ -9,6 +9,8 @@ declare var $:any;
 
 const SG_TIPO_PERSONA = "SG_TIPO_PERSONA";
 const SG_GRADOS = "SG_GRADOS";
+const TM_TIPO = "TM_TIPO";
+const TM_CLASIFICACION = "TM_CLASIFICACION";
 
 @Component({
   selector: 'app-home',
@@ -26,6 +28,8 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     this.Utilidades.ObtenerListas(SG_TIPO_PERSONA);
     this.Utilidades.ObtenerListas(SG_GRADOS);
+    this.Utilidades.ObtenerListas(TM_TIPO);
+    this.Utilidades.ObtenerListas(TM_CLASIFICACION);
     this.reloj();
     this.ObtenerBanner();
   }
