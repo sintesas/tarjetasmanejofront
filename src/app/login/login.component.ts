@@ -35,6 +35,7 @@ export class LoginComponent implements OnInit {
       if (response.tipo === 0) {
         localStorage.setItem("currentUser", JSON.stringify(response.user.result));
         localStorage.setItem("llave","1");
+        localStorage.setItem("cargarListas","1");
         setTimeout(() => {
           location.href = "/fac/home";
         }, 1000);

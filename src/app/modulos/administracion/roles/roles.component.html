@@ -63,10 +63,10 @@
             </div>
             <div class="col col10">
                 <div class="label-row">Activo</div>
-                <div class="checkbox-component">
-                    <label>
-                        <input type="checkbox" checked="checked" [(ngModel)]="model.varRol.activo">
-                        <span class="checkmark"></span>
+                <div class="table-checkbox-component">
+                    <label class="switch">
+                        <input type="checkbox" [(ngModel)]="model.varRol.activo">
+                        <span class="slider"></span>
                     </label>
                 </div>
             </div>
@@ -116,35 +116,40 @@
                             <td><input disabled type="text" [(ngModel)]="model.varprivilegio[i].nombre_pantalla"></td>
                             <td>
                                 <div class="table-checkbox-component">
-                                    <label>
-                                        <input type="checkbox" checked="checked" [(ngModel)]="model.varprivilegio[i].consultar">
+                                    <label class="switch">
+                                        <input type="checkbox" [(ngModel)]="model.varprivilegio[i].consultar">
+                                        <span class="slider"></span>
                                     </label>
                                 </div>
                             <td>
                                 <div class="table-checkbox-component">
-                                    <label>
-                                        <input type="checkbox" checked="checked" [(ngModel)]="model.varprivilegio[i].crear">
-                                    </label>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="table-checkbox-component">
-                                    <label>
-                                        <input type="checkbox" checked="checked" [(ngModel)]="model.varprivilegio[i].actualizar">
+                                    <label class="switch">
+                                        <input type="checkbox" [(ngModel)]="model.varprivilegio[i].crear">
+                                        <span class="slider"></span>
                                     </label>
                                 </div>
                             </td>
                             <td>
                                 <div class="table-checkbox-component">
-                                    <label>
-                                        <input type="checkbox" checked="checked" [(ngModel)]="model.varprivilegio[i].eliminar">
+                                    <label class="switch">
+                                        <input type="checkbox" [(ngModel)]="model.varprivilegio[i].actualizar">
+                                        <span class="slider"></span>
                                     </label>
                                 </div>
                             </td>
                             <td>
                                 <div class="table-checkbox-component">
-                                    <label>
-                                        <input type="checkbox" checked="checked" [(ngModel)]="model.varprivilegio[i].activo">
+                                    <label class="switch">
+                                        <input type="checkbox" [(ngModel)]="model.varprivilegio[i].eliminar">
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="table-checkbox-component">
+                                    <label class="switch">
+                                        <input type="checkbox" [(ngModel)]="model.varprivilegio[i].activo">
+                                        <span class="slider"></span>
                                     </label>
                                 </div>
                             </td>

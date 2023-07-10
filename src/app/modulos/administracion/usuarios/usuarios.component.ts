@@ -4,7 +4,7 @@ import { UsuariosService } from 'src/app/services/admin/usuarios/usuarios.servic
 import { ApiService } from 'src/app/services/api.service';
 import { RolesService } from 'src/app/services/admin/roles/roles.service';
 import { UtilidadesService } from 'src/app/services/utilidades/utilidades.service';
-
+import { Validaciones } from './validaciones';
 declare var Swal:any;
 
 export class Permiso {
@@ -21,12 +21,12 @@ export class Permiso {
 })
 export class UsuariosComponent {
   model = new Model();
-
+  validaciones = new Validaciones();
   p = new Permiso();
 
   usuario_id = 0;
   
-  constructor(private Utilidades:UtilidadesService, private apiU:UsuariosService, private api:ApiService, private apiR:RolesService){
+  constructor(private Utilidades:UtilidadesService, private apiU:UsuariosService, private api:ApiService){
     this.obtenerUsuarios();
     this.getPermisos();
   }
@@ -70,53 +70,62 @@ export class UsuariosComponent {
 
   guardar(num:number){
     this.model.varUsuario.tipo_usuario = 1;
-    if(num == 1){
-      let existe = this.model.varhistorial.filter((x:any)=>x.usuario == this.model.varUsuario.usuario);
-      if(existe.length >=1){
-        Swal.fire({
-          title:'Usuarios',
-          icon:'warning',
-          text:'El usuario ya existe, cambielo porfavor'
-        })
-      }else{
-        if(this.model.varUsuario.password != this.model.varUsuario.password2){
+    let respuesta = this.validaciones.validacionUsuarios(this.model);
+    if(respuesta.error == false){
+      if(num == 1){
+        let existe = this.model.varhistorial.filter((x:any)=>x.usuario == this.model.varUsuario.usuario);
+        if(existe.length >=1){
           Swal.fire({
             title:'Usuarios',
             icon:'warning',
-            text:'Las contraseñas no coinciden'
+            text:'El usuario ya existe, cambielo porfavor'
           })
+        }else{
+          if(this.model.varUsuario.password != this.model.varUsuario.password2){
+            Swal.fire({
+              title:'Usuarios',
+              icon:'warning',
+              text:'Las contraseñas no coinciden'
+            })
+          }
+          else{
+            this.apiU.createUsuarios(this.model.varUsuario).subscribe(data =>{
+              let response:any = this.api.ProcesarRespuesta(data);
+              if(response.tipo == 0){
+                Swal.fire({
+                  title: "Usuario",
+                  text: "Usuario Creado con Exito",
+                  icon: "success"
+                });
+                this.closeModal(false);
+              }
+            })
+          }
         }
-        else{
-          this.apiU.createUsuarios(this.model.varUsuario).subscribe(data =>{
-            let response:any = this.api.ProcesarRespuesta(data);
-            if(response.tipo == 0){
-              Swal.fire({
-                title: "Usuario",
-                text: "Usuario Creado con Exito",
-                icon: "success"
-              });
-              this.closeModal(false);
-            }
-          })
+      }else{
+        if(this.model.varUsuario.activo == true){
+          this.model.varUsuario.estado = "S";
+        }else{
+          this.model.varUsuario.estado = "N";
         }
+        this.apiU.updateUsuarios(this.model.varUsuario).subscribe(data =>{
+          let response:any = this.api.ProcesarRespuesta(data);
+          if(response.tipo == 0){
+            Swal.fire({
+              title: "Usuario",
+              text: "Usuario Actualizado con Exito",
+              icon: "success"
+            });
+            this.closeModal(false);
+          }
+        })
       }
     }else{
-      if(this.model.varUsuario.activo == true){
-        this.model.varUsuario.estado = "S";
-      }else{
-        this.model.varUsuario.estado = "N";
-      }
-      this.apiU.updateUsuarios(this.model.varUsuario).subscribe(data =>{
-        let response:any = this.api.ProcesarRespuesta(data);
-        if(response.tipo == 0){
-          Swal.fire({
-            title: "Usuario",
-            text: "Usuario Actualizado con Exito",
-            icon: "success"
-          });
-          this.closeModal(false);
-        }
-      })
+      Swal.fire({
+        title: "Error",
+        text: respuesta.msg_error,
+        icon: "warning"
+      });
     }
   }
 

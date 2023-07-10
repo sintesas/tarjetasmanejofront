@@ -6,7 +6,7 @@ import { PersonasService } from 'src/app/services/param/personas/personas.servic
 import { HttpClient } from '@angular/common/http';
 import { UtilidadesService } from 'src/app/services/utilidades/utilidades.service';
 import { UsuariosService } from 'src/app/services/admin/usuarios/usuarios.service';
-
+import { Validaciones } from './validaciones';
 declare var Swal:any;
 declare var $: any;
 declare var saveAs:any;
@@ -31,6 +31,7 @@ export class PersonasComponent implements AfterViewInit {
   ctx!: CanvasRenderingContext2D;
 
   model = new Model();
+  validaciones = new Validaciones();
 
   p = new Permiso();
 
@@ -206,44 +207,53 @@ export class PersonasComponent implements AfterViewInit {
   }
 
   guardar(num:number){
-    if(num == 1) {
-      if (this.file) this.model.varPersona.imagen = this.model.imagen?.toString().substring(this.model.imagen?.toString().indexOf(',') + 1);
-      else this.model.varPersona.imagen = null;
-     
-      this.model.varPersona.numero_identificacion = Number(this.model.varPersona.numero_identificacion);
-      this.model.varPersona.dependencia = Number(this.model.varPersona.dependencia);
-      this.model.varPersona.unidad = Number(this.model.varPersona.unidad);
-      this.model.varPersona.usuario = this.Utilidades.UsuarioConectado();
-      this.apiP.CrearPersona(this.model.varPersona).subscribe(data=>{
-        let response:any = this.api.ProcesarRespuesta(data);
-        if(response.tipo == 0){
-          Swal.fire({
-            title: 'Personas',
-            text: response.mensaje,
-            allowOutsideClick: false,
-            showConfirmButton: true,
-            icon: 'success'
-          })
-          this.closeModal(false);
-        }
-      });
-    }
-    else{
-      if (this.file) this.model.varPersona.imagen = this.model.imagen?.toString().substring(this.model.imagen?.toString().indexOf(',') + 1);
-      else this.model.varPersona.imagen = null;
-
-      this.apiP.ActualizarPersona(this.model.varPersona).subscribe(data=>{
-        let response:any = this.api.ProcesarRespuesta(data);
-        if(response.tipo == 0){
-          Swal.fire({
-            title: 'Personas',
-            text: response.mensaje,
-            allowOutsideClick: false,
-            showConfirmButton: true,
-            icon: 'success'
+    let respuesta = this.validaciones.validacionespersonas(this.model);
+    if(respuesta.error == false){
+        if(num == 1) {
+          if (this.file) this.model.varPersona.imagen = this.model.imagen?.toString().substring(this.model.imagen?.toString().indexOf(',') + 1);
+          else this.model.varPersona.imagen = null;
+        
+          this.model.varPersona.numero_identificacion = Number(this.model.varPersona.numero_identificacion);
+          this.model.varPersona.dependencia = Number(this.model.varPersona.dependencia);
+          this.model.varPersona.unidad = Number(this.model.varPersona.unidad);
+          this.model.varPersona.usuario = this.Utilidades.UsuarioConectado();
+          this.apiP.CrearPersona(this.model.varPersona).subscribe(data=>{
+            let response:any = this.api.ProcesarRespuesta(data);
+            if(response.tipo == 0){
+              Swal.fire({
+                title: 'Personas',
+                text: response.mensaje,
+                allowOutsideClick: false,
+                showConfirmButton: true,
+                icon: 'success'
+              })
+              this.closeModal(false);
+            }
           });
-          this.closeModal(false);
         }
+        else{
+          if (this.file) this.model.varPersona.imagen = this.model.imagen?.toString().substring(this.model.imagen?.toString().indexOf(',') + 1);
+          else this.model.varPersona.imagen = null;
+
+          this.apiP.ActualizarPersona(this.model.varPersona).subscribe(data=>{
+            let response:any = this.api.ProcesarRespuesta(data);
+            if(response.tipo == 0){
+              Swal.fire({
+                title: 'Personas',
+                text: response.mensaje,
+                allowOutsideClick: false,
+                showConfirmButton: true,
+                icon: 'success'
+              });
+              this.closeModal(false);
+            }
+          });
+        }
+    }else{
+      Swal.fire({
+        title: "Error",
+        text: respuesta.msg_error,
+        icon: "warning"
       });
     }
   }

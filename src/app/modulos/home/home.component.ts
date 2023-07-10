@@ -7,6 +7,9 @@ import { UtilidadesService } from 'src/app/services/utilidades/utilidades.servic
 // Jquery
 declare var $:any;
 
+//SweetAlert2
+declare var Swal:any;
+
 const SG_TIPO_PERSONA = "SG_TIPO_PERSONA";
 const SG_GRADOS = "SG_GRADOS";
 const TM_TIPO = "TM_TIPO";
@@ -26,12 +29,25 @@ export class HomeComponent implements OnInit {
   constructor(private apiHome: HomeService, private api: ApiService, private Utilidades:UtilidadesService) {}
 
   ngOnInit() {
-    this.Utilidades.ObtenerListas(SG_TIPO_PERSONA);
-    this.Utilidades.ObtenerListas(SG_GRADOS);
-    this.Utilidades.ObtenerListas(TM_TIPO);
-    this.Utilidades.ObtenerListas(TM_CLASIFICACION);
-    this.reloj();
     this.ObtenerBanner();
+    let obtenerListas = Number(localStorage.getItem("cargarListas"));
+    if(obtenerListas == 1){
+      Swal.fire({
+        title: 'Porfavor espere!',
+        html: 'Cargando Datos',
+        allowOutsideClick: false,
+        showCancelButton: false,
+        showConfirmButton: false
+      });
+      Swal.showLoading();
+      localStorage.removeItem("cargarListas");
+      this.Utilidades.ObtenerListas(SG_TIPO_PERSONA);
+      this.Utilidades.ObtenerListas(SG_GRADOS);
+      this.Utilidades.ObtenerListas(TM_TIPO);
+      this.Utilidades.ObtenerListas(TM_CLASIFICACION);
+      this.reloj();
+    }else{
+    }
   }
 
   reloj(){
@@ -78,6 +94,7 @@ export class HomeComponent implements OnInit {
   ObtenerBanner(){
     this.apiHome.ObtenerBanner().subscribe(data=>{
       let response:any = this.api.ProcesarRespuesta(data);
+      Swal.close();
       if(response.tipo == 0){
         this.model.banner = response.result;
       }

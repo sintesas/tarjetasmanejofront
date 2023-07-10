@@ -34,11 +34,10 @@ export class RolesComponent {
   }
 
   reload() {
-    this.ngOnInit();
-    // let currentUrl = this.router.url;
-    // this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-    //   this.router.navigate([currentUrl]);
-    // });
+    let currentUrl = this.router.url;
+    this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+      this.router.navigate([currentUrl]);
+    });
   }
 
   search(e: any) {
@@ -156,23 +155,31 @@ export class RolesComponent {
   }
 
   saveRoles() {
-    this.model.varRol.rol = this.model.varRol.rol.toUpperCase();
-    this.apiR.createRol(this.model.varRol).subscribe(data => {
-      let response: any = this.api.ProcesarRespuesta(data);
-      if (response.tipo == 0) {
-        Swal.fire({
-          title: 'Roles',
-          text: response.mensaje,
-          allowOutsideClick: false,
-          showConfirmButton: true,
-          confirmButtonText: 'Aceptar',
-          icon: 'success'
-        }).then((result: any) => {
-          this.model.modal = false;
-          this.reload();
-        })
-      }
-    });
+    if(this.model.varRol.rol == null || this.model.varRol.rol == undefined || this.model.varRol.rol == ""){
+      Swal.fire({
+        title: "Error",
+        text: "LLene el campo Rol",
+        icon: "warning"
+      });
+    }else{
+      this.model.varRol.rol = this.model.varRol.rol.toUpperCase();
+      this.apiR.createRol(this.model.varRol).subscribe(data => {
+        let response: any = this.api.ProcesarRespuesta(data);
+        if (response.tipo == 0) {
+          Swal.fire({
+            title: 'Roles',
+            text: response.mensaje,
+            allowOutsideClick: false,
+            showConfirmButton: true,
+            confirmButtonText: 'Aceptar',
+            icon: 'success'
+          }).then((result: any) => {
+            this.model.modal = false;
+            this.reload();
+          })
+        }
+      });
+    }
   }
 
   updateRoles() {

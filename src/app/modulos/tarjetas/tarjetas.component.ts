@@ -92,6 +92,7 @@ export class TarjetasComponent {
             x.grado2 = x.grado_nombre + "-";
           }
           x.nombre_grado = x.grado2 + x.nombres + " " + x.apellidos;
+          x.restringe_da = x.restringe_da == 1 ? true : false;
         });
         this.model.varhistorial = response.result;
         this.model.varhistorialTemp = response.result;
@@ -142,22 +143,31 @@ export class TarjetasComponent {
   }
 
   buscarPersona(num:number){
-    this.apiT.Obtenerdatos({id:num}).subscribe(data=>{
-      let response:any = this.api.ProcesarRespuesta(data);
-      if(response.tipo == 0){
-        response.result.forEach((x:any) => {
-          x.existe_img = (x.imagen == null || x.imagen == "") ? 0 : 1;
-        });
-        this.model.varTarjeta = response.result[0];
-        if (this.model.varTarjeta.existe_img == 1) {
-          let foto = this.api.imagen_folder + this.model.varTarjeta.imagen;
-          this.loadImage(this.ctx, foto);
+    let esEncontrado = this.model.varhistorial.filter((x:any)=>x.numero_identificacion == num);
+    if(esEncontrado.length == 0){
+      this.apiT.Obtenerdatos({id:num}).subscribe(data=>{
+        let response:any = this.api.ProcesarRespuesta(data);
+        if(response.tipo == 0){
+          response.result.forEach((x:any) => {
+            x.existe_img = (x.imagen == null || x.imagen == "") ? 0 : 1;
+          });
+          this.model.varTarjeta = response.result[0];
+          if (this.model.varTarjeta.existe_img == 1) {
+            let foto = this.api.imagen_folder + this.model.varTarjeta.imagen;
+            this.loadImage(this.ctx, foto);
+          }
+          else {
+            this.loadImage(this.ctx, this.model.filename);
+          }
         }
-        else {
-          this.loadImage(this.ctx, this.model.filename);
-        }
-      }
-    })
+      })
+    }else{
+      Swal.fire({
+        title: "Error",
+        text: 'EL Documento Ingresado ya Existe Por Favor Consultelo',
+        icon: "warning"
+      });
+    }
   }
 
   closeT(){
@@ -255,6 +265,7 @@ export class TarjetasComponent {
       this.model.listTarjetas.forEach((x:any) => {
         x.persona_id = this.model.varTarjeta.persona_id;
         x.usuario = this.Utilidades.UsuarioConectado();
+        x.restringe_da = this.model.varTarjeta.restringe_da;
         var datos:any = new FormData();
         datos.append('modelo',JSON.stringify(x));
         datos.append('acta', x.acta);
@@ -262,7 +273,7 @@ export class TarjetasComponent {
         if(x.Nuevoregistro == true){
           this.apiT.crearTarjeta(datos).subscribe(data=>{});
         }else{
-        // this.apiT.actualizarTarjetas(datos).subscribe(data=>{});
+          this.apiT.actualizarTarjetas(datos).subscribe(data=>{});
         }
       });
       Swal.fire({
