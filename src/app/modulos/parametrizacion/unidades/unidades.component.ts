@@ -4,6 +4,7 @@ import { ApiService } from 'src/app/services/api.service';
 import { UnidadesService } from 'src/app/services/param/unidades/unidades.service';
 import { UtilidadesService } from 'src/app/services/utilidades/utilidades.service';
 import { UsuariosService } from 'src/app/services/admin/usuarios/usuarios.service';
+import { Validaciones } from './validaciones';
 
 declare var Swal:any;
 
@@ -20,6 +21,8 @@ export class Permiso {
   styleUrls: ['./unidades.component.scss']
 })
 export class UnidadesComponent {
+  validaciones = new Validaciones();
+
   model = new Model();
 
   p = new Permiso();
@@ -86,63 +89,72 @@ export class UnidadesComponent {
   }
 
   guardarUnidad(num:number){
-    if(this.model.varUnidad.unidad_padre_id == 0){
-      this.model.varUnidad.unidad_padre_id = null;
-    }
-    if(this.model.unidad_id != 0){
-      this.model.varUnidad.unidad_padre_id = this.model.unidad_id;
-    }
-    if(num == 1){
-      let json={
-        nombre_unidad: this.model.varUnidad.nombre_unidad,
-        denominacion: this.model.varUnidad.denominacion,
-        ciudad: this.model.varUnidad.ciudad,
-        direccion: this.model.varUnidad.direccion,
-        unidad_padre_id: this.model.varUnidad.unidad_padre_id,
-        usuario: this.utilidades.UsuarioConectado()
+    let respuesta = this.validaciones.validarUnidades(this.model);
+    if(respuesta.error == false){
+      if(this.model.varUnidad.unidad_padre_id == 0){
+        this.model.varUnidad.unidad_padre_id = null;
       }
-      this.apiU.CrearUnidad(json).subscribe(data =>{
-        let response:any = this.api.ProcesarRespuesta(data);
-        if(response.tipo == 0){
-          Swal.fire({
-            title: 'Unidades',
-            text: response.mensaje,
-            allowOutsideClick: false,
-            showConfirmButton: true,
-            icon: 'success'
-          });
-          this.closeCrear();
+      if(this.model.unidad_id != 0){
+        this.model.varUnidad.unidad_padre_id = this.model.unidad_id;
+      }
+      if(num == 1){
+        let json={
+          nombre_unidad: this.model.varUnidad.nombre_unidad,
+          denominacion: this.model.varUnidad.denominacion,
+          ciudad: this.model.varUnidad.ciudad,
+          direccion: this.model.varUnidad.direccion,
+          unidad_padre_id: this.model.varUnidad.unidad_padre_id,
+          usuario: this.utilidades.UsuarioConectado()
         }
-      })
-    }else{
-      if(this.model.varUnidad.estado == false){
-        this.model.varUnidad.activo = 0;
+        this.apiU.CrearUnidad(json).subscribe(data =>{
+          let response:any = this.api.ProcesarRespuesta(data);
+          if(response.tipo == 0){
+            Swal.fire({
+              title: 'Unidades',
+              text: response.mensaje,
+              allowOutsideClick: false,
+              showConfirmButton: true,
+              icon: 'success'
+            });
+            this.closeCrear();
+          }
+        })
       }else{
-        this.model.varUnidad.activo = 1;
-      }
-      let json={
-        unidad_id: this.model.varUnidad.unidad_id,
-        nombre_unidad: this.model.varUnidad.nombre_unidad,
-        denominacion: this.model.varUnidad.denominacion,
-        ciudad: this.model.varUnidad.ciudad,
-        direccion: this.model.varUnidad.direccion,
-        unidad_padre_id: this.model.varUnidad.unidad_padre_id,
-        activo: this.model.varUnidad.activo,
-        usuario: this.utilidades.UsuarioConectado()
-      }
-      this.apiU.ActualizarUnidad(json).subscribe(data =>{
-        let response:any = this.api.ProcesarRespuesta(data);
-        if(response.tipo == 0){
-          Swal.fire({
-            title: 'Unidades',
-            text: response.mensaje,
-            allowOutsideClick: false,
-            showConfirmButton: true,
-            icon: 'success'
-          });
-          this.closeCrear();
+        if(this.model.varUnidad.estado == false){
+          this.model.varUnidad.activo = 0;
+        }else{
+          this.model.varUnidad.activo = 1;
         }
-      })
+        let json={
+          unidad_id: this.model.varUnidad.unidad_id,
+          nombre_unidad: this.model.varUnidad.nombre_unidad,
+          denominacion: this.model.varUnidad.denominacion,
+          ciudad: this.model.varUnidad.ciudad,
+          direccion: this.model.varUnidad.direccion,
+          unidad_padre_id: this.model.varUnidad.unidad_padre_id,
+          activo: this.model.varUnidad.activo,
+          usuario: this.utilidades.UsuarioConectado()
+        }
+        this.apiU.ActualizarUnidad(json).subscribe(data =>{
+          let response:any = this.api.ProcesarRespuesta(data);
+          if(response.tipo == 0){
+            Swal.fire({
+              title: 'Unidades',
+              text: response.mensaje,
+              allowOutsideClick: false,
+              showConfirmButton: true,
+              icon: 'success'
+            });
+            this.closeCrear();
+          }
+        })
+      }
+    }else{
+      Swal.fire({
+        title: "Error",
+        text: respuesta.msg_error,
+        icon: "warning"
+      });
     }
   }
 

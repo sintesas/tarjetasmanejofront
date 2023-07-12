@@ -98,7 +98,6 @@
                     <thead>
                         <tr>
                             <th>Nombre Unidad</th>
-                            <th>Denominacion</th>
                             <th>Estado</th>
                             <th>Acciones</th>
                         </tr>
@@ -106,7 +105,6 @@
                     <tbody class="scroll">
                         <tr *ngFor="let item of model.varHistorialDependencias; let i = index">
                             <td>{{item.nombre_unidad}}</td>
-                            <td>{{item.denominacion}}</td>
                             <td>
                                 <i class="fa fa-check" style="color: darkgreen;" *ngIf="item.estado"></i>
                                 <i class="fa fa-times-circle" style="color:darkred" *ngIf="!item.estado"></i>

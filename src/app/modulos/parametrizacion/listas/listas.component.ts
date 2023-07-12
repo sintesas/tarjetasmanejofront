@@ -4,6 +4,7 @@ import { ApiService } from 'src/app/services/api.service';
 import { UtilidadesService } from 'src/app/services/utilidades/utilidades.service';
 import { ListasService } from 'src/app/services/param/listas/listas.service';
 import { UsuariosService } from 'src/app/services/admin/usuarios/usuarios.service';
+import { Validaciones } from './validaciones';
 
 declare var Swal:any;
 
@@ -21,6 +22,7 @@ export class Permiso {
 })
 
 export class ListasComponent {
+  Validaciones = new Validaciones();
   model = new Model();
   p = new Permiso();
 
@@ -130,62 +132,79 @@ export class ListasComponent {
 
   guardar(){
     //guardar datos lista padre
-    if(this.model.isCrear == true){
-      this.model.varLista.usuario= this.utilidades.UsuarioConectado();
-      this.model.varLista.nombre_lista_padre_id = Number(this.model.varLista.nombre_lista_padre_id);
-      this.model.varLista.lista_padre_id = Number(this.model.varLista.lista_padre_id);
-      this.apiLD.crearLista(this.model.varLista).subscribe(data=>{
-        let response:any = this.api.ProcesarRespuesta(data);
-        if(response.tipo == 0){
-          this.model.nombre_lista_id = response.id;
-          Swal.fire({
-            title: 'Listas Dinamicas',
-            text: response.mensaje,
-            allowOutsideClick: false,
-            showConfirmButton: true,
-            icon: 'success'
-          });
-          this.guardarHijos();
-        }
-      })
+    if(this.model.varLista.nombre_lista == "" || this.model.varLista.nombre_lista == null || this.model.varLista.nombre_lista){
+      Swal.fire({
+        title: "Error",
+        text: "LLene el Campo Nombre Lista",
+        icon: "warning"
+      });
     }else{
-      this.model.varLista.usuario= this.utilidades.UsuarioConectado();
-      this.model.varLista.nombre_lista_padre_id = Number(this.model.varLista.nombre_lista_padre_id);
-      this.model.varLista.lista_padre_id = Number(this.model.varLista.lista_padre_id);
-      this.apiLD.actualizarLista(this.model.varLista).subscribe(data=>{
-        let response:any = this.api.ProcesarRespuesta(data);
-        if(response.tipo == 0){
-          this.model.nombre_lista_id = response.id;
-          Swal.fire({
-            title: 'Listas Dinamicas',
-            text: response.mensaje,
-            allowOutsideClick: false,
-            showConfirmButton: true,
-            icon: 'success'
-          });
-          this.guardarHijos();
-        }
-      })
+      if(this.model.isCrear == true){
+        this.model.varLista.usuario= this.utilidades.UsuarioConectado();
+        this.model.varLista.nombre_lista_padre_id = Number(this.model.varLista.nombre_lista_padre_id);
+        this.model.varLista.lista_padre_id = Number(this.model.varLista.lista_padre_id);
+        this.apiLD.crearLista(this.model.varLista).subscribe(data=>{
+          let response:any = this.api.ProcesarRespuesta(data);
+          if(response.tipo == 0){
+            this.model.nombre_lista_id = response.id;
+            Swal.fire({
+              title: 'Listas Dinamicas',
+              text: response.mensaje,
+              allowOutsideClick: false,
+              showConfirmButton: true,
+              icon: 'success'
+            });
+            this.guardarHijos();
+          }
+        })
+      }else{
+        this.model.varLista.usuario= this.utilidades.UsuarioConectado();
+        this.model.varLista.nombre_lista_padre_id = Number(this.model.varLista.nombre_lista_padre_id);
+        this.model.varLista.lista_padre_id = Number(this.model.varLista.lista_padre_id);
+        this.apiLD.actualizarLista(this.model.varLista).subscribe(data=>{
+          let response:any = this.api.ProcesarRespuesta(data);
+          if(response.tipo == 0){
+            this.model.nombre_lista_id = response.id;
+            Swal.fire({
+              title: 'Listas Dinamicas',
+              text: response.mensaje,
+              allowOutsideClick: false,
+              showConfirmButton: true,
+              icon: 'success'
+            });
+            this.guardarHijos();
+          }
+        })
+      }
+      this.grilla();
     }
-    this.grilla();
   }
 
   guardarHijos(){
     //guardar datos hijos
-    this.model.listListas.forEach((x:any) => {
-      x.usuario = this.utilidades.UsuarioConectado();
-      x.nombre_lista_id = Number(this.model.nombre_lista_id);
-      if(x.Nuevoregistro == true){
-        this.apiLD.crearListah(x).subscribe(data=>{});
-      }else{
-        this.apiLD.actualizarListah(x).subscribe(data=>{});
-      }
-    });
-        //recarga hijos
-    let time = (this.model.listHijos.length * 1000) + 2000;
-    setTimeout(() => {
-      this.ObtenerListasHijos(this.model.nombre_lista_id);
-    }, time);
+    let respuesta = this.Validaciones.validarListas(this.model);
+    if(respuesta.error == false){
+      this.model.listListas.forEach((x:any) => {
+        x.usuario = this.utilidades.UsuarioConectado();
+        x.nombre_lista_id = Number(this.model.nombre_lista_id);
+        if(x.Nuevoregistro == true){
+          this.apiLD.crearListah(x).subscribe(data=>{});
+        }else{
+          this.apiLD.actualizarListah(x).subscribe(data=>{});
+        }
+      });
+          //recarga hijos
+      let time = (this.model.listHijos.length * 1000) + 2000;
+      setTimeout(() => {
+        this.ObtenerListasHijos(this.model.nombre_lista_id);
+      }, time);
+    }else{
+      Swal.fire({
+        title: "Error",
+        text: respuesta.msg_error,
+        icon: "warning"
+      });
+    }
   }
 
   closeLd(){
