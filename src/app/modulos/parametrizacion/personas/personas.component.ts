@@ -1,15 +1,17 @@
-import { Component, EventEmitter, Input, Output, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
-import { Observable, Subscriber } from 'rxjs';
+import { Component, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { Model } from './entidades';
 import { ApiService } from 'src/app/services/api.service';
 import { PersonasService } from 'src/app/services/param/personas/personas.service';
-import { HttpClient } from '@angular/common/http';
 import { UtilidadesService } from 'src/app/services/utilidades/utilidades.service';
 import { UsuariosService } from 'src/app/services/admin/usuarios/usuarios.service';
 import { Validaciones } from './validaciones';
 declare var Swal:any;
 declare var $: any;
 declare var saveAs:any;
+const SG_TIPO_PERSONA = "SG_TIPO_PERSONA";
+const SG_GRADOS = "SG_GRADOS";
+const TM_TIPO = "TM_TIPO";
+const TM_CLASIFICACION = "TM_CLASIFICACION";
 
 export class Permiso {
   consultar: any;
@@ -41,6 +43,10 @@ export class PersonasComponent implements AfterViewInit {
     this.obtenerPersonas();
     this.obtenerUnidadesPadre();
     this.getPermisos();
+    this.Utilidades.ObtenerListas(SG_TIPO_PERSONA);
+    this.Utilidades.ObtenerListas(SG_GRADOS);
+    this.Utilidades.ObtenerListas(TM_TIPO);
+    this.Utilidades.ObtenerListas(TM_CLASIFICACION);
     var tipo_persona = localStorage.getItem("SG_TIPO_PERSONA");
     if(tipo_persona != null){
       this.model.tipoPersonalist = JSON.parse(tipo_persona);

@@ -5,12 +5,15 @@ import { UsuariosService } from 'src/app/services/admin/usuarios/usuarios.servic
 import { UtilidadesService } from 'src/app/services/utilidades/utilidades.service';
 import { TarjetasService } from 'src/app/services/tarjetas/tarjetas.service';
 import { PersonasService } from 'src/app/services/param/personas/personas.service';
-import { HttpClient } from '@angular/common/http';
 import { Validaciones } from './validaciones';
 
 declare var Swal:any;
 declare var  require:any;
 const FileSaver = require('file-saver');
+const SG_TIPO_PERSONA = "SG_TIPO_PERSONA";
+const SG_GRADOS = "SG_GRADOS";
+const TM_TIPO = "TM_TIPO";
+const TM_CLASIFICACION = "TM_CLASIFICACION";
 
 export class Permiso {
   consultar: any;
@@ -41,6 +44,10 @@ export class TarjetasComponent {
   url: any;
 
   constructor(private api: ApiService, private apiP: PersonasService, private apiU:UsuariosService, private apiT:TarjetasService, private Utilidades:UtilidadesService){
+    this.Utilidades.ObtenerListas(SG_TIPO_PERSONA);
+    this.Utilidades.ObtenerListas(SG_GRADOS);
+    this.Utilidades.ObtenerListas(TM_TIPO);
+    this.Utilidades.ObtenerListas(TM_CLASIFICACION);
     this.getPermisos();
     this.obtenergrilla();
     this.obtenerUnidadesPadre();
@@ -321,6 +328,11 @@ export class TarjetasComponent {
 
     this.model.listTarjetas[index].acta = data.target.files[0];
     this.model.listTarjetas[index].acta_nombre = 'acta'+this.model.varTarjeta.numero_identificacion+fechaYHora;
+    Swal.fire({
+      title: "Tarjetas",
+      text: "Archivo Cargado con Exito",
+      icon: "success"
+    });
   }
   
   changefileReserva(data:any, index:any){
@@ -331,6 +343,11 @@ export class TarjetasComponent {
 
     this.model.listTarjetas[index].reserva = data.target.files[0];
     this.model.listTarjetas[index].reserva_nombre = 'reserva'+this.model.varTarjeta.numero_identificacion+fechaYHora;
+    Swal.fire({
+      title: "Tarjetas",
+      text: "Archivo Cargado con Exito",
+      icon: "success"
+    });
   }
 
   descargarDoc(URL:String,PDFName:String,num:number){

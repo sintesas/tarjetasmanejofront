@@ -34,7 +34,7 @@
                             <td>{{item.nombre_dependencia}}</td>
                             <td>{{item.cargo}}</td>
                             <td>
-                                <button type="button" class="btn btn-info" *ngIf="p.crear == 1" (click)="editar(item)"><i class="fa fa-pencil"></i></button>
+                                <button type="button" class="btn btn-info" *ngIf="p.actualizar == 1" (click)="editar(item)"><i class="fa fa-pencil"></i></button>
                             </td>
                         </tr>
                         <tr *ngIf="model.varhistorial?.length == 0">

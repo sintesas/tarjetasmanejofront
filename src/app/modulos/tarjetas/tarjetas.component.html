@@ -5,7 +5,7 @@
             <div class="filter-content">
                 <ul class="filter-inner">
                     <li class="filter-item">
-                        <button type="button" class="button btn-default" (click)="CrearTajeta()">Crear</button>
+                        <button type="button" class="button btn-default" *ngIf="p.crear == 1" (click)="CrearTajeta()">Crear</button>
                     </li>
                     <li class="filter-item">
                         <input type="search" placeholder="Buscar..." (keyup)="search($event.target)">
@@ -35,7 +35,7 @@
                                 <i class="fa fa-times-circle" style="color:darkred" *ngIf="!item.estado"></i>
                             </td> -->
                             <td>
-                                <button type="button" class="button btn-edit" (click)="editar(item)">Editar</button>
+                                <button type="button" class="button btn-edit" *ngIf="p.actualizar == 1" (click)="editar(item)">Editar</button>
                                 <button type="button" class="button btn-edit" (click)="detalle(item)">Detalle</button>
                             </td>
                         </tr>
