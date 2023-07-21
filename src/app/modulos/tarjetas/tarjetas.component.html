@@ -161,7 +161,7 @@
                                 <input type="text" [disabled]="model.isLectura == true" [(ngModel)]="lista.cargo_firma">
                             </td>
                             <td *ngIf="model.isLectura == true">
-                                <button type="button" class="btn btn-blue"><i class="fa fa-print"></i></button>
+                                <button type="button" class="btn btn-blue" (click)="imprimirCard(lista)"><i class="fa fa-print"></i></button>
                             </td>
                             <td *ngIf="model.isLectura == false">
                                 <input type="file" #filetarget id="filetargetid" (change)="changefileActa($event,i)" accept=".pdf" aria-label="Seleccionar imagen" hidden>
@@ -216,3 +216,13 @@
         <button type="button" class="btn btn-blue" *ngIf="model.isLectura == false" (click)="guardar()">Guardar</button>
     </div>
 </app-modal> 
+
+<app-modal [title]="model.title" [show]="model.iframe" [size]="'modal-lg'" (close)="closeIframe()">
+    <div role="body">
+        <div [innerHTML]="url" class="iframe"></div>
+    </div>
+    <div role="footer">
+        <button type="button" class="btn btn-danger" (click)="closeIframe()">Cerrar</button>
+        <button type="button" class="btn btn-primary"><a href="{{ model.link }}">Descargar</a></button>
+    </div>
+</app-modal>

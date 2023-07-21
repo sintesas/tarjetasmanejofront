@@ -14,16 +14,16 @@ export class ApiService {
   // tipoAmbiente:any = "Produccion";
 
   ////Producion
-  private url = "http://172.20.100.67:85/TarjetasFac/"
-  public imagen_folder = this.url + "/public/img/perfil/";
-  public acta_folder = this.url + "/public/actas/"
-  public reserva_folder = this.url + "/public/reservas/"
+  // private url = "http://172.20.100.67:85/TarjetasFac/"
+  // public imagen_folder = this.url + "/public/img/perfil/";
+  // public acta_folder = this.url + "/public/actas/"
+  // public reserva_folder = this.url + "/public/reservas/"
 
   ////local
-  // private url = "http://localhost:8000/";
-  // public imagen_folder = this.url + "img/perfil/";
-  // public acta_folder = this.url + "actas/"
-  // public reserva_folder = this.url + "reservas/"
+  private url = "http://localhost:8000/";
+  public imagen_folder = this.url + "img/perfil/";
+  public acta_folder = this.url + "actas/"
+  public reserva_folder = this.url + "reservas/"
   
   private baseurl = this.url + "api/";
 
@@ -59,6 +59,10 @@ export class ApiService {
 
   get getBaseUrl() {
     return this.baseurl;
+  }
+
+  get URL(){
+    return this.url;
   }
 
   /* Error Exceptions */

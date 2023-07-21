@@ -47,6 +47,12 @@ export class HeaderComponent implements OnInit {
     this.varPerfil.usuario = this.Utilidades.UsuarioConectado();
     this.varPerfil.email = user.email;
     this.varPerfil.nombre_completo = user.nombre_completo;
+    this.apiU.ObtenerRolesAsignados({usuario_id:user.usuario_id}).subscribe(data=>{
+      let response = this.api.ProcesarRespuesta(data);
+      if(response.tipo == 0){
+        this.roles = response.result;
+      }
+    })
   }
 
   closePerfil(){

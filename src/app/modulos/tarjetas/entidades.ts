@@ -20,4 +20,8 @@ export class Model {
     Multimedia:any;
     nombreMultimedia:any;
     MultimediaBase64:any;
+    title = "";
+    iframe:boolean = false;
+    link:string = "";
+    Url_Tarjeta = "";
 }

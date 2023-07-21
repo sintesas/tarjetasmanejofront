@@ -34,10 +34,11 @@ export class RolesComponent {
   }
 
   reload() {
-    let currentUrl = this.router.url;
-    this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-      this.router.navigate([currentUrl]);
-    });
+    this.ngOnInit();
+    // let currentUrl = this.router.url;
+    // this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+    //   this.router.navigate([currentUrl]);
+    // });
   }
 
   search(e: any) {

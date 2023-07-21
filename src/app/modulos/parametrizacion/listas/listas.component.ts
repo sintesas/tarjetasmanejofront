@@ -132,7 +132,7 @@ export class ListasComponent {
 
   guardar(){
     //guardar datos lista padre
-    if(this.model.varLista.nombre_lista == "" || this.model.varLista.nombre_lista == null || this.model.varLista.nombre_lista){
+    if(this.model.varLista.nombre_lista == "" || this.model.varLista.nombre_lista == null || this.model.varLista.nombre_lista == undefined){
       Swal.fire({
         title: "Error",
         text: "LLene el Campo Nombre Lista",

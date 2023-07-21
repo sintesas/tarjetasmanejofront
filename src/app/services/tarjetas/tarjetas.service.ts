@@ -47,8 +47,10 @@ export class TarjetasService {
         retry(1), catchError(this.api.errorHandle)
       );
   }
+
+  public Imprimir(data:any):Observable<any>{
+    return this.http.get<any>(data).pipe(
+      retry(1),catchError(this.api.errorHandle)
+    )
+  }
 }
-
-
-
-

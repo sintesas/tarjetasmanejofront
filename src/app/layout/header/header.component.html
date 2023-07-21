@@ -71,7 +71,9 @@
                         <tr>Nombre Rol</tr>
                     </thead>
                     <tbody class="scroll">
-                        <tr *ngFor="let item of roles; let i = index"></tr>
+                        <tr *ngFor="let item of roles; let i = index">
+                            <td>{{item.rol}}</td>
+                        </tr>
                         <tr *ngIf="roles?.length == 0">
                             <div class="dbempty">No hay datos.</div>
                         </tr>

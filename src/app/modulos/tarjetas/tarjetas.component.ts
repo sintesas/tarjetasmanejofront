@@ -6,6 +6,7 @@ import { UtilidadesService } from 'src/app/services/utilidades/utilidades.servic
 import { TarjetasService } from 'src/app/services/tarjetas/tarjetas.service';
 import { PersonasService } from 'src/app/services/param/personas/personas.service';
 import { Validaciones } from './validaciones';
+import { DomSanitizer } from '@angular/platform-browser';
 
 declare var Swal:any;
 declare var  require:any;
@@ -43,7 +44,7 @@ export class TarjetasComponent {
 
   url: any;
 
-  constructor(private api: ApiService, private apiP: PersonasService, private apiU:UsuariosService, private apiT:TarjetasService, private Utilidades:UtilidadesService){
+  constructor(private api: ApiService, private apiP: PersonasService, private apiU:UsuariosService, private apiT:TarjetasService, private Utilidades:UtilidadesService, private sanitizer:DomSanitizer){
     this.Utilidades.ObtenerListas(SG_TIPO_PERSONA);
     this.Utilidades.ObtenerListas(SG_GRADOS);
     this.Utilidades.ObtenerListas(TM_TIPO);
@@ -66,6 +67,10 @@ export class TarjetasComponent {
     if(clasificacion != null){
       this.model.clasificacionList = JSON.parse(clasificacion);
     }
+  }
+
+  ngOnInit(): void {
+    this.url = "<iframe src=\"{0}\" width=\"100%\" height=\"500\"><iframe>";
   }
 
   obtenerUnidadesPadre(){
@@ -389,5 +394,22 @@ export class TarjetasComponent {
     const día = fechaFinal.getDate();
 
     this.model.listTarjetas[index].fecha_fin = `${año}-${mes.toString().padStart(2, '0')}-${día.toString().padStart(2, '0')}`;
+  }
+
+  imprimirCard(data: any) {
+    this.model.title = "Tarjeta";
+    this.model.iframe = true;
+    let ruta = 'tarjetas/imprimirCard/{0}';
+    let Apiurl = this.api.URL;
+    this.model.Url_Tarjeta = Apiurl + ruta.replace("{0}", data.tarjeta_id);
+    this.url = this.sanitizer.bypassSecurityTrustHtml(this.url.replace("{0}",this.model.Url_Tarjeta  + "#zoom=100&toolbar=0"));
+    this.model.link = Apiurl + "tarjetas/download/"+ data.tarjeta_id;
+  }
+
+  closeIframe(){
+    this.model.iframe = false;
+    this.model.link = new Model().link;
+    this.model.Url_Tarjeta = new Model().Url_Tarjeta;
+    this.url = "<iframe src=\"{0}\" width=\"100%\" height=\"500\"><iframe>";
   }
 }

@@ -28,11 +28,11 @@ export class Validaciones{
             msg_error = "Ingrese una contraseña";
             return {error, msg_error};
         }
-        if(user.password2 == "" || user.password2 == null || user.password2 == undefined){
-            error = true;
-            msg_error = "Ingrese una contraseña en el Campo Confirmar Contraseña";
-            return {error, msg_error};
-        }
+        // if(user.password2 == "" || user.password2 == null || user.password2 == undefined){
+        //     error = true;
+        //     msg_error = "Ingrese una contraseña en el Campo Confirmar Contraseña";
+        //     return {error, msg_error};
+        // }
         return {error, msg_error};
     }
 }
