@@ -27,8 +27,10 @@ export class Model{
     nombreMultimedia:any;
     MultimediaBase64:any;
     title = "";
-    listUnidadesP:any = [];
-    listUnidadesH:any = [];
+    listUnidades:any = [];
     tipoPersonalist:any = [];
     gradosList:any = [];
+    selectModal:boolean = false;
+    array:any;
+    inputform:any;
 }

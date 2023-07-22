@@ -93,9 +93,9 @@
                 <div class="label-row">Apellidos</div>
                 <input type="text" [(ngModel)]="model.varPersona.apellidos">
             </div>
-            <div class="col col25">
+            <!-- <div class="col col25">
                 <div class="label-row">Unidad</div>
-                <select [(ngModel)]="model.varPersona.unidad" (change)="obtenerUnidadesHijas(model.varPersona.unidad)">
+                <select [(ngModel)]="model.varPersona.unidad">
                     <option value="0">Seleccione</option>
                     <option *ngFor="let item of model.listUnidadesP" [value]="item.unidad_id">{{ item.nombre_unidad }}</option>
                 </select>            
@@ -106,6 +106,14 @@
                     <option value="0">Seleccione</option>
                     <option *ngFor="let item of model.listUnidadesH" [value]="item.unidad_id">{{ item.nombre_unidad }}</option>
                 </select>  
+            </div> -->
+            <div class="col col25">
+                <div class="label-row">Unidad</div>
+                <input type="text" [(ngModel)]="model.varPersona.nom_unidad" (click)="saveUnidad()">
+            </div>
+            <div class="col col25">
+                <div class="label-row">Jefatura/Dependencia</div>
+                <input type="text" disabled [(ngModel)]="model.varPersona.nom_dependencia">
             </div>
             <div class="col col25">
                 <div class="label-row">Cargo</div>
@@ -119,3 +127,5 @@
         <button *ngIf="model.isCrear == false" type="button" class="btn btn-blue" (click)="guardar(2)">Guardar</button>
     </div>
 </app-modal>
+
+<app-select-modal [title]="'Unidad-Dependencia'" [show]="model.selectModal" [array]="model.array" [arrayTemp]="model.array" (output)="dataform(model.inputform, $event)" (close)="closeSelectModal($event)"></app-select-modal>

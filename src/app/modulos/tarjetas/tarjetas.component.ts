@@ -366,20 +366,22 @@ export class TarjetasComponent {
   }
 
   vigencia(index:number,id:number){
-    let lista = this.model.clasificacionList.filter((x:any)=> x.lista_dinamica_id == id);
-    this.model.listTarjetas[index].vigencia = lista[0].atributo1;
+    if(this.model.listTarjetas[index].isTemporal == false){
+      let lista = this.model.clasificacionList.filter((x:any)=> x.lista_dinamica_id == id);
+      this.model.listTarjetas[index].vigencia = lista[0].atributo1;
 
-    const fechaInicial = new Date(this.model.listTarjetas[index].fecha_inicio); // Aquí puedes poner la fecha inicial que desees
+      const fechaInicial = new Date(this.model.listTarjetas[index].fecha_inicio); // Aquí puedes poner la fecha inicial que desees
 
-    const diasASumar = this.model.listTarjetas[index].vigencia; // Aquí puedes poner el número de días que deseas sumar
+      const diasASumar = this.model.listTarjetas[index].vigencia; // Aquí puedes poner el número de días que deseas sumar
 
-    const fechaFinal = new Date(fechaInicial.getTime() + diasASumar * 24 * 60 * 60 * 1000);
+      const fechaFinal = new Date(fechaInicial.getTime() + diasASumar * 24 * 60 * 60 * 1000);
 
-    const año = fechaFinal.getFullYear();
-    const mes = fechaFinal.getMonth() + 1;
-    const día = fechaFinal.getDate();
+      const año = fechaFinal.getFullYear();
+      const mes = fechaFinal.getMonth() + 1;
+      const día = fechaFinal.getDate();
 
-    this.model.listTarjetas[index].fecha_fin = `${año}-${mes.toString().padStart(2, '0')}-${día.toString().padStart(2, '0')}`;
+      this.model.listTarjetas[index].fecha_fin = `${año}-${mes.toString().padStart(2, '0')}-${día.toString().padStart(2, '0')}`;
+    }
   }
 
   changefechaInicio(index:number){
@@ -411,5 +413,17 @@ export class TarjetasComponent {
     this.model.link = new Model().link;
     this.model.Url_Tarjeta = new Model().Url_Tarjeta;
     this.url = "<iframe src=\"{0}\" width=\"100%\" height=\"500\"><iframe>";
+  }
+
+  changeTipo(id:number,index:number){
+    let lista = this.model.tiposList;
+    let encontrar = lista.filter((x:any)=>x.lista_dinamica_id == id);
+    let isTemporal:boolean = false;
+    if(encontrar[0].atributo2 == 'temporal'){
+      isTemporal = true;
+    }else{
+      isTemporal = false;
+    }
+    this.model.listTarjetas[index].isTemporal = isTemporal;
   }
 }

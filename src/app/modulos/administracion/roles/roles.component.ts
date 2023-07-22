@@ -239,7 +239,6 @@ export class RolesComponent {
   }
 
   saveModulo(index: number) {
-    ////////////////////////(
     this.model.varmodulo.forEach((x:any) => {
       x.item1 = x.modulo;
       x.item2 = x.pantalla;

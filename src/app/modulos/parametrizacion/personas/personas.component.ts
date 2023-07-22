@@ -41,7 +41,7 @@ export class PersonasComponent implements AfterViewInit {
 
   constructor(private api:ApiService, private apiP:PersonasService, private apiU:UsuariosService, private Utilidades:UtilidadesService){
     this.obtenerPersonas();
-    this.obtenerUnidadesPadre();
+    this.obtenerUnidades();
     this.getPermisos();
     this.Utilidades.ObtenerListas(SG_TIPO_PERSONA);
     this.Utilidades.ObtenerListas(SG_GRADOS);
@@ -196,11 +196,12 @@ export class PersonasComponent implements AfterViewInit {
     this.model.modal = true;
     this.model.title = 'Actualilzar Persona';
     this.model.varPersona = datos;
+    this.model.varPersona.nom_dependencia = datos.nombre_dependencia;
+    this.model.varPersona.nom_unidad = datos.nombre_unidad;
     this.model.varPersona.tmp_numero_identificacion = datos.numero_identificacion;
     this.model.varPersona.tmp_imagen = datos.imagen == "" || datos.imagen == null ? null : datos.imagen;
 
     if(this.model.varPersona.unidad != 0 && this.model.varPersona.unidad != ""){
-      this.obtenerUnidadesHijas(this.model.varPersona.unidad);
     }
 
     if (datos.existe_img == 1) {
@@ -264,22 +265,18 @@ export class PersonasComponent implements AfterViewInit {
     }
   }
 
-  obtenerUnidadesPadre(){
-    this.apiP.getUnidadesPadre().subscribe(data=>{
+  obtenerUnidades(){
+    this.apiP.getUnidades().subscribe(data=>{
       let response:any = this.api.ProcesarRespuesta(data);
       if(response.tipo == 0){
-        this.model.listUnidadesP = response.result;
+        this.model.listUnidades = response.result;
+        this.model.listUnidades.forEach((x:any) => {
+          x.descripcion = x.unidad;
+          x.sigla = x.dependencia;
+        });
+        this.model.array = this.model.listUnidades;
       }
     })
-  }
-
-  obtenerUnidadesHijas(num:number){
-    this.apiP.getUnidadesHijas({id:num}).subscribe(data=>{
-      let response:any = this.api.ProcesarRespuesta(data);
-      if(response.tipo == 0){
-        this.model.listUnidadesH = response.result;
-      }
-    });
   }
 
   getPermisos() {
@@ -298,5 +295,32 @@ export class PersonasComponent implements AfterViewInit {
         this.p.eliminar = response.result.eliminar;
       }
     })
+  }
+
+  saveUnidad() {
+    ////////////////////////(
+    this.model.array = this.model.listUnidades;
+    this.model.inputform = 'Unidad-Dependencia';
+    // this.model.index = index;
+    this.model.selectModal = true;
+  }
+
+  dataform(inputform: any, data: any) {
+    this.model.selectModal = false;
+    if (inputform == 'Unidad-Dependencia') {
+      this.model.varPersona.nom_unidad = data.unidad;
+      this.model.varPersona.nom_dependencia = data.dependencia;
+      if(data.unidad_padre_id != null){
+        this.model.varPersona.unidad = data.unidad_padre_id;
+        this.model.varPersona.dependencia = data.unidad_id;
+      }else{
+        this.model.varPersona.unidad = data.unidad_id;
+        this.model.varPersona.dependencia = 0;
+      }
+    }
+  }
+
+  closeSelectModal(bol: any) {
+    this.model.selectModal = false;
   }
 }

@@ -125,19 +125,19 @@
                     <tbody class="scroll">
                         <tr *ngFor="let lista of model.listTarjetas; let i = index">
                             <td>
-                                <select [(ngModel)]="lista.tipo_id" [disabled]="model.isLectura == true"> 
+                                <select [(ngModel)]="lista.tipo_id" [disabled]="model.isLectura == true " (change)="changeTipo(lista.tipo_id,i)"> 
                                     <option value="0">Seleccione</option>
                                     <option *ngFor="let item of model.tiposList" [value]="item.lista_dinamica_id">{{ item.lista_dinamica }}</option>
                                 </select>
                             </td>
                             <td>
-                                <select [(ngModel)]="lista.clasificacion_id" [disabled]="model.isLectura == true" (change)="vigencia(i,lista.clasificacion_id)">
+                                <select [(ngModel)]="lista.clasificacion_id" [disabled]="model.isLectura == true " (change)="vigencia(i,lista.clasificacion_id)">
                                     <option value="0">Seleccione</option>
                                     <option *ngFor="let item of model.clasificacionList" [value]="item.lista_dinamica_id">{{ item.lista_dinamica }}</option>
                                 </select>
                             </td>
                             <td>
-                                <input type="text" disabled [(ngModel)]="lista.vigencia">
+                                <input type="text" [disabled]="lista.isTemporal == false" [(ngModel)]="lista.vigencia">
                             </td>
                             <td>
                                 <input type="date" [disabled]="model.isLectura == true" [(ngModel)]="lista.fecha_inicio" (change)="changefechaInicio(i)">
@@ -203,7 +203,7 @@
                         <tr *ngIf="model.listTarjetas?.length == 0">
                             <div class="dbempty">No hay datos.</div>
                         </tr>
-                        <tr class="add_row_full" *ngIf="model.isLectura == false">
+                        <tr class="add_row_full" *ngIf="model.isLectura == false && model.varTarjeta.nombres != ''">
                             <button type="button" class="button btn-blue" (click)="add()">Agregar</button>
                         </tr>
                     </tbody>

@@ -37,8 +37,8 @@ export class SelectModalComponent implements OnInit {
     }
     else {
       this.array = this.arrayTemp.filter((item: any) => {
-        if (item.item1.toString().toLowerCase().indexOf(filter) !== -1 ||
-            item.item2.toString().toLowerCase().indexOf(filter) !== -1) {
+        if (item.descripcion.toString().toLowerCase().indexOf(filter) !== -1 ||
+            item.sigla.toString().toLowerCase().indexOf(filter) !== -1) {
               return true;
             }
         return false;

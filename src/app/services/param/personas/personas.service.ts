@@ -18,6 +18,7 @@ export class PersonasService {
   private apiUpload = this.api.getBaseUrl + "param/persona/upload";
   private apiObtenerUnidadesPadre = this.api.getBaseUrl + "param/personas/obtenerunidadespadre";
   private apiObtenerUnidadesHijas = this.api.getBaseUrl + "param/personas/obtenerunidadeshijas";
+  private apiObtenerUnidades = this.api.getBaseUrl + "param/personas/ObtenerUnidades";
 
   public getPersonas(): Observable<any> {
     return this.http.get<any>(this.apiGetPersonas, 
@@ -55,5 +56,12 @@ export class PersonasService {
     return this.http.post<any>(this.apiObtenerUnidadesHijas, data,
        this.api.getOptions('g'))
     .pipe(retry(1), catchError(this.api.errorHandle));
+  }
+
+  public getUnidades(): Observable<any> {
+    return this.http.get<any>(this.apiObtenerUnidades, 
+      this.api.getOptions('g')).pipe(retry(1), 
+        catchError(this.api.errorHandle)
+      );
   }
 }
