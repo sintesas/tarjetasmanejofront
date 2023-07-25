@@ -340,7 +340,7 @@ export class TarjetasComponent {
     });
   }
   
-  changefileReserva(data:any, index:any){
+  changefileReserva(data:any, index:any, tarjeta:any){
     var hoy = new Date();
     var fecha = hoy.getDate() + '-' + ( hoy.getMonth() + 1 ) + '-' + hoy.getFullYear();
     var hora = hoy.getHours() + '-' + hoy.getMinutes() + '-' + hoy.getSeconds();

@@ -37,7 +37,7 @@
                             </td>
                             <td>
                                 <button type="button" class="button btn-edit" (click)="editRoles(item)" *ngIf="p.actualizar == 1">Editar</button>
-                                <button type="button" class="button btn-edit" (click)="openRolPrivilegios(item)">Privilegios</button>
+                                <button type="button" class="button btn-edit" (click)="openRolPrivilegios(item)" *ngIf="p.actualizar == 1">Privilegios</button>
                             </td>
                         </tr>
                         <tr *ngIf="model.varhistorial?.length == 0">
