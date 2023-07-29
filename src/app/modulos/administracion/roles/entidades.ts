@@ -21,4 +21,5 @@ export class Model{
     varmodulo:any;
     array:any;
     inputform:any;
+    cabezeras:any;
 }

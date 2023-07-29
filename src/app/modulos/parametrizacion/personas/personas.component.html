@@ -66,7 +66,7 @@
             <div class="col col25"></div>
             <div class="col col25" style="text-align: center;">
                 <div class="imagen">
-                    <canvas #myCanvas style="width: 200px; height: 200px; padding-bottom: 10px; object-fit: contain;"></canvas>
+                    <canvas #myCanvas style="width: 4,5cm; height: 6cm; padding-bottom: 10px; object-fit: contain;"></canvas>
                 </div>
                 {{model.varPersona?.nombre_imagen}}
                 <input type="file" #filetarget id="filetargetid" (change)="changeFileImage($event)" style="display: none;">
@@ -128,4 +128,4 @@
     </div>
 </app-modal>
 
-<app-select-modal [title]="'Unidad-Dependencia'" [show]="model.selectModal" [array]="model.array" [arrayTemp]="model.array" (output)="dataform(model.inputform, $event)" (close)="closeSelectModal($event)"></app-select-modal>
+<app-select-modal [title]="'Unidad-Dependencia'" [show]="model.selectModal" [array]="model.array" [arrayTemp]="model.array" [head]="true" [headers]="model.cabezeras" (output)="dataform(model.inputform, $event)" (close)="closeSelectModal($event)"></app-select-modal>

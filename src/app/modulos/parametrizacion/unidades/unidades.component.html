@@ -6,7 +6,7 @@
             <div class="filter-content">
                 <ul class="filter-inner">
                     <li class="filter-item">
-                        <button type="button" class="button btn-default" *ngIf="p.crear == 1" (click)="CrearUnidad()">Crear</button>
+                        <button type="button" class="button btn-default" *ngIf="p.crear == 1" (click)="CrearUnidad(1)">Crear</button>
                     </li>
                     <li class="filter-item">
                         <input type="search" placeholder="Buscar..." (keyup)="search($event.target)">
@@ -32,7 +32,7 @@
                                 <i class="fa fa-times-circle" style="color:darkred" *ngIf="!item.estado"></i>
                             </td>
                             <td>
-                                <button type="button" class="btn btn-info" *ngIf="p.actualizar == 1" (click)="OpenUnidad(item)"><i class="fa fa-pencil"></i></button>
+                                <button type="button" class="btn btn-info" *ngIf="p.actualizar == 1" (click)="OpenUnidad(item,1)"><i class="fa fa-pencil"></i></button>
                                 <button type="button" class="btn btn-secondary" *ngIf="p.actualizar == 1" (click)="openDependencias(item)"><i class="fa fa-bars"></i></button>
                             </td>
                         </tr>
@@ -51,7 +51,7 @@
     </div>
 </div>
 
-<app-modal [title]="'Unidad'" class="prioridad" [show]="model.modalCrear" [size]="'modal-lg1'" (close)="closeCrear()">
+<app-modal [title]="model.titulo" class="prioridad" [show]="model.modalCrear" [size]="'modal-lg1'" (close)="closeCrear()">
     <div role="body">
         <div class="inner-col">
             <div class="col col33">
@@ -91,7 +91,7 @@
             </div>
         </div>   
         <br>
-        <button type="button" class="btn btn-blue" (click)="CrearUnidad()">Crear</button>
+        <button type="button" class="btn btn-blue" (click)="CrearUnidad(2)">Crear</button>
         <div class="inner-col">
             <div class="table-content">
                 <table class="table flex-table">
@@ -110,7 +110,7 @@
                                 <i class="fa fa-times-circle" style="color:darkred" *ngIf="!item.estado"></i>
                             </td>
                             <td>
-                                <button type="button" class="btn btn-primary button" (click)="OpenUnidad(item)">Editar</button>
+                                <button type="button" class="btn btn-primary button" (click)="OpenUnidad(item,2)">Editar</button>
                             </td>
                         </tr>
                     </tbody>

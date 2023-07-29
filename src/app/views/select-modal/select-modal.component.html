@@ -20,6 +20,12 @@
                 </div>
                 <div class="table-content">
                     <table class="table flex-table">
+                        <thead *ngIf="head == true">
+                            <tr>
+                                <th>{{headers[0].title1}}</th>
+                                <th>{{headers[0].title2}}</th>
+                            </tr>
+                        </thead>
                         <tbody class="scroll">
                             <tr class="pointer" *ngFor="let dato of array" (click)="clickData(dato)">
                                 <td>{{dato.descripcion}}</td>

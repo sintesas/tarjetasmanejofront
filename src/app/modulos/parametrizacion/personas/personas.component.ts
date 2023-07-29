@@ -272,9 +272,18 @@ export class PersonasComponent implements AfterViewInit {
         this.model.listUnidades = response.result;
         this.model.listUnidades.forEach((x:any) => {
           x.descripcion = x.unidad;
-          x.sigla = x.dependencia;
+          if(x.dependencia == null){
+            x.sigla = " ";
+          }else{
+            x.sigla = x.dependencia;
+          }
         });
-        this.model.array = this.model.listUnidades;
+        //this.model.array = this.model.listUnidades;
+        this.model.cabezeras = [];
+        this.model.cabezeras.push({
+          title1: "Unidad",
+          title2: "Dependencia"
+        })
       }
     })
   }
@@ -299,6 +308,30 @@ export class PersonasComponent implements AfterViewInit {
 
   saveUnidad() {
     ////////////////////////(
+    // let remove: string = "";
+    // for(let c = 0; c< this.model.listUnidades.length; c++){
+    //   let unidad = this.model.listUnidades[c];
+    //   let num_dependencias = 0;
+    //   if(unidad.sigla == " "){
+    //     this.model.listUnidades.forEach((x:any) => {
+    //       if(x.unidad_padre_id == unidad.unidad_id){
+    //         num_dependencias = num_dependencias + 1;
+    //       }
+    //     });
+    //   }
+    //   if(num_dependencias != 0){
+    //     remove = remove + c + ",";
+    //   }
+    // }
+    // let indices = remove
+    // .split(",")
+    // .map((value) => (value !== "" ? { result: Number(value) } : null))
+    // .filter((value) => value !== null);
+    
+    // for(let c = 0; c< indices.length; c++){
+    //   let Delete_indice = indices[c];
+    //   this.model.listUnidades.splice(Delete_indice?.result, 1);
+    // }
     this.model.array = this.model.listUnidades;
     this.model.inputform = 'Unidad-Dependencia';
     // this.model.index = index;

@@ -263,7 +263,8 @@ export class TarjetasComponent {
       gr_nombre:"",
       gr_cargo:"",
       activo:true,
-      Nuevoregistro:true
+      Nuevoregistro:true,
+      isTemporal:false
     });
   }
 
@@ -421,8 +422,10 @@ export class TarjetasComponent {
     let isTemporal:boolean = false;
     if(encontrar[0].atributo2 == 'temporal'){
       isTemporal = true;
+      this.model.listTarjetas[index].fecha_inicio = "";
     }else{
       isTemporal = false;
+      this.model.listTarjetas[index].fecha_inicio = this.Utilidades.parseFecha(new Date(),false,4);
     }
     this.model.listTarjetas[index].isTemporal = isTemporal;
   }

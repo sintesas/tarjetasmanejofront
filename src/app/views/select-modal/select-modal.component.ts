@@ -14,6 +14,8 @@ export class SelectModalComponent implements OnInit {
   @Input() array?: any;
   @Input() arrayTemp?: any;
   @Input() size?: string = 'modal-md';
+  @Input() head?: boolean = false;
+  @Input() headers?: any;
   @Output() close = new EventEmitter<Boolean>();
   @Output() output = new EventEmitter<any>();
 

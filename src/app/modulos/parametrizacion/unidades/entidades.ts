@@ -15,4 +15,5 @@ export class Model{
     varHistorialDependencias:any;
     title:String = "";
     unidad_id:number = 0;
+    titulo:String = "";
 }

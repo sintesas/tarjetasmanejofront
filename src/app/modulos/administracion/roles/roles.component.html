@@ -172,4 +172,4 @@
     </div>
 </app-modal>
 
-<app-select-modal [title]="'Módulos'" [show]="model.selectModal" [array]="model.array" [arrayTemp]="model.array" (output)="dataform(model.inputform, $event)" (close)="closeSelectModal($event)"></app-select-modal>
+<app-select-modal [title]="'Módulos'" [show]="model.selectModal" [array]="model.array" [arrayTemp]="model.array" [head]="true" [headers]="model.cabezeras" (output)="dataform(model.inputform, $event)" (close)="closeSelectModal($event)"></app-select-modal>

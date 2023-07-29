@@ -49,7 +49,12 @@ export class UnidadesComponent {
     })
   }
 
-  CrearUnidad(){
+  CrearUnidad(num:number){
+    if(num == 1){
+      this.model.titulo = "Crear Unidad";
+    }else{
+      this.model.titulo = "Crear Dependencia";
+    }
     this.model.modalCrear = true;
     this.model.isCrear = true;
   }
@@ -70,7 +75,12 @@ export class UnidadesComponent {
 
   clearSearch(dato:any){}
 
-  OpenUnidad(data:any){
+  OpenUnidad(data:any,num:number){
+    if(num == 1){
+      this.model.titulo = "Editar Unidad";
+    }else{
+      this.model.titulo = "Editar Dependencia";
+    }
     this.model.modalCrear = true;
     this.model.isCrear = false;
     this.model.varUnidad.unidad_id = data.unidad_id;

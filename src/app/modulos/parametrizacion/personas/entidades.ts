@@ -33,4 +33,5 @@ export class Model{
     selectModal:boolean = false;
     array:any;
     inputform:any;
+    cabezeras:any;
 }

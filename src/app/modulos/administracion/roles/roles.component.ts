@@ -243,6 +243,11 @@ export class RolesComponent {
       x.item1 = x.modulo;
       x.item2 = x.pantalla;
     });
+    this.model.cabezeras = [];
+    this.model.cabezeras.push({
+      title1: "Modulos",
+      title2: "Pantallas"
+    })
     this.model.array = this.model.varmodulo;
     this.model.inputform = 'modulo';
     this.model.index = index;
