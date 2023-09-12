@@ -14,6 +14,8 @@ export class UnidadesService {
   private apiCrearUnidades = this.api.getBaseUrl + "param/unidad/crearunidad";
   private apiActualizarUnidades = this.api.getBaseUrl + "param/unidad/actualizarunidad";
   private apiObtenerByIdUnidades = this.api.getBaseUrl + "param/unidad/obtenerunidadesByid";
+  private apiObtenerUnidad = this.api.getBaseUrl + "param/unidad/obtenerunidad";
+  private apiObtenerDependencia = this.api.getBaseUrl + "param/unidad/obtenerDependencia";
 
   public getUnidades(): Observable<any> {
     return this.http.get<any>(this.apiGetUnidades, 
@@ -36,6 +38,18 @@ export class UnidadesService {
 
   public ObtenerUnidadByID(data: any): Observable<any> {
     return this.http.post<any>(this.apiObtenerByIdUnidades, data, 
+      this.api.getOptions('g'))
+    .pipe(retry(1), catchError(this.api.errorHandle));
+  }
+
+  public ObtenerUnidad(data: any): Observable<any> {
+    return this.http.post<any>(this.apiObtenerUnidad, data, 
+      this.api.getOptions('g'))
+    .pipe(retry(1), catchError(this.api.errorHandle));
+  }
+
+  public ObtenerDependencia(data: any): Observable<any> {
+    return this.http.post<any>(this.apiObtenerDependencia, data, 
       this.api.getOptions('g'))
     .pipe(retry(1), catchError(this.api.errorHandle));
   }

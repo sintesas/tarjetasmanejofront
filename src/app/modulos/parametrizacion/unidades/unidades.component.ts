@@ -110,9 +110,6 @@ export class UnidadesComponent {
       if(num == 1){
         let json={
           nombre_unidad: this.model.varUnidad.nombre_unidad,
-          denominacion: this.model.varUnidad.denominacion,
-          ciudad: this.model.varUnidad.ciudad,
-          direccion: this.model.varUnidad.direccion,
           unidad_padre_id: this.model.varUnidad.unidad_padre_id,
           usuario: this.utilidades.UsuarioConectado()
         }
@@ -138,9 +135,6 @@ export class UnidadesComponent {
         let json={
           unidad_id: this.model.varUnidad.unidad_id,
           nombre_unidad: this.model.varUnidad.nombre_unidad,
-          denominacion: this.model.varUnidad.denominacion,
-          ciudad: this.model.varUnidad.ciudad,
-          direccion: this.model.varUnidad.direccion,
           unidad_padre_id: this.model.varUnidad.unidad_padre_id,
           activo: this.model.varUnidad.activo,
           usuario: this.utilidades.UsuarioConectado()

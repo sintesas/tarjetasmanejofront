@@ -7,6 +7,8 @@ import { TarjetasService } from 'src/app/services/tarjetas/tarjetas.service';
 import { PersonasService } from 'src/app/services/param/personas/personas.service';
 import { Validaciones } from './validaciones';
 import { DomSanitizer } from '@angular/platform-browser';
+import { UnidadesService } from 'src/app/services/param/unidades/unidades.service';
+import { ListasService } from 'src/app/services/param/listas/listas.service';
 
 declare var Swal:any;
 declare var  require:any;
@@ -44,7 +46,7 @@ export class TarjetasComponent {
 
   url: any;
 
-  constructor(private api: ApiService, private apiP: PersonasService, private apiU:UsuariosService, private apiT:TarjetasService, private Utilidades:UtilidadesService, private sanitizer:DomSanitizer){
+  constructor(private api: ApiService, private apiP: PersonasService, private apiU:UsuariosService,  private apiUni:UnidadesService, private apiL:ListasService, private apiT:TarjetasService, private Utilidades:UtilidadesService, private sanitizer:DomSanitizer){
     this.Utilidades.ObtenerListas(SG_TIPO_PERSONA);
     this.Utilidades.ObtenerListas(SG_GRADOS);
     this.Utilidades.ObtenerListas(TM_TIPO);
@@ -52,6 +54,11 @@ export class TarjetasComponent {
     this.getPermisos();
     this.obtenergrilla();
     this.obtenerUnidadesPadre();
+
+    var tipo_persona = localStorage.getItem("SG_TIPO_PERSONA");
+    if(tipo_persona != null){
+      this.model.tipoPersonalist = JSON.parse(tipo_persona);
+    }
 
     var grados = localStorage.getItem("SG_GRADOS");
     if(grados != null){
@@ -158,8 +165,16 @@ export class TarjetasComponent {
     let esEncontrado = this.model.varhistorial.filter((x:any)=>x.numero_identificacion == num);
     if(esEncontrado.length == 0){
       this.apiT.Obtenerdatos({id:num}).subscribe(data=>{
+        Swal.fire({
+          title: 'Buscando Datos...',
+          allowOutsideClick: false,
+          showCancelButton: false,
+          showConfirmButton: false,
+        });     
+        Swal.showLoading();  
         let response:any = this.api.ProcesarRespuesta(data);
-        if(response.tipo == 0){
+        if(response.tipo == 0 && response.result[0] != null){
+          Swal.close();
           response.result.forEach((x:any) => {
             x.existe_img = (x.imagen == null || x.imagen == "") ? 0 : 1;
           });
@@ -171,6 +186,108 @@ export class TarjetasComponent {
           else {
             this.loadImage(this.ctx, this.model.filename);
           }
+        }else{   
+          this.apiT.ObtenerViewData({id:num}).subscribe(data1=>{
+            let response1:any = this.api.ProcesarRespuesta(data1);
+            if(response1.tipo == 0 && response1.result[0] != null){
+              console.log(response1.result);
+              let datos = response1.result[0];
+              let unidad:any = {
+                unidad:0,
+                dependencia:0
+              };
+              this.apiUni.ObtenerUnidad({nombre:datos.Unidad}).subscribe(data2=>{
+                let response2:any = this.api.ProcesarRespuesta(data2);
+                if(response2.tipo == 0 && response2.result[0] != null){
+                  unidad.unidad = response2.result[0].unidad_id;
+                }else{
+                  let json={
+                    nombre_unidad: datos.Unidad,
+                    unidad_padre_id: "",
+                    usuario: this.Utilidades.UsuarioConectado()
+                  }
+                  this.apiUni.CrearUnidad(json).subscribe(data3 =>{
+                    let response3:any = this.api.ProcesarRespuesta(data3);
+                    if(response3.tipo == 0){
+                      unidad.unidad =response3.id;
+                    }
+                  });
+                }
+                setTimeout(() => {
+                  this.apiUni.ObtenerDependencia({nombre:datos.Dependencia}).subscribe(data4=>{
+                    let response4:any = this.api.ProcesarRespuesta(data4);
+                    if(response4.tipo == 0 && response4.result[0] != null){
+                      unidad.dependencia = response4.result[0].unidad_id;
+                    }else{
+                      let json={
+                        nombre_unidad: datos.Dependencia,
+                        unidad_padre_id: unidad.unidad,
+                        usuario: this.Utilidades.UsuarioConectado()
+                      }
+                      this.apiUni.CrearUnidad(json).subscribe(data5 =>{
+                        let response5:any = this.api.ProcesarRespuesta(data5);
+                        if(response5.tipo == 0){
+                          unidad.dependencia =response5.id;
+                        }
+                      });
+                    }
+                  })
+                }, 2000);
+                //buscar grado
+                let nombre_lista_id = this.model.gradosList[0].nombre_lista_id;
+                let lista_id = "";
+                this.apiL.GetLista({nombre:datos.Grado,id:nombre_lista_id}).subscribe(data7 =>{
+                  let response7:any = this.api.ProcesarRespuesta(data7);
+                    if(response7.tipo == 0 && response7.result[0] != null){
+                      lista_id = response7.result[0].lista_dinamica_id;
+                    }else{
+                      let json = {
+                        usuario: this.Utilidades.UsuarioConectado(),
+                        nombre_lista_id: Number(nombre_lista_id),
+                        lista_dinamica: datos.Grado,
+                        activo: true
+                      }
+                      this.apiL.crearListah(json).subscribe(data8=>{
+                        let response8: any = this.api.ProcesarRespuesta(data8);
+                        if(response8.tipo == 0){
+                          lista_id = response8.id;
+                        }
+                      });
+                    }
+                })
+                setTimeout(() => {
+                  let json = {
+                    imagen: null,
+                    numero_identificacion: Number(datos.Identificacion),
+                    dependencia: Number(unidad.dependencia),
+                    unidad: Number(unidad.unidad),
+                    usuario: this.Utilidades.UsuarioConectado(),
+                    grado: lista_id,
+                    nombres: datos.Nombres,
+                    apellidos: datos.Apellidos,
+                    tipo_persona: this.model.tipoPersonalist.filter((p:any) => p.lista_dinamica == 'Militar')[0].lista_dinamica_id,
+                    cargo: datos.Cargo
+                  }
+                  this.apiP.CrearPersona(json).subscribe(data6=>{
+                    let response6:any = this.api.ProcesarRespuesta(data6);
+                    if(response6.tipo == 0){
+                      this.buscarPersona(datos.Identificacion);
+                      Swal.close();
+                    }
+                  })
+                }, 4000);
+              })
+            }else{
+              Swal.fire({
+                title: 'Error',
+                text: 'La persona no pudo ser encontrada, porfavor creela en Personas',
+                icon:'error',
+                allowOutsideClick: false,
+                showCancelButton: false,
+                showConfirmButton: true,
+              }); 
+            }
+          })
         }
       })
     }else{

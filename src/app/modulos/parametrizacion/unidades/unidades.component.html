@@ -54,19 +54,11 @@
 <app-modal [title]="model.titulo" class="prioridad" [show]="model.modalCrear" [size]="'modal-lg1'" (close)="closeCrear()">
     <div role="body">
         <div class="inner-col">
-            <div class="col col33">
+            <div class="col col70">
                 <div class="label-row">Nombre:</div>
                 <input type="text" [(ngModel)]="model.varUnidad.nombre_unidad">
             </div>
-            <div class="col col33">
-                <div class="label-row">Ciudad:</div>
-                <input type="text" [(ngModel)]="model.varUnidad.ciudad">
-            </div>
-            <div class="col col33">
-                <div class="label-row">Direccion:</div>
-                <input type="text" [(ngModel)]="model.varUnidad.direccion">
-            </div>
-            <div class="col col33" *ngIf="model.isCrear == false">
+            <div class="col col30" *ngIf="model.isCrear == false">
                 <div class="label-row">Estado:</div>
                 <label class="switch">
                     <input type="checkbox" [(ngModel)]="model.varUnidad.estado">
@@ -89,9 +81,10 @@
                 <label>Nombre Unidad:</label>
                 <input type="text" disabled [(ngModel)]="model.title">
             </div>
-        </div>   
-        <br>
-        <button type="button" class="btn btn-blue" (click)="CrearUnidad(2)">Crear</button>
+        </div> 
+        <div class="col col100">
+            <button type="button" class="btn btn-blue" (click)="CrearUnidad(2)">Crear Dependencias</button>  
+        </div>
         <div class="inner-col">
             <div class="table-content">
                 <table class="table flex-table">
@@ -112,6 +105,9 @@
                             <td>
                                 <button type="button" class="btn btn-primary button" (click)="OpenUnidad(item,2)">Editar</button>
                             </td>
+                        </tr>
+                        <tr *ngIf="model.varHistorialDependencias?.length == 0">
+                            <div class="dbempty">No hay datos.</div>
                         </tr>
                     </tbody>
                 </table>

@@ -10,6 +10,7 @@ export class Model {
     };
     listTarjetas:any = [];
     filename:any = "../../../assets/images/avatar.jpg";
+    tipoPersonalist:any = [];
     gradosList:any = [];
     tiposList:any = [];
     clasificacionList:any = [];

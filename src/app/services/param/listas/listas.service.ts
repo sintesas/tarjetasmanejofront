@@ -17,6 +17,7 @@ export class ListasService {
   private apiCrearListah = this.api.getBaseUrl + "param/lista/crearListaDetalle";
   private apiActualizarListah = this.api.getBaseUrl + "param/lista/actualizarListaDetalle";
   private apiObtenerListasByName = this.api.getBaseUrl + "param/lista/getListasByName";
+  private apiObtenerLista = this.api.getBaseUrl + "param/lista/getLista";
 
   constructor(private http: HttpClient, private api: ApiService) { }
 
@@ -63,6 +64,13 @@ export class ListasService {
   
   public GetListaByName(data: any): Observable<any> {
     return this.http.post<any>(this.apiObtenerListasByName, data,
+      this.api.getOptions('g')).pipe(
+        retry(1), catchError(this.api.errorHandle)
+        );
+  }
+
+  public GetLista(data: any): Observable<any> {
+    return this.http.post<any>(this.apiObtenerLista, data,
       this.api.getOptions('g')).pipe(
         retry(1), catchError(this.api.errorHandle)
         );
