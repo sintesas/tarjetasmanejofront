@@ -198,6 +198,7 @@ export class UsuariosComponent {
       if(response.tipo == 0){
         response.result.forEach((x: any) => {
           x.nombre_rol = x.rol;
+          x.activo = (x.activo == 'S') ? true : false;
         });
         this.model.varRol = response.result;
       }
@@ -281,5 +282,38 @@ export class UsuariosComponent {
         this.p.eliminar = response.result.eliminar;
       }
     })
+  }
+
+  changepassword(){
+    let pass:any;
+    Swal.fire({
+      title: 'Cambiar Contraseña',
+      html:
+        '<input type="password" id="password" class="swal2-input" placeholder="Nueva Contraseña">' +
+        '<input type="password" id="confirmPassword" class="swal2-input" placeholder="Confirmar Contraseña">',
+      showCancelButton: true,
+      confirmButtonText: 'Cambiar Contraseña',
+      preConfirm: () => {
+        const password = Swal.getPopup().querySelector('#password').value;
+        const confirmPassword = Swal.getPopup().querySelector('#confirmPassword').value;
+
+        if (!password || !confirmPassword) {
+          Swal.showValidationMessage('Por favor, completa ambos campos de contraseña');
+        } else if (password !== confirmPassword) {
+          Swal.showValidationMessage('Las contraseñas no coinciden');
+        }else{
+          pass = password;
+        }
+      },
+    }).then((result:any) => {
+      if (result.isConfirmed) {
+        this.apiU.Cambiarpassword({password:pass, usuario_id:this.model.varUsuario.usuario_id}).subscribe(data=>{
+          let response:any = this.api.ProcesarRespuesta(data);
+          if(response.tipo == 0){
+            Swal.fire('Contraseña cambiada con éxito', '', 'success');
+          }
+        });
+      }
+    });
   }
 }

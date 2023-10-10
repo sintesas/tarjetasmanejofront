@@ -87,12 +87,16 @@
                 <div class="label-row">Confirmar Contraseña</div>
                 <input type="password" [(ngModel)]="model.varUsuario.password2">
             </div>
-            <div class="col col33" *ngIf="model.isCrear == false">
+            <div class="col col10" *ngIf="model.isCrear == false">
                 <div class="label-row">Activo</div>
                 <label class="switch">
                     <input type="checkbox" [(ngModel)]="model.varUsuario.activo">
                     <span class="slider"></span>
                 </label>
+            </div>
+            <div class="col col15" *ngIf="model.isCrear == false">
+                <br>
+                <button type="button" class="btn btn-blue" (click)="changepassword()">Cambiar Contraseña</button>
             </div>
         </div>
     </div>

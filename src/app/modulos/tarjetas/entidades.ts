@@ -25,4 +25,5 @@ export class Model {
     iframe:boolean = false;
     link:string = "";
     Url_Tarjeta = "";
+    d:any = new Date();
 }

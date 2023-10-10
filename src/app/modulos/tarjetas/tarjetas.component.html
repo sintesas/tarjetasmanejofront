@@ -131,19 +131,19 @@
                                 </select>
                             </td>
                             <td>
-                                <select [(ngModel)]="lista.clasificacion_id" [disabled]="model.isLectura == true" (change)="vigencia(indice,lista.clasificacion_id)">
+                                <select style="width: 75px;" [(ngModel)]="lista.clasificacion_id" [disabled]="model.isLectura == true" (change)="vigencia(indice,lista.clasificacion_id)">
                                     <option value="0">Seleccione</option>
                                     <option *ngFor="let item of model.clasificacionList" [value]="item.lista_dinamica_id">{{ item.lista_dinamica }}</option>
                                 </select>
                             </td>
                             <td>
-                                <input type="number" [disabled]="lista.isTemporal == false" [(ngModel)]="lista.vigencia">
+                                <input type="number" style="width: 50px;" [disabled]="lista.isTemporal == false" [(ngModel)]="lista.vigencia">
                             </td>
                             <td>
-                                <input type="date" [disabled]="model.isLectura == true" [(ngModel)]="lista.fecha_inicio" (change)="changefechaInicio(indice)">
+                                <input type="date" style="width: 98px;" [disabled]="model.isLectura == true" [(ngModel)]="lista.fecha_inicio" (change)="changefechaInicio(indice)">
                             </td>
                             <td>
-                                <input type="date" disabled [(ngModel)]="lista.fecha_fin">
+                                <input type="date" style="width: 98px;" disabled [(ngModel)]="lista.fecha_fin">
                             </td>
                             <td>
                                 <input type="text" disabled [(ngModel)]="lista.unidad">
@@ -192,7 +192,7 @@
                             </td>
                             <td>
                                 <label class="switch">
-                                    <input type="checkbox" [disabled]="model.isLectura == true" [(ngModel)]="lista.activo">
+                                    <input type="checkbox" [disabled]="model.isLectura == true || lista.des == 1" [(ngModel)]="lista.activo">
                                     <span class="slider"></span>
                                 </label>
                             </td>
