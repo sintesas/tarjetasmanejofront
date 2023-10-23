@@ -5,6 +5,7 @@ import { ApiService } from 'src/app/services/api.service';
 import { RolesService } from 'src/app/services/admin/roles/roles.service';
 import { UtilidadesService } from 'src/app/services/utilidades/utilidades.service';
 import { Validaciones } from './validaciones';
+import { Subscriber } from 'rxjs';
 declare var Swal:any;
 
 export class Permiso {
@@ -242,8 +243,7 @@ export class UsuariosComponent {
           this.apiU.UpdatePrivilegios(x).subscribe(data=>{});
         }
       });
-
-      let menus_id = this.model.varRol.map((x: any) => x.menu_id).join(",");
+      let menus_id = this.model.varRol.filter((x: any) => x.activo === true).map((x: any) => x.menu_id).join(",");
 
       let datos_user = this.Utilidades.DatosUsuario();
       let json = {
