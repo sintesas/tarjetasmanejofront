@@ -137,7 +137,7 @@
                                 </select>
                             </td>
                             <td>
-                                <input type="number" style="width: 50px;" [disabled]="lista.isTemporal == false" [(ngModel)]="lista.vigencia">
+                                <input type="number" style="width: 50px;" [disabled]="lista.isTemporal == false || model.isLectura == true" [(ngModel)]="lista.vigencia" (change)="changefechaInicio(indice)">
                             </td>
                             <td>
                                 <input type="date" style="width: 98px;" [disabled]="model.isLectura == true" [(ngModel)]="lista.fecha_inicio" (change)="changefechaInicio(indice)">
