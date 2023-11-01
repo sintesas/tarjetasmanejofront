@@ -67,29 +67,29 @@ export class PersonasComponent implements AfterViewInit {
     }
   }
 
-  obtenerPersonas(){
-    this.apiP.getPersonas().subscribe(data=>{
-      let response:any = this.api.ProcesarRespuesta(data);
-      if(response.tipo == 0){
+  obtenerPersonas() {
+    this.apiP.getPersonas().subscribe(data => {
+      let response: any = this.api.ProcesarRespuesta(data);
+      if (response.tipo == 0) {
         response.result.forEach((x: any) => {
-          x.grado_nombre = this.model.gradosList.filter((g:any) => g.lista_dinamica_id == x.grado)[0].lista_dinamica;
+          x.grado_nombre = this.model.gradosList.find((g: any) => g.lista_dinamica_id == x.grado)?.lista_dinamica || 'Valor predeterminado si no se encuentra';
           x.existe_img = (x.imagen == null || x.imagen == "") ? 0 : 1;
-          if(x.grado == null){
+          if (x.grado == null) {
             x.grado2 = "";
-          }else{
+          } else {
             x.grado2 = x.grado_nombre + "-";
           }
           x.nombre_grado = x.grado2 + x.nombres + " " + x.apellidos;
 
-          if(x.nombre_unidad == null){
+          if (x.nombre_unidad == null) {
             x.nombre_unidad = "";
           }
-          
-          if(x.nombre_dependencia == null){
+
+          if (x.nombre_dependencia == null) {
             x.nombre_dependencia = "";
           }
 
-          if(x.cargo == null){
+          if (x.cargo == null) {
             x.cargo = "";
           }
         });

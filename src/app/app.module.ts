@@ -9,7 +9,7 @@ import { PlatformModule } from './platform/platform.module';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,

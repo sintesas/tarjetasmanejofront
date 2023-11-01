@@ -5,7 +5,8 @@
             <div class="filter-content">
                 <ul class="filter-inner">
                     <li class="filter-item">
-                        <button type="button" class="button btn-default" *ngIf="p.crear == 1" (click)="CrearTajeta()">Crear</button>
+                        <button type="button" class="button btn-default" *ngIf="p.crear == 1"
+                            (click)="CrearTajeta()">Crear</button>
                     </li>
                     <li class="filter-item">
                         <input type="search" placeholder="Buscar..." (keyup)="search($event.target)">
@@ -35,8 +36,10 @@
                                 <i class="fa fa-times-circle" style="color:darkred" *ngIf="!item.estado"></i>
                             </td> -->
                             <td>
-                                <button type="button" class="button btn-edit" *ngIf="p.actualizar == 1" (click)="editar(item)">Editar</button>
-                                <button type="button" class="button btn-edit" *ngIf="p.consultar == 1" (click)="detalle(item)">Detalle</button>
+                                <button type="button" class="button btn-edit" *ngIf="p.actualizar == 1"
+                                    (click)="editar(item)">Editar</button>
+                                <button type="button" class="button btn-edit" *ngIf="p.consultar == 1"
+                                    (click)="detalle(item)">Detalle</button>
                             </td>
                         </tr>
                         <tr *ngIf="model.varhistorial?.length == 0">
@@ -61,8 +64,10 @@
                         appearance: none;
                         border-radius: 5px;
                         height: 30px;
-                        background-color: white;" [(ngModel)]="model.varTarjeta.numero_identificacion" [disabled]="model.isCrear == false">
-                        <button *ngIf="model.isCrear == true" type="button" class="button btn-default" (click)="buscarPersona(model.varTarjeta.numero_identificacion)">
+                        background-color: white;" [(ngModel)]="model.varTarjeta.numero_identificacion"
+                             [disabled]="model.isCrear == false">
+                        <button *ngIf="model.isCrear == true" type="button" class="button btn-default"
+                            (click)="buscarPersona(model.varTarjeta.numero_identificacion)">
                             <i class="fa fa-search"></i>
                         </button>
                     </div>
@@ -71,8 +76,9 @@
                     <div class="label-row">Grado:</div>
                     <select disabled [(ngModel)]="model.varTarjeta.grado">
                         <option value="0">Sin grado</option>
-                        <option *ngFor="let item of model.gradosList" [value]="item.lista_dinamica_id">{{ item.lista_dinamica }}</option>
-                    </select>  
+                        <option *ngFor="let item of model.gradosList" [value]="item.lista_dinamica_id">{{
+                            item.lista_dinamica }}</option>
+                    </select>
                 </div>
                 <div class="col col20">
                     <div class="label-row">Nombres:</div>
@@ -84,17 +90,19 @@
                 </div>
                 <div class="col col25" style="text-align: center;">
                     <div class="imagen">
-                        <canvas #myCanvas style="width: 4,5cm; height: 6cm; padding-bottom: 10px; object-fit: contain;"></canvas>
+                        <canvas #myCanvas
+                            style="width: 4,5cm; height: 6cm; padding-bottom: 10px; object-fit: contain;"></canvas>
                     </div>
-                </div>
+                </div>                                    
             </div>
-        </div>  
+        </div>
         <div class="inner-col">
             <div class="col col100">
                 <div class="col col20">
                     <div class="label-row">Restringe DA:</div>
                     <label class="switch">
-                        <input type="checkbox" [disabled]="model.isLectura == true" [(ngModel)]="model.varTarjeta.restringe_da">
+                        <input type="checkbox" [disabled]="model.isLectura == true"
+                            [(ngModel)]="model.varTarjeta.restringe_da">
                         <span class="slider"></span>
                     </label>
                 </div>
@@ -107,97 +115,108 @@
                         <tr>
                             <th>Tipo</th>
                             <th>Clasificacion</th>
-                            <th>Vigencia</th>
-                            <th>Fecha Inicio</th>
-                            <th>Fecha Fin</th>
-                            <th>Unidad</th>
+                            <th style="text-align: center;">Vigencia</th>
+                            <th style="padding-left: 16px; text-align: center;">Fecha Inicio</th>
+                            <th style="padding-left: 35px; text-align: center;">Fecha Fin</th>
+                            <th style="margin-left: 10px;">Unidad</th>
                             <th>Dependencia</th>
                             <th>Cargo</th>
                             <th>Gr-Nombre Firma</th>
                             <th>Cargo Firma</th>
                             <th *ngIf="model.isLectura == true">Imprimir</th>
-                            <th>Acta HERMES</th>
-                            <th>Formato Reserva</th>
-                            <th>Activo</th>
+                            <th style="text-align: center;">Acta HERMES</th>
+                            <th style="padding-left: 10px; text-align: center;">Formato Reserva</th>
+                            <th style="text-align: center;">Activo</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody class="scroll">
                         <tr *ngFor="let lista of model.listTarjetas; let indice = index">
                             <td>
-                                <select [(ngModel)]="lista.tipo_id" [disabled]="model.isLectura == true" (change)="changeTipo(lista.tipo_id,indice)"> 
+                                <select [(ngModel)]="lista.tipo_id" [disabled]="model.isLectura == true"
+                                    (change)="changeTipo(lista.tipo_id,indice)">
                                     <option value="0">Seleccione</option>
-                                    <option *ngFor="let item of model.tiposList" [value]="item.lista_dinamica_id">{{ item.lista_dinamica }}</option>
+                                    <option *ngFor="let item of model.tiposList" [value]="item.lista_dinamica_id">{{
+                                        item.lista_dinamica }}</option>
                                 </select>
                             </td>
                             <td>
-                                <select style="width: 75px;" [(ngModel)]="lista.clasificacion_id" [disabled]="model.isLectura == true" (change)="vigencia(indice,lista.clasificacion_id)">
+                                <select style="width: 75px;" [(ngModel)]="lista.clasificacion_id"
+                                    [disabled]="model.isLectura == true"
+                                    (change)="vigencia(indice,lista.clasificacion_id)">
                                     <option value="0">Seleccione</option>
-                                    <option *ngFor="let item of model.clasificacionList" [value]="item.lista_dinamica_id">{{ item.lista_dinamica }}</option>
+                                    <option *ngFor="let item of model.clasificacionList"
+                                        [value]="item.lista_dinamica_id">{{ item.lista_dinamica }}</option>
                                 </select>
                             </td>
                             <td>
-                                <input type="number" style="width: 50px;" [disabled]="lista.isTemporal == false || model.isLectura == true" [(ngModel)]="lista.vigencia" (change)="changefechaInicio(indice)">
+                                <input type="number" style="width: 50px;" [disabled]="lista.isTemporal == false"
+                                    [(ngModel)]="lista.vigencia">
                             </td>
                             <td>
-                                <input type="date" style="width: 98px;" [disabled]="model.isLectura == true" [(ngModel)]="lista.fecha_inicio" (change)="changefechaInicio(indice)">
+                                <input type="date" style="width: 98px;" [disabled]="model.isLectura == true"
+                                    [(ngModel)]="lista.fecha_inicio" (change)="changefechaInicio(indice)">
                             </td>
                             <td>
-                                <input type="date" style="width: 98px;" disabled [(ngModel)]="lista.fecha_fin">
+                                <input type="date" style="width: 98px ;" disabled [(ngModel)]="lista.fecha_fin">
                             </td>
                             <td>
                                 <input type="text" disabled [(ngModel)]="lista.unidad">
                             </td>
-                            <td>
+                            <td style="padding-left: 23px;">
                                 <input type="text" disabled [(ngModel)]="lista.dependencia">
                             </td>
-                            <td>
+                            <td style="padding-left: 30px;">
                                 <input type="text" disabled [(ngModel)]="lista.cargo">
                             </td>
-                            <td>
-                                <input type="text" [disabled]="model.isLectura == true" [(ngModel)]="lista.nombre_firma">
+                            <td style="padding-left: 20px;">
+                                <input type="text" [disabled]="model.isLectura == true"
+                                    [(ngModel)]="lista.nombre_firma">
                             </td>
-                            <td>
+                            <td style="padding-left: 20px;">
                                 <input type="text" [disabled]="model.isLectura == true" [(ngModel)]="lista.cargo_firma">
                             </td>
-                            <td *ngIf="model.isLectura == true">
-                                <button type="button" class="btn btn-blue" (click)="imprimirCard(lista)"><i class="fa fa-print"></i></button>
+                            <td *ngIf="model.isLectura == true" style="padding-right: 5px;">
+                                <button type="button" class="btn btn-blue" (click)="imprimirCard(lista)"><i
+                                        class="fa fa-print"></i></button>
                             </td>
                             <td *ngIf="model.isLectura == false">
-                                <input type="file" #filetarget id="filetargetid{{indice}}" (change)="changefileActa($event,indice)" accept=".pdf" aria-label="Seleccionar imagen" hidden>
+                                <input type="file" #filetarget id="filetargetid{{indice}}"
+                                    (change)="changefileActa($event,indice)" accept=".pdf"
+                                    aria-label="Seleccionar imagen" hidden>
                                 <label for="filetargetid{{indice}}" class="btn btn-blue">
                                     <div class="text-1"><i class="fas fa-upload"></i></div>
                                 </label>
                             </td>
                             <td *ngIf="model.isLectura == true">
-                                <a href="javascript:void(0)" 
-                                style="cursor:pointer"
-                                class="btn btn-blue"
-                                (click)="descargarDoc( lista.url_acta, model.varTarjeta.numero_identificacion, 1)">
-                                <i class="fa fa-download"></i></a>
+                                <a href="javascript:void(0)" style="cursor:pointer" class="btn btn-blue"
+                                    (click)="descargarDoc( lista.url_acta, model.varTarjeta.numero_identificacion, 1)">
+                                    <i class="fa fa-download"></i></a>
                             </td>
                             <td *ngIf="model.isLectura == false">
-                                <input type="file" #filetarget id="filetargetidr{{indice}}" (change)="changefileReserva($event,indice,lista)" accept=".pdf" aria-label="Seleccionar imagen" hidden>
+                                <input type="file" #filetarget id="filetargetidr{{indice}}"
+                                    (change)="changefileReserva($event,indice,lista)" accept=".pdf"
+                                    aria-label="Seleccionar imagen" hidden>
                                 <label for="filetargetidr{{indice}}" class="btn btn-blue">
                                     <div class="text-1"><i class="fas fa-upload"></i></div>
                                 </label>
                             </td>
                             <td *ngIf="model.isLectura == true">
                                 <!-- reserva -->
-                                <a href="javascript:void(0)" 
-                                style="cursor:pointer"
-                                class="btn btn-blue"
-                                (click)="descargarDoc( lista.url_reserva, model.varTarjeta.numero_identificacion, 2)">
-                                <i class="fa fa-download"></i></a>
+                                <a href="javascript:void(0)" style="cursor:pointer" class="btn btn-blue"
+                                    (click)="descargarDoc( lista.url_reserva, model.varTarjeta.numero_identificacion, 2)">
+                                    <i class="fa fa-download"></i></a>
                             </td>
-                            <td>
+                            <td style="padding-right: 10px;">
                                 <label class="switch">
-                                    <input type="checkbox" [disabled]="model.isLectura == true || lista.des == 1" [(ngModel)]="lista.activo">
+                                    <input type="checkbox" [disabled]="model.isLectura == true || lista.des == 1"
+                                        [(ngModel)]="lista.activo">
                                     <span class="slider"></span>
                                 </label>
                             </td>
                             <td>
-                                <i class="fa fa-circle-xmark" style="color:darkred;" *ngIf="lista.Nuevoregistro == true" (click)="delete(indice)"></i>
+                                <i class="fa fa-circle-xmark" style="color:darkred;" *ngIf="lista.Nuevoregistro == true"
+                                    (click)="delete(indice)"></i>
                             </td>
                         </tr>
                         <tr *ngIf="model.listTarjetas?.length == 0">
@@ -215,7 +234,7 @@
         <button type="button" class="btn btn-red" (click)="closeT()">Cerrar</button>
         <button type="button" class="btn btn-blue" *ngIf="model.isLectura == false" (click)="guardar()">Guardar</button>
     </div>
-</app-modal> 
+</app-modal>
 
 <app-modal [title]="model.title" [show]="model.iframe" [size]="'modal-lg'" (close)="closeIframe()">
     <div role="body">
