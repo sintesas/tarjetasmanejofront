@@ -5,6 +5,7 @@ import { PersonasService } from 'src/app/services/param/personas/personas.servic
 import { UtilidadesService } from 'src/app/services/utilidades/utilidades.service';
 import { UsuariosService } from 'src/app/services/admin/usuarios/usuarios.service';
 import { Validaciones } from './validaciones';
+import { TarjetasService } from 'src/app/services/tarjetas/tarjetas.service';
 declare var Swal:any;
 declare var $: any;
 declare var saveAs:any;
@@ -38,8 +39,11 @@ export class PersonasComponent implements AfterViewInit {
   p = new Permiso();
 
   file: any;
+  nombrefoto!: string;
+  rutaImagen!: string;
+  imagenCargadaMap: { [key: string]: string } = {};
 
-  constructor(private api:ApiService, private apiP:PersonasService, private apiU:UsuariosService, private Utilidades:UtilidadesService){
+  constructor(private api:ApiService, private apiP:PersonasService, private apiU:UsuariosService, private Utilidades:UtilidadesService,private apiT: TarjetasService){
     this.obtenerPersonas();
     this.obtenerUnidades();
     this.getPermisos();
@@ -192,6 +196,8 @@ export class PersonasComponent implements AfterViewInit {
     };
   }
 
+  showError: boolean = false;
+  errorMessage: string = '';
   editar(datos:any){
     this.model.modal = true;
     this.model.title = 'Actualilzar Persona';
@@ -207,10 +213,86 @@ export class PersonasComponent implements AfterViewInit {
     if (datos.existe_img == 1) {
       let foto = this.api.imagen_folder + datos.imagen;
       this.loadImage(this.ctx, foto);
-    }
-    else {
+    } else if (datos.existe_img == 0) {
+      Swal.fire({
+        title: 'Cargando Foto...',
+        allowOutsideClick: false,
+        showCancelButton: false,
+        showConfirmButton: false,
+      });
+      Swal.showLoading();
+      this.apiT.ObtenerNombreFoto({ identificacion: this.model.varPersona.numero_identificacion }).subscribe(
+        (data: any) => {
+          try {
+            if (data.nombrefoto) {
+              this.nombrefoto = data.nombrefoto;
+              console.log("Nombre de la foto:", this.nombrefoto);
+              if (this.nombrefoto) {
+                let url = this.api.URL;
+                // Construye la ruta completa a la imagen en la carpeta assets/images
+                const rutaBase = `http://localhost:3000/fotos`;
+                this.rutaImagen = `${rutaBase}/${this.nombrefoto}`;
+                console.log(url);
+                const img = new Image();
+                img.onload = () => {
+                  this.ctx.clearRect(0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
+                  this.ctx.drawImage(img, 0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
+                  setTimeout(() => {
+                    Swal.close();
+                  }, 2000);
+                };
+                img.onerror = () => {
+                  // Si la imagen no se carga correctamente, muestra un mensaje de error y carga la imagen de avatar.
+                  Swal.fire({
+                    title: 'Error',
+                    text: 'Imagen no disponible. Si desea cargar una imagen por favor guardela en la unidad Z con el siguiente nombre: ' + this.nombrefoto + ' o continue con el proceso.',
+                    icon: 'error',
+                    allowOutsideClick: false,
+                    showCancelButton: false,
+                    showConfirmButton: true,
+                  });
+                  this.showError = true;
+                  console.log('La foto no se encuentra en la URL especificada');
+                  // Cargar la imagen de avatar en lugar de la imagen faltante
+                  this.rutaImagen = "../../../assets/images/avatar.jpg";
+                  const avatarImg = new Image();
+                  avatarImg.onload = () => {
+                    this.ctx.clearRect(0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
+                    this.ctx.drawImage(avatarImg, 0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
+                  };
+                  avatarImg.src = this.rutaImagen;
+                };
+                img.src = this.rutaImagen;
+  
+                // Usa this.model.varTarjeta.numero_identificacion como clave en el diccionario
+                this.imagenCargadaMap[this.model.varPersona.numero_identificacion] = this.rutaImagen;
+  
+                console.log(this.rutaImagen);
+  
+              }
+            } else {
+              console.error("La respuesta no contiene el nombre de la foto.");
+              Swal.fire({
+                title: 'Error',
+                text: 'Imagen no disponible. Si desea cargar una imagen lo puede hacer oprimiendo el botón "Cargar Imagen" o continue con el proceso.',
+                icon: 'error',
+                allowOutsideClick: false,
+                showCancelButton: false,
+                showConfirmButton: true,
+              });
+            }
+          } catch (error) {
+            console.error("Error al procesar la respuesta:", error);
+          }
+        },
+        (error) => {
+          console.error("Error en la solicitud HTTP:", error);
+        }
+      );
+    }else {
       this.loadImage(this.ctx, this.model.filename);
     }
+    
   }
 
   guardar(num:number){
@@ -263,6 +345,7 @@ export class PersonasComponent implements AfterViewInit {
         icon: "warning"
       });
     }
+    
   }
 
   obtenerUnidades(){
