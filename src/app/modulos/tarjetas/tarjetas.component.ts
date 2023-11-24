@@ -191,6 +191,10 @@ export class TarjetasComponent {
             x.existe_img = (x.imagen == null || x.imagen == "") ? 0 : 1;
           });
           this.model.varTarjeta = response.result[0];
+          setTimeout(() => {
+            Swal.close();
+            this.buscarFoto();
+          }, 2000);
         } else {
           this.apiT.ObtenerViewData({ id: num }).subscribe(data1 => {
             let response1: any = this.api.ProcesarRespuesta(data1);
@@ -376,46 +380,86 @@ export class TarjetasComponent {
     if (datos.existe_img == 1) {
       let foto = this.api.imagen_folder + datos.imagen;
       this.loadImage(this.ctx, foto);
-    }
-    else {
+    } else if (datos.existe_img == 0) {
+      Swal.fire({
+        title: 'Cargando Foto...',
+        allowOutsideClick: false,
+        showCancelButton: false,
+        showConfirmButton: false,
+      });
+      Swal.showLoading();
+      this.apiT.ObtenerNombreFoto({ identificacion: this.model.varTarjeta.numero_identificacion }).subscribe(
+        (data: any) => {
+          try {
+            if (data.nombrefoto) {
+              this.nombrefoto = data.nombrefoto;
+              console.log("Nombre de la foto:", this.nombrefoto);
+              if (this.nombrefoto) {
+                let url = this.api.URL;
+                // Construye la ruta completa a la imagen en la carpeta assets/images
+                const rutaBase = `http://localhost:3000/fotos`;
+                this.rutaImagen = `${rutaBase}/${this.nombrefoto}`;
+                console.log(url);
+                const img = new Image();
+                img.onload = () => {
+                  this.ctx.clearRect(0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
+                  this.ctx.drawImage(img, 0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
+                  setTimeout(() => {
+                    Swal.close();
+                  }, 2000);
+                };
+                img.onerror = () => {
+                  // Si la imagen no se carga correctamente, muestra un mensaje de error y carga la imagen de avatar.
+                  Swal.fire({
+                    title: 'Error',
+                    text: 'Imagen no disponible. Si desea cargar una imagen por favor guardela en la unidad Z con el siguiente nombre: ' + this.nombrefoto + ' o continue con el proceso.',
+                    icon: 'error',
+                    allowOutsideClick: false,
+                    showCancelButton: false,
+                    showConfirmButton: true,
+                  });
+                  this.showError = true;
+                  console.log('La foto no se encuentra en la URL especificada');
+                  // Cargar la imagen de avatar en lugar de la imagen faltante
+                  this.rutaImagen = "../../../assets/images/avatar.jpg";
+                  const avatarImg = new Image();
+                  avatarImg.onload = () => {
+                    this.ctx.clearRect(0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
+                    this.ctx.drawImage(avatarImg, 0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
+                  };
+                  avatarImg.src = this.rutaImagen;
+                };
+                img.src = this.rutaImagen;
+
+                // Usa this.model.varTarjeta.numero_identificacion como clave en el diccionario
+                this.imagenCargadaMap[this.model.varTarjeta.numero_identificacion] = this.rutaImagen;
+
+                console.log(this.rutaImagen);
+
+              }
+            } else {
+              console.error("La respuesta no contiene el nombre de la foto.");
+              Swal.fire({
+                title: 'Error',
+                text: 'Imagen no disponible. Si desea cargar una imagen por favor dirijase al modulo Personas o continue con el proceso.',
+                icon: 'error',
+                allowOutsideClick: false,
+                showCancelButton: false,
+                showConfirmButton: true,
+              });
+            }
+          } catch (error) {
+            console.error("Error al procesar la respuesta:", error);
+          }
+        },
+        (error) => {
+          console.error("Error en la solicitud HTTP:", error);
+        }
+      );
+    } else {
       this.loadImage(this.ctx, this.model.filename);
     }
-    this.apiT.ObtenerNombreFoto({ identificacion: this.model.varTarjeta.numero_identificacion }).subscribe(
-      (data: any) => {
-        try {
-          if (data.nombrefoto) {
-            this.nombrefoto = data.nombrefoto;
-            console.log("Nombre de la foto:", this.nombrefoto);
-            if (this.nombrefoto) {
-              let url = this.api.URL;
-              // Construye la ruta completa a la imagen en la carpeta assets/images
-              const rutaBase = `http://localhost:3000/fotos`;
-              this.rutaImagen = `${rutaBase}/${this.nombrefoto}`;
-              console.log(url);
-              const img = new Image();
-              img.onload = () => {
-                this.ctx.clearRect(0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
-                this.ctx.drawImage(img, 0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
-              };
-              img.src = this.rutaImagen;
 
-              // Usa this.model.varTarjeta.numero_identificacion como clave en el diccionario
-              this.imagenCargadaMap[this.model.varTarjeta.numero_identificacion] = this.rutaImagen;
-
-              console.log(this.rutaImagen);
-
-            }
-          } else {
-            console.error("La respuesta no contiene el nombre de la foto.");
-          }
-        } catch (error) {
-          console.error("Error al procesar la respuesta:", error);
-        }
-      },
-      (error) => {
-        console.error("Error en la solicitud HTTP:", error);
-      }
-    );
   }
 
   detalle(datos: any) {
@@ -492,7 +536,7 @@ export class TarjetasComponent {
       cargo: this.model.varTarjeta.cargo,
       gr_nombre: "",
       gr_cargo: "",
-      activo: true,
+      activo: false,
       Nuevoregistro: true,
       isTemporal: false
     });
@@ -689,29 +733,12 @@ export class TarjetasComponent {
   }
 
   nombrefoto!: string;
+  imagen!: string;
 
   numeroIdentificacion!: string;
   fotoUrl!: string;
 
 
-  obtenerNombreDeFoto(numeroIdentificacion: string) {
-    // Construye la URL con el número de identificación
-    const url = `http://localhost:8000/api/tarjetas/buscarImagen/identificacion:${this.model.varTarjeta.numero_identificacion}`;
-
-    // Realiza la solicitud HTTP
-    this.http.get(url)
-      .subscribe((response: any) => {
-        // Comprueba si la respuesta contiene el nombre de la foto
-        if (response.result && response.result[0] && response.result[0].nombrefoto) {
-          // Extrae el nombre de la foto de la respuesta
-          this.nombrefoto = response.result[0].nombrefoto;
-        } else {
-          console.error('No se encontró el nombre de la foto para la cédula proporcionada.');
-        }
-      }, error => {
-        console.error('Error al obtener el nombre de la foto', error);
-      });
-  }
   rutaImagen!: string;
 
   buscarFoto() {
@@ -721,11 +748,13 @@ export class TarjetasComponent {
           if (data.nombrefoto) {
             this.nombrefoto = data.nombrefoto;
             console.log("Nombre de la foto:", this.nombrefoto);
-            if (this.nombrefoto) {
+            if (this.nombrefoto !== 'null') {
               this.cargarFoto();
+              this.imagen = 'null';
             }
           } else {
-            console.error("La respuesta no contiene el nombre de la foto.");
+            this.nombrefoto = 'null';
+            this.imagen = 'null';
           }
         } catch (error) {
           console.error("Error al procesar la respuesta:", error);
@@ -735,6 +764,41 @@ export class TarjetasComponent {
         console.error("Error en la solicitud HTTP:", error);
       }
     );
+
+    this.apiT.ObtenerNombreImagen({ numero_identificacion: this.model.varTarjeta.numero_identificacion }).subscribe(
+      (data: any) => {
+        try {
+          if (data.imagen) {
+            this.imagen = data.imagen;
+            console.log("Nombre de la foto:", this.imagen);
+            if (this.imagen !== 'null') {
+              this.nombrefoto = 'null';
+              this.cargarImagen();
+              console.log('carga imagen');
+            }
+          } else if (this.nombrefoto !== 'null' && this.imagen === 'null') {
+            this.imagen = 'null';
+            this.cargarFoto();
+            console.log('muestrafotoz');
+
+          } else {
+            if (this.nombrefoto === 'null' && this.imagen === 'null') {
+              this.nombrefoto = 'null';
+              this.imagen = 'null';
+              this.cargarFoto();
+              console.log('muestra el error')
+            }
+          }
+
+        } catch (error) {
+          console.error("Error al procesar la respuesta:", error);
+        }
+      },
+      (error) => {
+        console.error("Error en la solicitud HTTP:", error);
+      }
+    );
+
   }
 
 
@@ -749,7 +813,7 @@ export class TarjetasComponent {
       showConfirmButton: false,
     });
     Swal.showLoading();
-    if (this.nombrefoto) {
+    if (this.nombrefoto !== 'null') {
       let url = this.api.URL;
       // Construye la ruta completa a la imagen en la carpeta assets/images
       const rutaBase = `http://localhost:3000/fotos`;
@@ -767,7 +831,7 @@ export class TarjetasComponent {
         // Si la imagen no se carga correctamente, muestra un mensaje de error y carga la imagen de avatar.
         Swal.fire({
           title: 'Error',
-          text: 'La foto no pudo ser encontrada',
+          text: 'Imagen no disponible. Si desea cargar una imagen por favor guardela en la unidad Z con el siguiente nombre: ' + this.nombrefoto + ' o continue con el proceso.',
           icon: 'error',
           allowOutsideClick: false,
           showCancelButton: false,
@@ -792,15 +856,90 @@ export class TarjetasComponent {
     } else {
       Swal.fire({
         title: 'Error',
-        text: 'El nombre de la foto no fue',
+        text: 'Imagen no disponible. Si desea cargar una imagen por favor dirijase al modulo Personas o continue con el proceso.',
         icon: 'error',
         allowOutsideClick: false,
         showCancelButton: false,
         showConfirmButton: true,
       });
-      Swal.showLoading();
       this.showError = true;
       console.log('La foto no se encuentra en la unidad Z');
+      this.rutaImagen = "../../../assets/images/avatar.jpg";
+      const avatarImg = new Image();
+      avatarImg.onload = () => {
+        this.ctx.clearRect(0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
+        this.ctx.drawImage(avatarImg, 0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
+      };
+      avatarImg.src = this.rutaImagen;
+    }
+  }
+
+  cargarImagen() {
+    Swal.fire({
+      title: 'Cargando Foto...',
+      allowOutsideClick: false,
+      showCancelButton: false,
+      showConfirmButton: false,
+    });
+    Swal.showLoading();
+    if (this.imagen !== 'null') {
+      let url = this.api.URL;
+      // Construye la ruta completa a la imagen en la carpeta assets/images
+      const rutaBase = this.api.imagen_folder;
+      this.rutaImagen = `${rutaBase}${this.imagen}`;
+      console.log(url);
+      const img = new Image();
+      img.onload = () => {
+        this.ctx.clearRect(0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
+        this.ctx.drawImage(img, 0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
+        setTimeout(() => {
+          Swal.close();
+        }, 2000); // 3000 milisegundos (3 segundos) en este ejemplo
+      };
+      img.onerror = () => {
+        // Si la imagen no se carga correctamente, muestra un mensaje de error y carga la imagen de avatar.
+        Swal.fire({
+          title: 'Error',
+          text: 'Imagen no disponible. Si desea cargar una imagen por favor dirijase al modulo Personas o continue con el proceso.',
+          icon: 'error',
+          allowOutsideClick: false,
+          showCancelButton: false,
+          showConfirmButton: true,
+        });
+        this.showError = true;
+        console.log('La foto no se encuentra en la URL especificada');
+        // Cargar la imagen de avatar en lugar de la imagen faltante
+        this.rutaImagen = "../../../assets/images/avatar.jpg";
+        const avatarImg = new Image();
+        avatarImg.onload = () => {
+          this.ctx.clearRect(0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
+          this.ctx.drawImage(avatarImg, 0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
+        };
+        avatarImg.src = this.rutaImagen;
+      };
+      img.src = this.rutaImagen;
+      // Usa this.model.varTarjeta.numero_identificacion como clave en el diccionario
+      this.imagenCargadaMap[this.model.varTarjeta.numero_identificacion] = this.rutaImagen;
+      console.log(this.rutaImagen);
+
+    } else {
+      Swal.fire({
+        title: 'Error',
+        text: 'Imagen no disponible. Si desea cargar una imagen por favor dirijase al modulo Personas o continue con el proceso.',
+        icon: 'error',
+        allowOutsideClick: false,
+        showCancelButton: false,
+        showConfirmButton: true,
+      });
+      this.showError = true;
+      console.log('La foto no se encuentra en la capeta perfil');
+      this.rutaImagen = "../../../assets/images/avatar.jpg";
+      const avatarImg = new Image();
+      avatarImg.onload = () => {
+        this.ctx.clearRect(0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
+        this.ctx.drawImage(avatarImg, 0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
+      };
+      avatarImg.src = this.rutaImagen;
 
     }
   }

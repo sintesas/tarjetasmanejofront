@@ -16,6 +16,7 @@ export class TarjetasService {
   private apiGetView = this.api.getBaseUrl + "tarjetas/obtenerDatosView";
   private apiGetUsuarioDA = this.api.getBaseUrl + "tarjetas/obtenerUsuarioDA";
   private apiGetNombreFoto = this.api.getBaseUrl + "tarjetas/buscarImagen";
+  private apiGetNombreImagen = this.api.getBaseUrl + "tarjetas/buscarImagenPersonas";
 
   constructor(private http: HttpClient, private api: ApiService) { }
 
@@ -73,6 +74,13 @@ export class TarjetasService {
 
   public ObtenerNombreFoto(data:any):Observable<any>{
     return this.http.post<any>(this.apiGetNombreFoto, data,
+      this.api.getOptions('g')).pipe(
+        retry(1), catchError(this.api.errorHandle)
+      );
+  }
+
+  public ObtenerNombreImagen(data:any):Observable<any>{
+    return this.http.post<any>(this.apiGetNombreImagen, data,
       this.api.getOptions('g')).pipe(
         retry(1), catchError(this.api.errorHandle)
       );
