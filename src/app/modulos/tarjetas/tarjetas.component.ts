@@ -510,13 +510,17 @@ export class TarjetasComponent {
         let ultimo = this.model.listTarjetas[d];
         if (c != d) {
           if (this.model.listTarjetas[c].activo == true && this.model.listTarjetas[c].Nuevoregistro == false) {
-            debugger
             let f_i = new Date(this.model.listTarjetas[c].fecha_inicio);
             let f_f = new Date(this.model.listTarjetas[c].fecha_fin);
             let f = new Date(ultimo.fecha_inicio);
             if (f >= f_i && f < f_f) {
               this.model.listTarjetas[c].activo = false;
             }
+          }
+        }
+        if(this.model.listTarjetas[d].tipo_id == 2108){
+          if(this.model.listTarjetas[c].tipo_id == 2109){
+            this.model.listTarjetas[c].activo = false;
           }
         }
       }
@@ -632,9 +636,9 @@ export class TarjetasComponent {
   }
 
   changefechaInicio(index: number) {
-    const fechaInicial = new Date(this.model.listTarjetas[index].fecha_inicio); // Aquí puedes poner la fecha inicial que desees
+    const fechaInicial = new Date(this.model.listTarjetas[index].fecha_inicio);
 
-    const diasASumar = this.model.listTarjetas[index].vigencia; // Aquí puedes poner el número de días que deseas sumar
+    const diasASumar = this.model.listTarjetas[index].vigencia;
 
     const fechaFinal = new Date(fechaInicial.getTime() + diasASumar * 24 * 60 * 60 * 1000);
 
@@ -643,6 +647,14 @@ export class TarjetasComponent {
     const día = fechaFinal.getDate();
 
     this.model.listTarjetas[index].fecha_fin = `${año}-${mes.toString().padStart(2, '0')}-${día.toString().padStart(2, '0')}`;
+    let fecha_a = new Date();
+    let fecha_inic = new Date(this.model.listTarjetas[index].fecha_inicio);
+    if(fecha_inic != fecha_a){
+      this.model.listTarjetas[index].des = 1;
+      this.model.listTarjetas[index].activo = false;
+    }else {
+      this.model.listTarjetas[index].des = 0;
+    }
   }
 
   imprimirCard(data: any) {

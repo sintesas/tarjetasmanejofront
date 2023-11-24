@@ -133,29 +133,24 @@
                     <tbody class="scroll">
                         <tr *ngFor="let lista of model.listTarjetas; let indice = index">
                             <td>
-                                <select [(ngModel)]="lista.tipo_id" [disabled]="model.isLectura == true"
-                                    (change)="changeTipo(lista.tipo_id,indice)">
+                                <select [(ngModel)]="lista.tipo_id" [disabled]="model.isLectura == true" (change)="changeTipo(lista.tipo_id,indice)">
                                     <option value="0">Seleccione</option>
                                     <option *ngFor="let item of model.tiposList" [value]="item.lista_dinamica_id">{{
                                         item.lista_dinamica }}</option>
                                 </select>
                             </td>
                             <td>
-                                <select style="width: 75px;" [(ngModel)]="lista.clasificacion_id"
-                                    [disabled]="model.isLectura == true"
-                                    (change)="vigencia(indice,lista.clasificacion_id)">
+                                <select style="width: 75px;" [(ngModel)]="lista.clasificacion_id" [disabled]="model.isLectura == true" (change)="vigencia(indice,lista.clasificacion_id)">
                                     <option value="0">Seleccione</option>
                                     <option *ngFor="let item of model.clasificacionList"
                                         [value]="item.lista_dinamica_id">{{ item.lista_dinamica }}</option>
                                 </select>
                             </td>
                             <td>
-                                <input type="number" style="width: 50px;" [disabled]="lista.isTemporal == false"
-                                    [(ngModel)]="lista.vigencia">
+                                <input type="number" style="width: 50px;" [disabled]="lista.isTemporal == false || model.isLectura == true" [(ngModel)]="lista.vigencia" (change)="changefechaInicio(indice)">
                             </td>
                             <td>
-                                <input type="date" style="width: 98px;" [disabled]="model.isLectura == true"
-                                    [(ngModel)]="lista.fecha_inicio" (change)="changefechaInicio(indice)">
+                                <input type="date" style="width: 98px;" [disabled]="model.isLectura == true" [(ngModel)]="lista.fecha_inicio" (change)="changefechaInicio(indice)">
                             </td>
                             <td>
                                 <input type="date" style="width: 98px ;" disabled [(ngModel)]="lista.fecha_fin">
@@ -170,53 +165,43 @@
                                 <input type="text" disabled [(ngModel)]="lista.cargo">
                             </td>
                             <td style="padding-left: 20px;">
-                                <input type="text" [disabled]="model.isLectura == true"
-                                    [(ngModel)]="lista.nombre_firma">
+                                <input type="text" [disabled]="model.isLectura == true" [(ngModel)]="lista.nombre_firma">
                             </td>
                             <td style="padding-left: 20px;">
                                 <input type="text" [disabled]="model.isLectura == true" [(ngModel)]="lista.cargo_firma">
                             </td>
                             <td *ngIf="model.isLectura == true" style="padding-right: 5px;">
-                                <button type="button" class="btn btn-blue" (click)="imprimirCard(lista)"><i
-                                        class="fa fa-print"></i></button>
+                                <button type="button" class="btn btn-blue" (click)="imprimirCard(lista)"><i class="fa fa-print"></i></button>
                             </td>
                             <td *ngIf="model.isLectura == false">
-                                <input type="file" #filetarget id="filetargetid{{indice}}"
-                                    (change)="changefileActa($event,indice)" accept=".pdf"
-                                    aria-label="Seleccionar imagen" hidden>
+                                <input type="file" #filetarget id="filetargetid{{indice}}" (change)="changefileActa($event,indice)" accept=".pdf" aria-label="Seleccionar imagen" hidden>
                                 <label for="filetargetid{{indice}}" class="btn btn-blue">
                                     <div class="text-1"><i class="fas fa-upload"></i></div>
                                 </label>
                             </td>
                             <td *ngIf="model.isLectura == true">
-                                <a href="javascript:void(0)" style="cursor:pointer" class="btn btn-blue"
-                                    (click)="descargarDoc( lista.url_acta, model.varTarjeta.numero_identificacion, 1)">
+                                <a href="javascript:void(0)" style="cursor:pointer" class="btn btn-blue" (click)="descargarDoc( lista.url_acta, model.varTarjeta.numero_identificacion, 1)">
                                     <i class="fa fa-download"></i></a>
                             </td>
                             <td *ngIf="model.isLectura == false">
-                                <input type="file" #filetarget id="filetargetidr{{indice}}"
-                                    (change)="changefileReserva($event,indice,lista)" accept=".pdf"
-                                    aria-label="Seleccionar imagen" hidden>
+                                <input type="file" #filetarget id="filetargetidr{{indice}}"(change)="changefileReserva($event,indice,lista)" accept=".pdf" aria-label="Seleccionar imagen" hidden>
                                 <label for="filetargetidr{{indice}}" class="btn btn-blue">
                                     <div class="text-1"><i class="fas fa-upload"></i></div>
                                 </label>
                             </td>
                             <td *ngIf="model.isLectura == true">
                                 <!-- reserva -->
-                                <a href="javascript:void(0)" style="cursor:pointer" class="btn btn-blue"
-                                    (click)="descargarDoc( lista.url_reserva, model.varTarjeta.numero_identificacion, 2)">
+                                <a href="javascript:void(0)" style="cursor:pointer" class="btn btn-blue" (click)="descargarDoc( lista.url_reserva, model.varTarjeta.numero_identificacion, 2)">
                                     <i class="fa fa-download"></i></a>
                             </td>
                             <td style="padding-right: 10px;">
                                 <label class="switch">
-                                    <input type="checkbox" [disabled]="model.isLectura == true || lista.des == 1"
-                                        [(ngModel)]="lista.activo">
+                                    <input type="checkbox" [disabled]="model.isLectura == true || lista.des == 1" [(ngModel)]="lista.activo">
                                     <span class="slider"></span>
                                 </label>
                             </td>
                             <td>
-                                <i class="fa fa-circle-xmark" style="color:darkred;" *ngIf="lista.Nuevoregistro == true"
-                                    (click)="delete(indice)"></i>
+                                <i class="fa fa-circle-xmark" style="color:darkred;" *ngIf="lista.Nuevoregistro == true" (click)="delete(indice)"></i>
                             </td>
                         </tr>
                         <tr *ngIf="model.listTarjetas?.length == 0">
