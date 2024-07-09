@@ -436,6 +436,8 @@ export class PersonasComponent implements AfterViewInit {
     }
   }
 
+
+
   closeSelectModal(bol: any) {
     this.model.selectModal = false;
   }
